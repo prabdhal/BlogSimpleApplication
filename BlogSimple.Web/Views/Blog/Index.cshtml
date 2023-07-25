@@ -1,0 +1,21 @@
+﻿@model BlogSimple.Model.ViewModels.BlogListViewModel;
+
+@{
+    ViewData["Title"] = "MyBlogs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>MyBlogs</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@foreach (var item in Model.Blogs) {
+<div class="card">
+    <h5 class="card-header"><a href="/Blog/Details/@item.Id">@item.Title</a></h5>
+    <div class="card-body">
+        <p class="card-text">@item.Description</p>
+    </div>
+</div>
+}

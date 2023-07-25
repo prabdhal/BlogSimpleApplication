@@ -1,0 +1,26 @@
+﻿@model BlogSimple.Model.ViewModels.BlogViewModel;
+
+@{
+    ViewData["Title"] = "ViewBlog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h1>ViewBlog</h1>*@
+
+<div class="container">
+    <h1>@Model.Blog.Title</h1>
+    <div>Posted by: @Html.DisplayFor(model => model.Blog.CreatedBy.UserName)</div>
+    <div>Published: @Model.Blog.CreatedOn.ToString("MMM d, yyyy")</div>
+    <div>Updated: @Model.Blog.UpdatedOn.ToString("MMM d, yyyy")</div>
+    <br />
+    <br />
+    <br />
+
+    <div>
+        @Html.DisplayFor(model => model.Blog.Content)
+    </div>
+</div>
+@*<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>*@
