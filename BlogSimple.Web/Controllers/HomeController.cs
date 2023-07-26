@@ -13,9 +13,9 @@ public class HomeController : Controller
         _homeBusinessManager = homeBusinessManager;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string searchString)
     {
-        HomeIndexViewModel homeIndexViewModal = _homeBusinessManager.GetHomeIndexViewModel();
+        HomeIndexViewModel homeIndexViewModal = _homeBusinessManager.GetHomeIndexViewModel(searchString);
 
         return View(homeIndexViewModal);
     }
@@ -23,8 +23,8 @@ public class HomeController : Controller
     // GET: HomeController/Details/Id
     public ActionResult Details(string id)
     {
-        HomeDetailsViewModel homeDetailsViewModal = _homeBusinessManager.GetHomeDetailsViewModel(id);
+        BlogDetailsViewModel viewModel = _homeBusinessManager.GetHomeDetailsViewModel(id);
 
-        return View(homeDetailsViewModal);
+        return View(viewModel);
     }
 }

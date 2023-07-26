@@ -2,7 +2,7 @@
 
 namespace BlogSimple.Model.ViewModels;
 
-public class DashboardDetailViewModal
+public class BlogDetailsViewModel
 {
     public Blog Blog { get; set; }
 }

@@ -7,8 +7,8 @@ namespace BlogSimple.Web.BusinessManager.Interfaces;
 
 public interface IBlogBusinessManager
 {
-    Task<DashboardIndexViewModel> GetDashboardIndexViewModel(ClaimsPrincipal claimsPrincipal);
-    DashboardDetailViewModal GetDashboardDetailViewModel(string id);
+    Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
+    BlogDetailsViewModel GetDashboardDetailViewModel(string id);
     Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal);
     EditBlogViewModel GetEditBlogViewModel(string id);
     ActionResult<EditBlogViewModel> EditBlog(EditBlogViewModel editBlogViewModel, ClaimsPrincipal claimsPrincipal);

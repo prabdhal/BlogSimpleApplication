@@ -14,21 +14,20 @@ public class HomeBusinessManager : IHomeBusinessManager
         _blogService = blogService;
     }
 
-    public HomeDetailsViewModel GetHomeDetailsViewModel(string id)
+    public BlogDetailsViewModel GetHomeDetailsViewModel(string id)
     {
         Blog blog = _blogService.Get(id);
 
-        return new HomeDetailsViewModel
+        return new BlogDetailsViewModel
         {
             Blog = blog
         };
     }
 
-    public HomeIndexViewModel GetHomeIndexViewModel()
+    public HomeIndexViewModel GetHomeIndexViewModel(string searchString)
     {
-        IEnumerable<Blog> blogs = _blogService.Get();
+        IEnumerable<Blog> blogs = _blogService.GetAll(searchString ?? string.Empty);
         Blog featuredBlog = new Blog();
-        IEnumerable<Blog> unfeaturedBlogs = Enumerable.Empty<Blog>();
 
         if (blogs.Any())
         {

@@ -58,7 +58,7 @@ namespace BlogSimple.Web.Controllers
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
                     if (result.Succeeded)
                     {
-                        return Redirect(returnurl ?? "/Dashboard/Index");
+                        return Redirect(returnurl ?? "/Blog/Index");
                     }
                 }
                 ModelState.AddModelError(nameof(username), "Login Failed: Invalid Email or Password");

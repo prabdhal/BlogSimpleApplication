@@ -13,6 +13,9 @@ public class Blog
     [Required(ErrorMessage = "Please enter the blog title.")]
     public string Title { get; set; } = String.Empty;
     [Required(ErrorMessage = "Please enter the blog description.")]
+    public int CategoryId { get; set; }
+    //[Required(ErrorMessage = "Please select the appropriate category of the blog.")]
+    public BlogCategory Category { get; set; }
     public string Description { get; set; } = String.Empty;
     [Required(ErrorMessage = "Please enter the blog content.")]
     public string Content { get; set; } = String.Empty;

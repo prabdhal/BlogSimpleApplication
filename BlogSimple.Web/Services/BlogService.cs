@@ -18,9 +18,21 @@ public class BlogService : IBlogService
         _blogs = db.GetCollection<Blog>(blogSettings.BlogsCollectionName);
     }
 
-    public List<Blog> Get()
+    public List<Blog> GetAll()
     {
         return _blogs.Find(_ => true).ToList();
+    }
+
+    public List<Blog> GetAll(string searchString)
+    {
+        var search = searchString.ToLower();
+
+        // Need to filter by contains text
+        var filterSearch = Builders<Blog>.Filter.Where(b => b.Title.ToLower().Contains(search) | 
+            b.Description.ToLower().Contains(search) | 
+            b.Content.ToLower().Contains(search));
+
+        return _blogs.Find(filterSearch).ToList();
     }
 
     public Blog Get(string id)

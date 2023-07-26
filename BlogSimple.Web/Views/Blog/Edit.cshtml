@@ -1,18 +1,19 @@
-﻿@model BlogSimple.Model.ViewModels.CreateBlogViewModel;
+﻿@model BlogSimple.Model.ViewModels.EditBlogViewModel;
 
 @{
-    ViewData["Title"] = "Create Blog";
-    Layout = "~/Views/Dashboard/_Layout.cshtml";
+    ViewData["Title"] = "Edit " + Model.Blog.Title;
+    Layout = "~/Views/Blog/_DashboardLayout.cshtml";
 }
 
-<h1>CreateBlog</h1>
+<h1>EditBlog</h1>
 
 <h4>Blog</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-12">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Blog.Id" readonly hidden />
             <div class="form-group">
                 <label asp-for="Blog.Title" class="control-label"></label>
                 <input asp-for="Blog.Title" class="form-control" />
@@ -25,11 +26,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="Blog.Content" class="control-label"></label>
-                <input asp-for="Blog.Content" class="form-control" />
+                <textarea asp-for="Blog.Content" class="form-control" rows="10">@Model.Blog.Content</textarea>
                 <span asp-validation-for="Blog.Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

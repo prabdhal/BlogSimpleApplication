@@ -4,7 +4,8 @@ namespace BlogSimple.Model.Services.Interfaces;
 
 public interface IBlogService
 {
-    List<Blog> Get();
+    List<Blog> GetAll();
+    List<Blog> GetAll(string searchString);
     Blog Get(string id);
     Blog Create(Blog blog);
     Blog Update(string id, Blog blog);

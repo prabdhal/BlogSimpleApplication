@@ -22,9 +22,9 @@ public class BlogBusinessManager : IBlogBusinessManager
         _userManager = userManager;
     }
 
-    public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(ClaimsPrincipal claimsPrincipal)
+    public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
     {
-        var blogs = _blogService.Get();
+        IEnumerable<Blog> blogs = _blogService.GetAll(searchString ?? string.Empty);
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
@@ -36,11 +36,11 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public DashboardDetailViewModal GetDashboardDetailViewModel(string id)
+    public BlogDetailsViewModel GetDashboardDetailViewModel(string id)
     {
         var blog = _blogService.Get(id);
 
-        return new DashboardDetailViewModal
+        return new BlogDetailsViewModel
         {
             Blog = blog,
         };

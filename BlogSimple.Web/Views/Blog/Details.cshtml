@@ -1,8 +1,8 @@
-﻿@model BlogSimple.Model.ViewModels.DashboardDetailViewModal;
+﻿@model BlogSimple.Model.ViewModels.BlogDetailsViewModel;
 
 @{
-    ViewData["Title"] = "ViewBlog";
-    Layout = "~/Views/Dashboard/_Layout.cshtml";
+    ViewData["Title"] = "View " + Model.Blog.Title;
+    Layout = "~/Views/Blog/_DashboardLayout.cshtml";
 }
 
 

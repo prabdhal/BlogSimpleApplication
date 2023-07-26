@@ -7,18 +7,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace BlogSimple.Web.Controllers;
 
 [Authorize]
-public class DashboardController : Controller
+public class BlogController : Controller
 {
     private readonly IBlogBusinessManager _blogBusinessManager;
 
-    public DashboardController(IBlogBusinessManager blogBusinessManager)
+    public BlogController(IBlogBusinessManager blogBusinessManager)
     {
         _blogBusinessManager = blogBusinessManager;
     }
 
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(string searchString)
     {
-        DashboardIndexViewModel blogListViewModal = await _blogBusinessManager.GetDashboardIndexViewModel(User);
+        DashboardIndexViewModel blogListViewModal = await _blogBusinessManager.GetDashboardIndexViewModel(searchString, User);
 
         return View(blogListViewModal);
     }
@@ -26,7 +26,7 @@ public class DashboardController : Controller
     // GET: HomeController/Details/Id
     public ActionResult Details(string id)
     {
-        DashboardDetailViewModal dashboardDetailsViewModal = _blogBusinessManager.GetDashboardDetailViewModel(id);
+        BlogDetailsViewModel dashboardDetailsViewModal = _blogBusinessManager.GetDashboardDetailViewModel(id);
 
         return View(dashboardDetailsViewModal);
     }
