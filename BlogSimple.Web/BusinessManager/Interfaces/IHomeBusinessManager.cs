@@ -4,5 +4,6 @@ namespace BlogSimple.Web.BusinessManager.Interfaces;
 
 public interface IHomeBusinessManager
 {
-    public HomeIndexViewModel GetHomeIndexViewModel();
+    HomeDetailsViewModel GetHomeDetailsViewModel(string id);
+    HomeIndexViewModel GetHomeIndexViewModel();
 }

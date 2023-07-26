@@ -22,21 +22,21 @@ public class BlogBusinessManager : IBlogBusinessManager
         _userManager = userManager;
     }
 
-    public BlogListViewModel GetBlogListViewModel()
+    public DashboardIndexViewModel GetDashboardIndexViewModel()
     {
         var blogs = _blogService.Get();
 
-        return new BlogListViewModel
+        return new DashboardIndexViewModel
         {
             Blogs = blogs,
         };
     }
 
-    public BlogViewModel GetBlogViewModel(string id)
+    public DashboardDetailViewModal GetDashboardDetailViewModel(string id)
     {
         var blog = _blogService.Get(id);
 
-        return new BlogViewModel
+        return new DashboardDetailViewModal
         {
             Blog = blog,
         };
@@ -78,6 +78,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         blog.Description = editBlogViewModel.Blog.Description;
         blog.Content = editBlogViewModel.Blog.Content;
         blog.UpdatedOn = DateTime.Now;
+
 
         return new EditBlogViewModel
         {

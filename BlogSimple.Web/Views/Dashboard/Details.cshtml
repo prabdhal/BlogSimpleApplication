@@ -1,4 +1,4 @@
-﻿@model BlogSimple.Model.ViewModels.BlogViewModel;
+﻿@model BlogSimple.Model.ViewModels.DashboardDetailViewModal;
 
 @{
     ViewData["Title"] = "ViewBlog";
@@ -9,7 +9,7 @@
 
 <div class="container">
     <h1>@Model.Blog.Title</h1>
-    <div>Posted by: @Html.DisplayFor(model => model.Blog.CreatedBy.UserName)</div>
+    <div>Posted by: @Model.Blog.CreatedBy.UserName</div>
     <div>Published: @Model.Blog.CreatedOn.ToString("MMM d, yyyy")</div>
     <div>Updated: @Model.Blog.UpdatedOn.ToString("MMM d, yyyy")</div>
     <br />
@@ -17,7 +17,7 @@
     <br />
 
     <div>
-        @Html.DisplayFor(model => model.Blog.Content)
+        @Model.Blog.Content
     </div>
 </div>
 @*<div>

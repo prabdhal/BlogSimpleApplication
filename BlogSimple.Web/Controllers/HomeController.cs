@@ -1,18 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BlogSimple.Model.ViewModels;
+using BlogSimple.Web.BusinessManager.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace BlogSimple.Web.Controllers
+namespace BlogSimple.Web.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly IHomeBusinessManager _homeBusinessManager;
+
+    public HomeController(IHomeBusinessManager homeBusinessManager)
     {
-        public HomeController()
-        {
-        }
+        _homeBusinessManager = homeBusinessManager;
+    }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+    public IActionResult Index()
+    {
+        HomeIndexViewModel homeIndexViewModal = _homeBusinessManager.GetHomeIndexViewModel();
 
+        return View(homeIndexViewModal);
+    }
 
+    // GET: HomeController/Details/Id
+    public ActionResult Details(string id)
+    {
+        HomeDetailsViewModel homeDetailsViewModal = _homeBusinessManager.GetHomeDetailsViewModel(id);
+
+        return View(homeDetailsViewModal);
     }
 }

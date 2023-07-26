@@ -1,39 +1,37 @@
-﻿using BlogSimple.Model.ViewModels;
+﻿using BlogSimple.Model.Models;
+using BlogSimple.Model.ViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSimple.Web.Controllers;
 
-public class BlogController : Controller
+[Authorize]
+public class DashboardController : Controller
 {
     private readonly IBlogBusinessManager _blogBusinessManager;
 
-    public BlogController(
-        IBlogBusinessManager blogBusinessManager
-        )
+    public DashboardController(IBlogBusinessManager blogBusinessManager)
     {
         _blogBusinessManager = blogBusinessManager;
     }
 
-    // GET: BlogController
-    public ActionResult Index(string id)
+    public IActionResult Index()
     {
-        BlogListViewModel blogListViewModal = _blogBusinessManager.GetBlogListViewModel();
+        DashboardIndexViewModel blogListViewModal = _blogBusinessManager.GetDashboardIndexViewModel();
 
         return View(blogListViewModal);
     }
 
-    // GET: BlogController/Details/5
+    // GET: HomeController/Details/Id
     public ActionResult Details(string id)
     {
-        BlogViewModel blogViewModel = _blogBusinessManager.GetBlogViewModel(id);
+        DashboardDetailViewModal dashboardDetailsViewModal = _blogBusinessManager.GetDashboardDetailViewModel(id);
 
-        return View(blogViewModel);
+        return View(dashboardDetailsViewModal);
     }
 
     // GET: BlogController/Create
-    [Authorize]
     public ActionResult Create()
     {
         return View(new CreateBlogViewModel());
@@ -41,19 +39,17 @@ public class BlogController : Controller
 
     // POST: BlogController/Create
     [HttpPost]
-    [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(CreateBlogViewModel createBlogViewModel)
+    public async Task<ActionResult> Create(CreateBlogViewModel createBlogViewModel)
     {
         if (!ModelState.IsValid)
             return View("Create");
 
-        _blogBusinessManager.CreateBlog(createBlogViewModel, User);
+        Blog blog = await _blogBusinessManager.CreateBlog(createBlogViewModel, User);
         return RedirectToAction("Details", new { createBlogViewModel.Blog.Id });
     }
 
     // GET: BlogController/Edit/5
-    [Authorize]
     public ActionResult Edit(string id)
     {
         var editBlogViewModel = _blogBusinessManager.GetEditBlogViewModel(id);
@@ -66,9 +62,8 @@ public class BlogController : Controller
 
     // POST: BlogController/Edit/5
     [HttpPost]
-    [Authorize]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(int id, EditBlogViewModel editBlogViewModel)
+    public ActionResult Edit(string id, EditBlogViewModel editBlogViewModel)
     {
         if (!ModelState.IsValid)
             return View("Edit");
@@ -79,7 +74,6 @@ public class BlogController : Controller
 
     // POST: BlogController/Delete/5
     [HttpPost]
-    [Authorize]
     [ValidateAntiForgeryToken]
     public ActionResult Delete(string id)
     {

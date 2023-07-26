@@ -26,6 +26,7 @@ builder.Services.AddSingleton<IMongoClient>(e =>
 
 builder.Services.AddScoped<IBlogService, BlogService>();
 
+builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()

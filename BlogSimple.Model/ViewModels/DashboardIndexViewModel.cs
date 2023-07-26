@@ -2,8 +2,8 @@
 
 namespace BlogSimple.Model.ViewModels;
 
-public class BlogListViewModel
+public class DashboardIndexViewModel
 {
     public Blog Blog { get; set; }
-    public List<Blog> Blogs { get; set; }
+    public IEnumerable<Blog> Blogs { get; set; }
 }

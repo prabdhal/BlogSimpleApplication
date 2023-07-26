@@ -1,0 +1,29 @@
+﻿@model BlogSimple.Model.ViewModels.DashboardIndexViewModel;
+
+@{
+    ViewData["Title"] = "MyBlogs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>MyBlogs</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+@if (!Model.Blogs.Any())
+{
+    <p>There are no blog posts at this moment... <a href="/Account/Register">Sign up</a> now to create a blog post!</p>
+} 
+else
+{
+    @foreach (var blog in Model.Blogs)
+    {
+        <div class="card">
+            <h5 class="card-header"><a href="/Dashboard/Details/@blog.Id">@blog.Title</a></h5>
+            <div class="card-body">
+                <p class="card-text">@blog.Description</p>
+            </div>
+        </div>
+    }
+}
+
