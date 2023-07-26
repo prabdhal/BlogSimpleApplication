@@ -1,29 +1,39 @@
 ﻿@model BlogSimple.Model.ViewModels.DashboardIndexViewModel;
 
 @{
-    ViewData["Title"] = "MyBlogs";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Dashboard/_Layout.cshtml";
 }
 
-<h1>MyBlogs</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-@if (!Model.Blogs.Any())
-{
-    <p>There are no blog posts at this moment... <a href="/Account/Register">Sign up</a> now to create a blog post!</p>
-} 
-else
-{
-    @foreach (var blog in Model.Blogs)
-    {
-        <div class="card">
-            <h5 class="card-header"><a href="/Dashboard/Details/@blog.Id">@blog.Title</a></h5>
-            <div class="card-body">
-                <p class="card-text">@blog.Description</p>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Dashboard</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+                <div class="row">
+                    @foreach (Blog blog in Model.Blogs)
+                    {
+                        <div class="col-lg-6">
+                            <!-- Blog post-->
+                            <div class="card mb-4">
+                                <a href="/Dashboard/Details/@blog.Id"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
+                                <div class="card-body">
+                                    <h2 class="card-title h4"><a href="/Dashboard/Details/@blog.Id">@blog.Title</a></h2>
+                                    <div class="small text-muted">Last Updated on @blog.CreatedOn.ToString("MMM d, yyyy") by @blog.CreatedBy.UserName</div>
+                                    <p class="card-text">@blog.Description</p>
+                                    @*<a class="btn btn-primary" href="#!">Read more →</a>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
             </div>
-        </div>
-    }
-}
+        </main>
+    </div>
+</div>
 

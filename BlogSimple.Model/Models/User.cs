@@ -4,6 +4,10 @@ namespace BlogSimple.Model.Models;
 
 public class User
 {
+    [Required(ErrorMessage = "First Name is required")]
+    public string FirstName { get; set; }
+    [Required(ErrorMessage = "Last Name is required")]
+    public string LastName { get; set; }
     [Required(ErrorMessage = "Username is required")]
     [StringLength(16, ErrorMessage = "Must be between 4 and 16 characters", MinimumLength = 4)]
     public string Username { get; set; }

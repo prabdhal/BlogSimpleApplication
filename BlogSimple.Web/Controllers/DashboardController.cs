@@ -16,9 +16,9 @@ public class DashboardController : Controller
         _blogBusinessManager = blogBusinessManager;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        DashboardIndexViewModel blogListViewModal = _blogBusinessManager.GetDashboardIndexViewModel();
+        DashboardIndexViewModel blogListViewModal = await _blogBusinessManager.GetDashboardIndexViewModel(User);
 
         return View(blogListViewModal);
     }

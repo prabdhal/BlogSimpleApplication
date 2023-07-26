@@ -22,13 +22,17 @@ public class BlogBusinessManager : IBlogBusinessManager
         _userManager = userManager;
     }
 
-    public DashboardIndexViewModel GetDashboardIndexViewModel()
+    public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var blogs = _blogService.Get();
 
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        var userBlogs = blogs.Where(b => b.CreatedBy.Email == user.Email);
+
         return new DashboardIndexViewModel
         {
-            Blogs = blogs,
+            Blogs = userBlogs,
         };
     }
 
