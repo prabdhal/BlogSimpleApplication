@@ -26,7 +26,7 @@ public class HomeBusinessManager : IHomeBusinessManager
 
     public HomeIndexViewModel GetHomeIndexViewModel(string searchString)
     {
-        IEnumerable<Blog> blogs = _blogService.GetAll(searchString ?? string.Empty);
+        IEnumerable<Blog> blogs = _blogService.GetPublishedOnly(searchString ?? string.Empty);
         Blog featuredBlog = new Blog();
 
         if (blogs.Any())

@@ -1,5 +1,4 @@
-﻿
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+﻿<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" asp-controller="Home" asp-action="Index">Blog Simple</a>
     <!-- Sidebar Toggle-->
@@ -7,7 +6,7 @@
     <!-- Navbar Search-->
     <form asp-controller="Blog" asp-action="Index" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div class="input-group">
-            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+            <input class="form-control" type="text" @*asp-for="SearchString"*@ placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
             <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
         </div>
     </form>

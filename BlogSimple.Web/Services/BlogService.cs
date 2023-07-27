@@ -2,6 +2,7 @@
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Web.Settings;
 using MongoDB.Driver;
+using System.Linq;
 
 namespace BlogSimple.Model.Services;
 
@@ -33,6 +34,20 @@ public class BlogService : IBlogService
             b.Content.ToLower().Contains(search));
 
         return _blogs.Find(filterSearch).ToList();
+    }
+
+    public List<Blog> GetPublishedOnly(string searchString)
+    {
+        var search = searchString.ToLower();
+
+        // Need to filter by contains text
+        var filterSearch = Builders<Blog>.Filter.Where(b => b.Title.ToLower().Contains(search) |
+            b.Description.ToLower().Contains(search) |
+            b.Content.ToLower().Contains(search));
+
+        var filterByPublished = Builders<Blog>.Filter.Where(b => b.isPublished);
+
+        return _blogs.Find(filterSearch & filterByPublished).ToList();
     }
 
     public Blog Get(string id)
