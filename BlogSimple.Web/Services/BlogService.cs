@@ -2,7 +2,6 @@
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Web.Settings;
 using MongoDB.Driver;
-using System.Linq;
 
 namespace BlogSimple.Model.Services;
 
@@ -11,7 +10,7 @@ public class BlogService : IBlogService
     private readonly IMongoCollection<Blog> _blogs;
 
     public BlogService(
-        IBlogSimpleDatabaseSettings blogSettings, 
+        IBlogSimpleDatabaseSettings blogSettings,
         IMongoClient mongoClient
         )
     {
@@ -29,8 +28,8 @@ public class BlogService : IBlogService
         var search = searchString.ToLower();
 
         // Need to filter by contains text
-        var filterSearch = Builders<Blog>.Filter.Where(b => b.Title.ToLower().Contains(search) | 
-            b.Description.ToLower().Contains(search) | 
+        var filterSearch = Builders<Blog>.Filter.Where(b => b.Title.ToLower().Contains(search) |
+            b.Description.ToLower().Contains(search) |
             b.Content.ToLower().Contains(search));
 
         return _blogs.Find(filterSearch).ToList();
