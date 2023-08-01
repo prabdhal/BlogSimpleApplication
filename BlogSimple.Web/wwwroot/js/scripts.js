@@ -109,7 +109,7 @@ const displayFeaturedBlog = () => {
                 </div>
             </div>`;
 
-    featuredBlogContainer.append(divElement);
+    featuredBlogContainer.appendChild(divElement);
 }
 
 const displayBlogs = () => {
@@ -128,18 +128,20 @@ const displayBlogs = () => {
 
         const divElement = document.createElement('div');
         divElement.innerHTML =
-            `<div class="card mb-4">
-                <a href="/Home/Details/${blogsToShow[i].id}">
-                    <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
-                </a>
-                <div class="card-body">
-                    <div class="small text-muted">${month} ${date}, ${year}</div>
-                    <h2 class="card-title h4"><a href="/Home/Details/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
-                    <p class="card-text">${blogsToShow[i].description}</p>
+           `<div class="col-lg-6">
+                <div class="card mb-4">
+                    <a href="/Home/Details/${blogsToShow[i].id}">
+                        <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
+                    </a>
+                    <div class="card-body">
+                        <div class="small text-muted">${month} ${date}, ${year}</div>
+                        <h2 class="card-title h4"><a href="/Home/Details/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
+                        <p class="card-text">${blogsToShow[i].description}</p>
+                    </div>
                 </div>
             </div>`;
 
-        blogsDisplayContainer.append(divElement);
+        blogsDisplayContainer.prepend(divElement);
     }
 }
 
@@ -153,7 +155,7 @@ const setUpBlogCategoryList = () => {
         listItemElement.classList = 'list-select';
         listItemElement.addEventListener('click', () => getBlogsFromSelectedCategory(catName));
 
-        blogCategoryListContainer.appendChild(listItemElement);
+        blogCategoryListContainer.append(listItemElement);
     });
 }
 
@@ -181,5 +183,5 @@ window.addEventListener('DOMContentLoaded', event => {
 });
 
 setUpBlogCategoryList();
-displayFeaturedBlog();
 getBlogsFromSearch("");
+displayFeaturedBlog();

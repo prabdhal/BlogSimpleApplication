@@ -17,9 +17,10 @@
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
     <div class="row">
         <!-- Blog entries-->
-        <div class="col-lg-8" id="featuredBlogContainer">
+        <div class="col-lg-8">
             <!-- Featured blog post-->
-
+            <div id="featuredBlogContainer">
+            </div>
 
             <!-- Nested row for non-featured blog posts-->
             <div class="row" id="blogsDisplayContainer">
