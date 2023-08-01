@@ -1,4 +1,5 @@
-﻿@model BlogSimple.Model.ViewModels.DashboardIndexViewModel;
+﻿@using BlogSimple.Model.ViewModels.HomeViewModels;
+@model DashboardIndexViewModel;
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -10,7 +11,7 @@
     <div class="container-fluid px-4">
         <h1 class="mt-4">Dashboard</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active">My Blogs</li>
         </ol>
         <div class="row">
             @foreach (Blog blog in Model.Blogs)
@@ -20,10 +21,9 @@
                     <div class="card mb-4">
                         <a href="/Dashboard/Details/@blog.Id"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
                         <div class="card-body">
-                            <h2 class="card-title h4"><a href="/Blog/Details/@blog.Id">@blog.Title</a></h2>
+                            <h2 class="card-title h4"><a href="/Home/Details/@blog.Id">@blog.Title</a></h2>
                             <div class="small text-muted">Last Updated on @blog.CreatedOn.ToString("MMM d, yyyy") by @blog.CreatedBy.UserName</div>
                             <p class="card-text">@blog.Description</p>
-                            @*<a class="btn btn-primary" href="#!">Read more →</a>*@
                         </div>
                     </div>
                 </div>

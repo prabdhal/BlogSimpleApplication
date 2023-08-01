@@ -1,6 +1,7 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
-using BlogSimple.Model.ViewModels;
+using BlogSimple.Model.ViewModels.BlogViewModels;
+using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -17,27 +18,39 @@ public class HomeBusinessManager : IHomeBusinessManager
     public BlogDetailsViewModel GetHomeDetailsViewModel(string id)
     {
         Blog blog = _blogService.Get(id);
+        var blogs = _blogService.GetAll();
 
         return new BlogDetailsViewModel
         {
-            Blog = blog
+            Blog = blog,
+            AllBlogs = blogs
         };
     }
 
     public HomeIndexViewModel GetHomeIndexViewModel(string searchString)
     {
-        IEnumerable<Blog> blogs = _blogService.GetPublishedOnly(searchString ?? string.Empty);
+        IEnumerable<Blog> publishedBlogs = _blogService.GetPublishedOnly(searchString ?? string.Empty);
         Blog featuredBlog = new Blog();
+        List<string> blogCats = new List<string>();
+        var blogs = _blogService.GetPublishedOnly("");
 
-        if (blogs.Any())
+        if (publishedBlogs.Any())
         {
             featuredBlog = DetermineFeaturedBlog(blogs);
+        }
+
+
+        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
+        {
+            blogCats.Add(cat.ToString()); 
         }
 
         return new HomeIndexViewModel
         {
             FeaturedBlog = featuredBlog,
-            Blogs = blogs
+            BlogCategories =  blogCats,
+            Blogs = publishedBlogs,
+            AllBlogs = blogs
         };
     }
 

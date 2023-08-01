@@ -1,6 +1,7 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
-using BlogSimple.Model.ViewModels;
+using BlogSimple.Model.ViewModels.BlogViewModels;
+using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,9 +40,16 @@ public class BlogBusinessManager : IBlogBusinessManager
     public BlogDetailsViewModel GetDashboardDetailViewModel(string id)
     {
         var blog = _blogService.Get(id);
+        List<string> blogCats = new List<string>();
+
+        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
+        {
+            blogCats.Add(cat.ToString());
+        }
 
         return new BlogDetailsViewModel
         {
+            BlogCategories = blogCats,
             Blog = blog,
         };
     }

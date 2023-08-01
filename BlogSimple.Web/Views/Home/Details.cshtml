@@ -1,4 +1,5 @@
-﻿@model BlogSimple.Model.ViewModels.BlogDetailsViewModel;
+﻿@using BlogSimple.Model.ViewModels.BlogViewModels;
+@model BlogDetailsViewModel;
 @{
     ViewData["Title"] = "View " + @Model.Blog.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";

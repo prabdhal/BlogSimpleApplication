@@ -1,4 +1,6 @@
-﻿@model BlogSimple.Model.ViewModels.HomeIndexViewModel;
+﻿@using BlogSimple.Model.ViewModels.HomeViewModels;
+@using Newtonsoft.Json;
+@model HomeIndexViewModel;
 @{
     ViewData["Title"] = "Home";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,68 +9,22 @@
 
 <!-- Page content-->
 <div class="container">
+    <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedBlog))'></div>
+    @foreach (var blog in Model.AllBlogs)
+    {
+        <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
+    }
+    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
     <div class="row">
         <!-- Blog entries-->
-        <div class="col-lg-8">
+        <div class="col-lg-8" id="featuredBlogContainer">
             <!-- Featured blog post-->
-            @if (Model.Blogs.Any())
-            {
-                <div class="card mb-4">
-                    <a href="/Dashboard/Details/@Model.FeaturedBlog.Id"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                    <div class="card-body">
-                        <div class="small text-muted">@Model.FeaturedBlog.CreatedOn.ToString("MMM d, yyyy")</div>
-                        <h2 class="card-title h4"><a href="/Blog/Details/@Model.FeaturedBlog.Id">@Model.FeaturedBlog.Title</a></h2>
-                        <p class="card-text">@Model.FeaturedBlog.Description</p>
-                    </div>
-                </div>
-            }
+
+
             <!-- Nested row for non-featured blog posts-->
-            <div class="row">
-                @if (!Model.Blogs.Any())
-                {
-                    <p>There are no blog posts at this moment... <a href="/Account/Register">Sign up</a> now to create a blog post!</p>
-                }
-                else
-                {
-                    int idx = 0;
-                    @foreach (var blog in Model.Blogs)
-                    {
-                        idx++;
-                        if (!blog.isFeatured)
-                        {
-                            @if (idx % 2 != 0)
-                            {
-                                <div class="col-lg-6">
-                                    <!-- Blog post-->
-                                    <div class="card mb-4">
-                                        <a href="/Blog/Details/@blog.Id"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                        <div class="card-body">
-                                            <div class="small text-muted">@blog.CreatedOn.ToString("MMM d, yyyy")</div>
-                                            <h2 class="card-title h4"><a href="/Blog/Details/@Model.FeaturedBlog.Id">@blog.Title</a></h2>
-                                            <p class="card-text">@blog.Description</p>
-                                            @*<a class="btn btn-primary" href="#!">Read more →</a>*@
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                            @if (idx % 2 == 0)
-                            {
-                                <div class="col-lg-6">
-                                    <!-- Blog post-->
-                                    <div class="card mb-4">
-                                        <a href="/Blog/Details/@blog.Id"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." /></a>
-                                        <div class="card-body">
-                                            <div class="small text-muted">@blog.CreatedOn.ToString("MMM d, yyyy")</div>
-                                            <h2 class="card-title h4"><a href="/Blog/Details/@Model.FeaturedBlog.Id">@blog.Title</a></h2>
-                                            <p class="card-text">@blog.Description</p>
-                                            @*<a class="btn btn-primary" href="#!">Read more →</a>*@
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
-                    }
-                }
+            <div class="row" id="blogsDisplayContainer">
+
+
             </div>
             <!-- Pagination-->
             <nav aria-label="Pagination">
@@ -90,12 +46,10 @@
             <div class="card mb-4">
                 <div class="card-header">Search</div>
                 <div class="card-body">
-                    <form asp-controller="Home" asp-action="Index" class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-                        <div class="input-group">
-                            <input class="form-control" id="barSearch" asp-for="SearchString" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                            <button class="btn btn-primary" id="btnSearch" type="submit"><i class="fas fa-search"></i></button>
-                        </div>
-                    </form>
+                    <div class="input-group">
+                        <input class="form-control" id="searchBarInput" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                        <button class="btn btn-primary" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
+                    </div>
                 </div>
             </div>
             <!-- Categories widget-->
@@ -103,20 +57,8 @@
                 <div class="card-header">Categories</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li><a href="#!">Web Design</a></li>
-                                <li><a href="#!">HTML</a></li>
-                                <li><a href="#!">Freebies</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li><a href="#!">JavaScript</a></li>
-                                <li><a href="#!">CSS</a></li>
-                                <li><a href="#!">Tutorials</a></li>
-                            </ul>
-                        </div>
+                        <ul class="list-unstyled mb-0" id="blogCategoryListContainer">
+                        </ul>
                     </div>
                 </div>
             </div>

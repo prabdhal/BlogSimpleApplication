@@ -30,6 +30,7 @@ public class BlogService : IBlogService
         // Need to filter by contains text
         var filterSearch = Builders<Blog>.Filter.Where(b => b.Title.ToLower().Contains(search) |
             b.Description.ToLower().Contains(search) |
+            b.Category.ToString().ToLower().Contains(search) |
             b.Content.ToLower().Contains(search));
 
         return _blogs.Find(filterSearch).ToList();
@@ -42,6 +43,7 @@ public class BlogService : IBlogService
         // Need to filter by contains text
         var filterSearch = Builders<Blog>.Filter.Where(b => b.Title.ToLower().Contains(search) |
             b.Description.ToLower().Contains(search) |
+            b.Category.ToString().ToLower().Contains(search) |
             b.Content.ToLower().Contains(search));
 
         var filterByPublished = Builders<Blog>.Filter.Where(b => b.isPublished);

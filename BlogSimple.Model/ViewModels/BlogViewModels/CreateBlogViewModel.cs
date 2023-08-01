@@ -1,6 +1,6 @@
 ﻿using BlogSimple.Model.Models;
 
-namespace BlogSimple.Model.ViewModels;
+namespace BlogSimple.Model.ViewModels.BlogViewModels;
 
 public class CreateBlogViewModel
 {
