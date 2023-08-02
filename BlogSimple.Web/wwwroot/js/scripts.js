@@ -29,9 +29,15 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 // sets blogCategoryIdx
 const setBlogCategory = (selectedCategory) => {
+    // toggle blog category on/off upon clicking same category
+    if (selectedCategory == getBlogCategoryName(blogCategoryIdx)) {
+        blogCategoryIdx = 100;
+    } else {
+        blogCategoryIdx = getBlogCategoryIdx(selectedCategory);
+    }
+    
     setBlogSearchString("");
     searchBarInput.value = "";
-    blogCategoryIdx = getBlogCategoryIdx(selectedCategory);
     setBlogsToDisplay();
     displayBlogs();
     console.log('clicked ' + selectedCategory);
@@ -105,65 +111,6 @@ const setPageNumber = (num) => {
     displayBlogs();
 }
 
-// search bar event listener 
-searchBarInput.addEventListener('input', (e) => {
-    setBlogSearchString(e.target.value);
-    setBlogsToDisplay();
-    displayBlogs();
-});
-
-// maps enum int to its name
-const getBlogCategoryName = (value) => {
-    switch (value) {
-        case 0:
-            return 'HTML';
-        case 1:
-            return 'CSS';
-        case 2:
-            return 'JavaScript';
-        case 3:
-            return 'C#';
-        case 4:
-            return 'Object-Oriented Programming';
-        case 5:
-            return 'Web Design';
-        case 6:
-            return 'Tutorials';
-        case 7:
-            return 'Freebies';
-        case 8:
-            return 'Other';
-        default:
-            return 'All';
-    }
-}
-
-// maps enum name into ints
-const getBlogCategoryIdx = (value) => {
-    switch (value) {
-        case 'HTML':
-            return 0;
-        case 'CSS':
-            return 1;
-        case 'JavaScript':
-            return 2;
-        case 'C#':
-            return 3;
-        case 'Object-Oriented Programming':
-            return 4;
-        case 'Web Design':
-            return 5;
-        case 'Tutorials':
-            return 6;
-        case 'Freebies':
-            return 7;
-        case 'Other':
-            return 8;
-        default:
-            return 100;
-    }
-}
-
 // displays the featured blog 
 const displayFeaturedBlog = () => {
     //featuredBlogContainer.innerHTML = '';
@@ -197,20 +144,28 @@ const displayBlogs = () => {
 
     blogsDisplayContainer.innerHTML = '';
 
-    let curBlogIdx = (currentPageNumber - 1) * maxBlogsPerPage;
-    let blogIdxOnCurrentPage = currentPageNumber * maxBlogsPerPage;
+    let searchHeading = document.createElement('h3');
+    if (blogSearchString == "") {
+        searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)}`;
+    } else {
+        searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)} - ${blogSearchString}`;
+    }
+    blogsDisplayContainer.append(searchHeading);
 
     if (blogsToShow.length <= 0) {
         // no results
         const divElement = document.createElement('div');
         divElement.innerHTML =
             `<div class="col-lg-6">
-                <p>There are no results...</p>
+                <p>Sorry... There are no related results for the above query :( </p>
             </div>`;
 
-        blogsDisplayContainer.prepend(divElement);
+        blogsDisplayContainer.append(divElement);
         return;
     }
+
+    let curBlogIdx = (currentPageNumber - 1) * maxBlogsPerPage;
+    let blogIdxOnCurrentPage = currentPageNumber * maxBlogsPerPage;
 
     for (var i = curBlogIdx; i < blogIdxOnCurrentPage; i++) {
 
@@ -238,7 +193,7 @@ const displayBlogs = () => {
                 </div>
             </div>`;
 
-        blogsDisplayContainer.prepend(divElement);
+        blogsDisplayContainer.append(divElement);
     }
 }
 
@@ -298,6 +253,13 @@ const createPagination = () => {
     }
 }
 
+// search bar event listener 
+searchBarInput.addEventListener('input', (e) => {
+    setBlogSearchString(e.target.value);
+    setBlogsToDisplay();
+    displayBlogs();
+});
+
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation
@@ -316,6 +278,60 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
+
+// HELPER FUNCTIONS 
+// maps enum int to its name
+const getBlogCategoryName = (value) => {
+    switch (value) {
+        case 0:
+            return 'HTML';
+        case 1:
+            return 'CSS';
+        case 2:
+            return 'JavaScript';
+        case 3:
+            return 'C#';
+        case 4:
+            return 'Object-Oriented Programming';
+        case 5:
+            return 'Web Design';
+        case 6:
+            return 'Tutorials';
+        case 7:
+            return 'Freebies';
+        case 8:
+            return 'Other';
+        default:
+            return 'All';
+    }
+}
+
+// maps enum name into ints
+const getBlogCategoryIdx = (value) => {
+    switch (value) {
+        case 'HTML':
+            return 0;
+        case 'CSS':
+            return 1;
+        case 'JavaScript':
+            return 2;
+        case 'C#':
+            return 3;
+        case 'Object-Oriented Programming':
+            return 4;
+        case 'Web Design':
+            return 5;
+        case 'Tutorials':
+            return 6;
+        case 'Freebies':
+            return 7;
+        case 'Other':
+            return 8;
+        default:
+            return 100;
+    }
+}
+
 setBlogCategory("All");
 setBlogSearchString("")
 setUpBlogCategoryList();
@@ -328,70 +344,3 @@ displayFeaturedBlog();
 
 
 
-
-
-
-//// displays blogs by search text
-//const getAllBlogsBySearch = (searchString) => {
-//    blogSearchString = searchString;
-
-//    let catName = getBlogCategoryName(blogCategoryIdx);
-
-//    blogsToShow = [];
-
-//    blogsData.forEach(b => {
-//        var blog = JSON.parse(b.getAttribute("value"));
-
-//        if (blog.isFeatured) return;
-//        if (blog.title.toString().toLowerCase().includes(blogSearchString) ||
-//            blog.description.toString().toLowerCase().includes(blogSearchString) ||
-//            blog.content.toString().toLowerCase().includes(blogSearchString) ||
-//            blogSearchString.toString() === "") {
-//            if (blog.category == catName || catName == 'All') {
-//                blogsToShow.push(blog);
-//            }
-//        }
-//    });
-//    displayBlogs(blogsToShow);
-//}
-
-//// displays blogs by selected category on side widget
-//const getBlogsFromSelectedCategory = (catName) => {
-//    console.log("clicked selected cat: " + catName);
-//    blogCategoryIdx = getBlogCategoryIdx(catName);
-//    blogSearchString = "";
-//    currentPageNumber = 1;
-
-//    blogsToShow = [];
-
-//    blogsData.forEach(b => {
-//        var blog = JSON.parse(b.getAttribute("value"));
-//        var cat = getBlogCategoryName(blog.category);
-
-//        if (blog.isFeatured) return;
-
-//        if (cat == getBlogCategoryName(blogCategoryIdx)) {
-//            blogsToShow.push(blog);
-//        }
-//    });
-//    displayBlogs(blogsToShow);
-//}
-
-// on click event for pagination buttons
-//const setAsCurrentPage = (pageNumber) => {
-//    if (pageNumber > totalPageCount || pageNumber < 1) {
-//        if (pageNumber <= 1) {
-//            pageNumber = 1;
-//            currentPageNumber = 1;
-//        }
-//        if (pageNumber >= totalPageCount) {
-//            pageNumber = totalPageCount;
-//            currentPageNumber = totalPageCount;
-//        }
-//        return;
-//    } 
-
-//    currentPageNumber = pageNumber;
-//    console.log(currentPageNumber);
-//    getAllBlogsBySearch(blogSearchString);
-//}
