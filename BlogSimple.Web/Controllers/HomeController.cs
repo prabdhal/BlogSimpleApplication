@@ -20,9 +20,6 @@ public class HomeController : Controller
     {
         HomeIndexViewModel homeIndexViewModal = _homeBusinessManager.GetHomeIndexViewModel(searchString);
 
-        //ViewBag.Blogs = homeIndexViewModal.FeaturedBlog;
-        //ViewBag.Categories = Enum.GetValues(typeof(BlogCategory));
-
         return View(homeIndexViewModal);
     }
 

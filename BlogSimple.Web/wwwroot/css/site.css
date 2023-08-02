@@ -27,3 +27,56 @@ html {
 .font-weight-bold {
     font-weight: 700;
 }
+
+.banner-tag {
+    width: 150px;
+    height: 45px;
+    position: absolute;
+    top: 10%;
+    clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
+}
+
+.banner-tag div {
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    margin-left: 5px;
+}
+
+.html {
+    background-color: #ff6a00;
+}
+
+.css {
+    background-color: #258cfb;
+}
+
+.js {
+    background-color: #ffd800;
+}
+
+.cs {
+    background-color: #b200ff;
+}
+
+.oop {
+    background-color: #4800ff;
+}
+
+.web-design {
+    background-color: #00ff21;
+}
+
+.tutorials {
+    background-color: #808080
+}
+
+.freebies {
+    background-color: #ff0000;
+}
+
+.other {
+    background-color: #000000;
+}

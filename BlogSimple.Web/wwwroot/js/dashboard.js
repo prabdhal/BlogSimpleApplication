@@ -1,22 +1,17 @@
-// search bar and buttons refs
+﻿// search bar and buttons refs
 const searchBarInput = document.querySelector('#searchBarInput');
 const searchBarBtn = document.querySelector('#searchBarBtn');
 
 // blog and category containers refs
-const featuredBlogContainer = document.querySelector('#featuredBlogContainer');
-const blogCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 const blogsDisplayContainer = document.querySelector('#blogsDisplayContainer');
+const blogCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
 
-var featuredBlog = JSON.parse(document.querySelector('#featuredBlog').getAttribute("value"));
 var blogsData = document.querySelectorAll('div.blogsData');
 var blogCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
-// access to all the blogs in provided in view model
-let blogsToShow = [];
-
 // pagination values 
-const maxBlogsPerPage = 2;
+const maxBlogsPerPage = 10;
 let currentPageNumber = 1;
 
 // search string and category
@@ -25,6 +20,12 @@ let blogCategoryIdx = 100;
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+
+// opens modal to delete given blog
+const openDeleteBlogModal = (id) => {
+    console.log('open delete Modal');
+    alert(`Are you sure you want to delete blog with ${id}`);
+}
 
 
 // sets blogCategoryIdx
@@ -35,7 +36,7 @@ const setBlogCategory = (selectedCategory) => {
     } else {
         blogCategoryIdx = getBlogCategoryIdx(selectedCategory);
     }
-    
+
     setBlogSearchString("");
     searchBarInput.value = "";
     setBlogsToDisplay();
@@ -111,36 +112,6 @@ const setPageNumber = (num) => {
     displayBlogs();
 }
 
-// displays the featured blog 
-const displayFeaturedBlog = () => {
-    //featuredBlogContainer.innerHTML = '';
-    console.log('display featured blog: ' + featuredBlog);
-
-    var createdOnDate = new Date(featuredBlog.createdOn);
-    var year = createdOnDate.getFullYear();
-    var month = months[createdOnDate.getMonth()].substring(0, 3);
-    var date = createdOnDate.getDate();
-    var date = createdOnDate.getDate();
-
-    const divElement = document.createElement('div');
-    divElement.innerHTML =
-        `<div class="card mb-4">
-                <a href="/Dashboard/Details/${featuredBlog.id}">
-                        <div class="banner-tag ${getBlogCategoryClass(featuredBlog.category)}">
-                            <div>${getBlogCategoryName(featuredBlog.category)}</div >
-                        </div>
-                        <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
-                    </a>
-                <div class="card-body">
-                    <div class="small text-muted">Last updated on ${month} ${date}, ${year}</div>
-                    <h2 class="card-title h4"><a href="/Blog/Details/${featuredBlog.id}">${featuredBlog.title}</a></h2>
-                    <p class="card-text text-truncate">${featuredBlog.description}</p>
-                </div>
-            </div>`;
-
-    featuredBlogContainer.appendChild(divElement);
-}
-
 // displays all blogs 
 const displayBlogs = () => {
     createPagination();
@@ -149,9 +120,8 @@ const displayBlogs = () => {
 
     let searchHeading = document.createElement('h3');
     if (blogSearchString == "") {
-        searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)}`;
     } else {
-        searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)} - ${blogSearchString}`;
+        searchHeading.innerHTML = `Search Results: ${blogSearchString}`;
     }
     blogsDisplayContainer.append(searchHeading);
 
@@ -175,15 +145,22 @@ const displayBlogs = () => {
         if (blogsToShow[i] == null) return;
         if (blogsToShow[i].isFeatured) return;
 
-        var createdOnDate = new Date(blogsToShow[i].createdOn);
-        var year = createdOnDate.getFullYear();
-        var month = months[createdOnDate.getMonth()].substring(0, 3);
-        var day = createdOnDate.getDate();
+        var updatedOnDate = new Date(blogsToShow[i].updatedOn);
+        var year = updatedOnDate.getFullYear();
+        var month = months[updatedOnDate.getMonth()].substring(0, 3);
+        var day = updatedOnDate.getDate();
+
+        let eyeSVG = '<svg width="50px" height="50px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 4L20 20" stroke="#000000" stroke-width="1.2" stroke-linecap="round"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M6.22308 5.63732C4.19212 6.89322 2.60069 8.79137 1.73175 11.0474C1.49567 11.6604 1.49567 12.3396 1.73175 12.9526C3.31889 17.0733 7.31641 20 12 20C14.422 20 16.6606 19.2173 18.4773 17.8915L17.042 16.4562C15.6033 17.4309 13.8678 18 12 18C8.17084 18 4.89784 15.6083 3.5981 12.2337C3.54022 12.0835 3.54022 11.9165 3.5981 11.7663C4.36731 9.76914 5.82766 8.11625 7.6854 7.09964L6.22308 5.63732ZM9.47955 8.89379C8.5768 9.6272 7.99997 10.7462 7.99997 12C7.99997 14.2091 9.79083 16 12 16C13.2537 16 14.3728 15.4232 15.1062 14.5204L13.6766 13.0908C13.3197 13.6382 12.7021 14 12 14C10.8954 14 9.99997 13.1046 9.99997 12C9.99997 11.2979 10.3618 10.6802 10.9091 10.3234L9.47955 8.89379ZM15.9627 12.5485L11.4515 8.03729C11.6308 8.0127 11.8139 8 12 8C14.2091 8 16 9.79086 16 12C16 12.1861 15.9873 12.3692 15.9627 12.5485ZM18.5678 15.1536C19.3538 14.3151 19.9812 13.3259 20.4018 12.2337C20.4597 12.0835 20.4597 11.9165 20.4018 11.7663C19.1021 8.39172 15.8291 6 12 6C11.2082 6 10.4402 6.10226 9.70851 6.29433L8.11855 4.70437C9.32541 4.24913 10.6335 4 12 4C16.6835 4 20.681 6.92668 22.2682 11.0474C22.5043 11.6604 22.5043 12.3396 22.2682 12.9526C21.7464 14.3074 20.964 15.5331 19.9824 16.5682L18.5678 15.1536Z" fill="#000000"></path> </g></svg>';
+        if (blogsToShow[i].isPublished) {
+            eyeSVG = '<svg width="50px" height="50px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.335 11.4069L22.2682 11.0474L21.335 11.4069ZM21.335 12.5932L20.4018 12.2337L21.335 12.5932ZM2.66492 11.4068L1.73175 11.0474L2.66492 11.4068ZM2.66492 12.5932L1.73175 12.9526L2.66492 12.5932ZM3.5981 11.7663C4.89784 8.39171 8.17084 6 12 6V4C7.31641 4 3.31889 6.92667 1.73175 11.0474L3.5981 11.7663ZM12 6C15.8291 6 19.1021 8.39172 20.4018 11.7663L22.2682 11.0474C20.681 6.92668 16.6835 4 12 4V6ZM20.4018 12.2337C19.1021 15.6083 15.8291 18 12 18V20C16.6835 20 20.681 17.0733 22.2682 12.9526L20.4018 12.2337ZM12 18C8.17084 18 4.89784 15.6083 3.5981 12.2337L1.73175 12.9526C3.31889 17.0733 7.31641 20 12 20V18ZM20.4018 11.7663C20.4597 11.9165 20.4597 12.0835 20.4018 12.2337L22.2682 12.9526C22.5043 12.3396 22.5043 11.6604 22.2682 11.0474L20.4018 11.7663ZM1.73175 11.0474C1.49567 11.6604 1.49567 12.3396 1.73175 12.9526L3.5981 12.2337C3.54022 12.0835 3.54022 11.9165 3.5981 11.7663L1.73175 11.0474Z" fill="#000000"></path> <circle cx="12" cy="12" r="3" stroke="#000000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>';
+        }
+
 
         const divElement = document.createElement('div');
         divElement.classList = "col-lg-6";
         divElement.innerHTML =
-           `<div class="card mb-4">
+            `<!-- Blog post-->
+                <div class="card mb-4">
                     <a href="/Dashboard/Details/${blogsToShow[i].id}">
                         <div class="banner-tag ${getBlogCategoryClass(blogsToShow[i].category)}">
                             <div>${getBlogCategoryName(blogsToShow[i].category)}</div >
@@ -191,9 +168,17 @@ const displayBlogs = () => {
                         <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
                     </a>
                     <div class="card-body">
-                        <div class="small text-muted">Last updated on ${month} ${day}, ${year}</div>
                         <h2 class="card-title h4"><a href="/Home/Details/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year}</div>
                         <p class="card-text text-truncate">${blogsToShow[i].description}</p>
+                    </div>
+                    <div class="card-footer">
+                        ${eyeSVG}
+
+                        <a href="/Blog/Edit/${blogsToShow[i].id}">
+                            <svg width="50px" height="50px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#f5f5f5" transform="rotate(0)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)"><rect x="-2.4" y="-2.4" width="28.80" height="28.80" rx="14.4" fill="#1786fd" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#a01c0e" stroke-width="0.24000000000000005"></g><g id="SVGRepo_iconCarrier"> <path d="M18.3785 8.44975L8.9636 17.8648C8.6844 18.144 8.3288 18.3343 7.94161 18.4117L4.99988 19.0001L5.58823 16.0583C5.66566 15.6711 5.85597 15.3155 6.13517 15.0363L15.5501 5.62132M18.3785 8.44975L19.7927 7.03553C20.1832 6.64501 20.1832 6.01184 19.7927 5.62132L18.3785 4.20711C17.988 3.81658 17.3548 3.81658 16.9643 4.20711L15.5501 5.62132M18.3785 8.44975L15.5501 5.62132" stroke="#f5f5f5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>    
+                        </a>
+                        <svg width="50px" height="50px" onclick="openDeleteBlogModal(${blogsToShow[i].id})" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"><rect x="-2.4" y="-2.4" width="28.80" height="28.80" rx="14.4" fill="#1786fd" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M10 11V17" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 11V17" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M4 7H20" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6 7H12H18V18C18 19.6569 16.6569 21 15 21H9C7.34315 21 6 19.6569 6 18V7Z" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                     </div>
                 </div>`;
 
@@ -264,6 +249,23 @@ searchBarInput.addEventListener('input', (e) => {
     displayBlogs();
 });
 
+window.addEventListener('DOMContentLoaded', event => {
+
+    // Toggle the side navigation
+    const sidebarToggle = document.body.querySelector('#sidebarToggle');
+    if (sidebarToggle) {
+        // Uncomment Below to persist sidebar toggle between refreshes
+        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+        //     document.body.classList.toggle('sb-sidenav-toggled');
+        // }
+        sidebarToggle.addEventListener('click', event => {
+            event.preventDefault();
+            document.body.classList.toggle('sb-sidenav-toggled');
+            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+        });
+    }
+
+});
 
 
 // HELPER FUNCTIONS 
@@ -347,13 +349,9 @@ const getBlogCategoryClass = (value) => {
 
 setBlogCategory("All");
 setBlogSearchString("")
-setUpBlogCategoryList();
+//setUpBlogCategoryList();
 setBlogsToDisplay();
 displayBlogs();
-displayFeaturedBlog();
-
-
-
 
 
 
