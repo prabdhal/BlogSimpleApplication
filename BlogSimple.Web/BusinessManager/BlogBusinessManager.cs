@@ -87,8 +87,10 @@ public class BlogBusinessManager : IBlogBusinessManager
             return new NotFoundResult();
 
         blog.Title = editBlogViewModel.Blog.Title;
+        blog.Category = editBlogViewModel.Blog.Category;
         blog.Description = editBlogViewModel.Blog.Description;
         blog.Content = editBlogViewModel.Blog.Content;
+        blog.isPublished = editBlogViewModel.Blog.isPublished;
         blog.UpdatedOn = DateTime.Now;
 
 

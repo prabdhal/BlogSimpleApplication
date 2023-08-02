@@ -23,3 +23,7 @@ html {
     width: auto;
     vertical-align: middle;
 }
+
+.font-weight-bold {
+    font-weight: 700;
+}
