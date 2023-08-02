@@ -29,5 +29,5 @@ public class Blog
     
     [DisplayName("Last Updated")]
     public DateTime UpdatedOn { get; set; }
-    public List<Comment> Comments { get; set; }
+    public IEnumerable<Comment> Comments { get; set; } = Enumerable.Empty<Comment>();
 }

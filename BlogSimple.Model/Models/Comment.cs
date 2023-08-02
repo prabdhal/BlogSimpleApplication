@@ -7,6 +7,6 @@ public class Comment
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public string Content { get; set; }
-    public IEnumerable<CommentReply> Replies { get; set; }
+    public IEnumerable<CommentReply> Replies { get; set; } = Enumerable.Empty<CommentReply>();
     public Blog CommentedBlog { get; set; }
 }
