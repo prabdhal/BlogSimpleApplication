@@ -125,7 +125,7 @@ const displayFeaturedBlog = () => {
     const divElement = document.createElement('div');
     divElement.innerHTML =
         `<div class="card mb-4">
-                <a href="/Dashboard/Details/${featuredBlog.id}">
+                <a href="/Home/Details/${featuredBlog.id}">
                         <div class="banner-tag ${getBlogCategoryClass(featuredBlog.category)}">
                             <div>${getBlogCategoryName(featuredBlog.category)}</div >
                         </div>
@@ -133,7 +133,7 @@ const displayFeaturedBlog = () => {
                     </a>
                 <div class="card-body">
                     <div class="small text-muted">Last updated on ${month} ${date}, ${year}</div>
-                    <h2 class="card-title h4"><a href="/Blog/Details/${featuredBlog.id}">${featuredBlog.title}</a></h2>
+                    <h2 class="card-title h4"><a href="/Home/Details/${featuredBlog.id}">${featuredBlog.title}</a></h2>
                     <p class="card-text text-truncate">${featuredBlog.description}</p>
                 </div>
             </div>`;
@@ -184,7 +184,7 @@ const displayBlogs = () => {
         divElement.classList = "col-lg-6";
         divElement.innerHTML =
            `<div class="card mb-4">
-                    <a href="/Dashboard/Details/${blogsToShow[i].id}">
+                    <a href="/Home/Details/${blogsToShow[i].id}">
                         <div class="banner-tag ${getBlogCategoryClass(blogsToShow[i].category)}">
                             <div>${getBlogCategoryName(blogsToShow[i].category)}</div >
                         </div>

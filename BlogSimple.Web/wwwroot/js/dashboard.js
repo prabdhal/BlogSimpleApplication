@@ -161,7 +161,7 @@ const displayBlogs = () => {
         divElement.innerHTML =
             `<!-- Blog post-->
                 <div class="card mb-4">
-                    <a href="/Dashboard/Details/${blogsToShow[i].id}">
+                    <a href="/Home/Details/${blogsToShow[i].id}">
                         <div class="banner-tag ${getBlogCategoryClass(blogsToShow[i].category)}">
                             <div>${getBlogCategoryName(blogsToShow[i].category)}</div >
                         </div>
