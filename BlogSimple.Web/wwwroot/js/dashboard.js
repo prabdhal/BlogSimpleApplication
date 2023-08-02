@@ -85,9 +85,6 @@ const setBlogsToDisplay = () => {
     blogsData.forEach(b => {
         let blog = JSON.parse(b.getAttribute("value"));
 
-        // exclude featured blogs
-        if (blog.isFeatured) return;
-
         if (blog.title.toString().toLowerCase().includes(blogSearchString) ||
             blog.description.toString().toLowerCase().includes(blogSearchString) ||
             blog.content.toString().toLowerCase().includes(blogSearchString) ||
@@ -97,10 +94,19 @@ const setBlogsToDisplay = () => {
             }
         }
     });
+
+    sortBlogs();
+
     console.log('blog search string ' + blogSearchString);
     console.log('blogs to show ' + blogsToShow);
     console.log('blogs to show length ' + blogsToShow.length);
     updatePaginationVariables(blogsToShow.length);
+}
+
+// sort blogs by updated date
+const sortBlogs = () => {
+    blogsToShow = blogsToShow.sort(
+        (b1, b2) => (b1.updatedOn < b2.updatedOn) ? 1 : (b1.updatedOn > b2.updatedOn) ? -1 : 0);
 }
 
 const updatePaginationVariables = (blogCount) => {
@@ -155,7 +161,6 @@ const displayBlogs = () => {
     for (var i = curBlogIdx; i < blogIdxOnCurrentPage; i++) {
 
         if (blogsToShow[i] == null) return;
-        if (blogsToShow[i].isFeatured) return;
 
         var updatedOnDate = new Date(blogsToShow[i].updatedOn);
         var year = updatedOnDate.getFullYear();

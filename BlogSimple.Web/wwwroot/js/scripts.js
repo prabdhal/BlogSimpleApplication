@@ -84,10 +84,19 @@ const setBlogsToDisplay = () => {
             }
         }
     });
+
+    sortBlogs();
+
     console.log('blog search string ' + blogSearchString);
     console.log('blogs to show ' + blogsToShow);
     console.log('blogs to show length ' + blogsToShow.length);
     updatePaginationVariables(blogsToShow.length);
+}
+
+// sort blogs by updated date
+const sortBlogs = () => {
+    blogsToShow = blogsToShow.sort(
+        (b1, b2) => (b1.updatedOn < b2.updatedOn) ? 1 : (b1.updatedOn > b2.updatedOn) ? -1 : 0);
 }
 
 const updatePaginationVariables = (blogCount) => {
