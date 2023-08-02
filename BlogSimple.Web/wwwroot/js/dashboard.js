@@ -6,7 +6,9 @@ const searchBarBtn = document.querySelector('#searchBarBtn');
 const blogsDisplayContainer = document.querySelector('#blogsDisplayContainer');
 const blogCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
+const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
 
+var blogData = document.querySelector('div.blogData');
 var blogsData = document.querySelectorAll('div.blogsData');
 var blogCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
@@ -20,6 +22,16 @@ let blogCategoryIdx = 100;
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+
+// create category badge on detail view dashboard
+const createCategoryBadge = () => {
+    let blog = JSON.parse(blogData.getAttribute("value"));
+
+    const badgeElement = document.createElement('a');
+    badgeElement.innerHTML = `<a class="badge text-decoration-none link-light cs">${blog.category}</a>`;
+
+    categoryBadgeContainer.append(badgeElement);
+}
 
 // opens modal to delete given blog
 const openDeleteBlogModal = (id) => {

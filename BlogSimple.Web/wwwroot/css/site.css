@@ -32,7 +32,7 @@ html {
     width: 150px;
     height: 45px;
     position: absolute;
-    top: 10%;
+    top: 5%;
     clip-path: polygon(75% 0%, 100% 50%, 75% 100%, 0% 100%, 0 50%, 0% 0%);
 }
 

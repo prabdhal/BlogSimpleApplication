@@ -3,12 +3,16 @@
 
 @{
     ViewData["Title"] = "View " + Model.Blog.Title;
-    Layout = "~/Views/Blog/_DashboardLayout.cshtml";
+    Layout = "~/Views/Blog/_DashboardLayoutDetails.cshtml";
 }
 
 
 <!-- Page content-->
 <div class="container mt-5">
+
+    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
+    <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Blog))'></div>
+
     <div class="row">
         <div class="col-lg-8">
             <!-- Post content-->
@@ -21,7 +25,9 @@
                     <div class="text-muted fst-italic mb-2">Posted on @Model.Blog.CreatedOn.ToString("MMM d, yyyy") by @Model.Blog.CreatedBy</div>
                     <div class="text-muted fst-italic mb-2">Last Updated on @Model.Blog.UpdatedOn.ToString("MMM d, yyyy")</div>
                     <!-- Post categories-->
-                    <a class="badge bg-secondary text-decoration-none link-light" href="#!">@Model.Blog.Category</a>
+                    <div id="categoryBadgeContainer">
+                        
+                    </div>
                 </header>
                 <!-- Preview image figure-->
                 <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
@@ -35,9 +41,9 @@
                 <div class="card bg-light">
                     <div class="card-body">
                         <!-- Comment form-->
-                        <form class="mb-4"><textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!">
+                        <form class="mb-4">
                             <input asp-for="Blog.Id" readonly hidden />
-                            </textarea>
+                            <textarea class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
                         </form>
                         <!-- Comment with nested comments-->
                         <div class="d-flex mb-4">
