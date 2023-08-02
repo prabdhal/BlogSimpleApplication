@@ -18,7 +18,7 @@ public class HomeBusinessManager : IHomeBusinessManager
     public BlogDetailsViewModel GetHomeDetailsViewModel(string id)
     {
         Blog blog = _blogService.Get(id);
-        var blogs = _blogService.GetAll();
+        var blogs = _blogService.GetPublishedOnly("");
 
         return new BlogDetailsViewModel
         {
@@ -32,11 +32,10 @@ public class HomeBusinessManager : IHomeBusinessManager
         IEnumerable<Blog> publishedBlogs = _blogService.GetPublishedOnly(searchString ?? string.Empty);
         Blog featuredBlog = new Blog();
         List<string> blogCats = new List<string>();
-        var blogs = _blogService.GetPublishedOnly("");
 
         if (publishedBlogs.Any())
         {
-            featuredBlog = DetermineFeaturedBlog(blogs);
+            featuredBlog = DetermineFeaturedBlog(publishedBlogs);
         }
 
 
@@ -49,8 +48,7 @@ public class HomeBusinessManager : IHomeBusinessManager
         {
             FeaturedBlog = featuredBlog,
             BlogCategories =  blogCats,
-            Blogs = publishedBlogs,
-            AllBlogs = blogs
+            PublishedBlogs = publishedBlogs,
         };
     }
 

@@ -8,7 +8,7 @@
 
 
 <main>
-    @foreach (var blog in Model.Blogs)
+    @foreach (var blog in Model.UserBlogs)
     {
         <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
     }

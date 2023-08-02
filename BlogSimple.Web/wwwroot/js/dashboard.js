@@ -161,14 +161,14 @@ const displayBlogs = () => {
         divElement.innerHTML =
             `<!-- Blog post-->
                 <div class="card mb-4">
-                    <a href="/Home/Details/${blogsToShow[i].id}">
+                    <a href="/Blog/Details/${blogsToShow[i].id}">
                         <div class="banner-tag ${getBlogCategoryClass(blogsToShow[i].category)}">
                             <div>${getBlogCategoryName(blogsToShow[i].category)}</div >
                         </div>
                         <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
                     </a>
                     <div class="card-body">
-                        <h2 class="card-title h4"><a href="/Home/Details/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
+                        <h2 class="card-title h4"><a href="/Blog/Details/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
                         <div class="small text-muted">Last Updated on ${month} ${day}, ${year}</div>
                         <p class="card-text text-truncate">${blogsToShow[i].description}</p>
                     </div>

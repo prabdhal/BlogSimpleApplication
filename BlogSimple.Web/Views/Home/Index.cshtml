@@ -10,7 +10,7 @@
 <!-- Page content-->
 <div class="container">
     <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedBlog))'></div>
-    @foreach (var blog in Model.AllBlogs)
+    @foreach (var blog in Model.PublishedBlogs)
     {
         <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
     }

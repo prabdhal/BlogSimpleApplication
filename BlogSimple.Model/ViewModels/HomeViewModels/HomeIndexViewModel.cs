@@ -6,6 +6,5 @@ public class HomeIndexViewModel
 {
     public List<string> BlogCategories { get; set; }
     public Blog FeaturedBlog { get; set; } = new Blog();
-    public IEnumerable<Blog> Blogs { get; set; } = Enumerable.Empty<Blog>();
-    public IEnumerable<Blog> AllBlogs { get; set; } = Enumerable.Empty<Blog>();
+    public IEnumerable<Blog> PublishedBlogs { get; set; } = Enumerable.Empty<Blog>();
 }

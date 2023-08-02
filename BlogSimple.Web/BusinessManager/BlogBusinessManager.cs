@@ -33,7 +33,7 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         return new DashboardIndexViewModel
         {
-            Blogs = userBlogs,
+            UserBlogs = userBlogs,
         };
     }
 
