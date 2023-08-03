@@ -25,7 +25,7 @@ public class BlogController : Controller
     }
 
     // GET: HomeController/Details/Id
-    public ActionResult Details(string id)
+    public IActionResult Details(string id)
     {
         BlogDetailsViewModel dashboardDetailsViewModal = _blogBusinessManager.GetDashboardDetailViewModel(id);
 
@@ -33,15 +33,23 @@ public class BlogController : Controller
     }
 
     // GET: BlogController/Create
-    public ActionResult Create()
+    public IActionResult CreateBlog()
     {
         return View(new CreateBlogViewModel());
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateComment(BlogDetailsViewModel blogDetailsViewModel)
+    {
+        Comment comment = await _blogBusinessManager.CreateComment(blogDetailsViewModel, User);
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 
     // POST: BlogController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<ActionResult> Create(CreateBlogViewModel createBlogViewModel)
+    public async Task<IActionResult> CreateBlog(CreateBlogViewModel createBlogViewModel)
     {
         if (!ModelState.IsValid)
             return View("Create");
@@ -51,7 +59,7 @@ public class BlogController : Controller
     }
 
     // GET: BlogController/Edit/5
-    public ActionResult Edit(string id)
+    public IActionResult EditBlog(string id)
     {
         var editBlogViewModel = _blogBusinessManager.GetEditBlogViewModel(id);
 
@@ -64,7 +72,7 @@ public class BlogController : Controller
     // POST: BlogController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Edit(string id, EditBlogViewModel editBlogViewModel)
+    public IActionResult EditBlog(string id, EditBlogViewModel editBlogViewModel)
     {
         if (!ModelState.IsValid)
             return View("Edit");
@@ -73,10 +81,8 @@ public class BlogController : Controller
         return RedirectToAction("Details", new { editBlogViewModel.Blog.Id });
     }
 
-    // POST: BlogController/Delete/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public ActionResult Delete(string id)
+    // POST: BlogController/DeleteBlog/5
+    public IActionResult DeleteBlog(string id)
     {
         _blogBusinessManager.DeleteBlog(id);
 

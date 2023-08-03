@@ -3,7 +3,10 @@ using BlogSimple.Model.Services;
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Web.BusinessManager;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services;
+using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings;
+using BlogSimple.Web.Settings.Interfaces;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -25,6 +28,8 @@ builder.Services.AddSingleton<IMongoClient>(e =>
     new MongoClient(builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString")));
 
 builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICommentReplyService, CommentReplyService>();
 
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();

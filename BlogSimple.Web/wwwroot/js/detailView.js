@@ -1,4 +1,7 @@
-﻿var blogData = document.querySelector('div.blogData');
+﻿let blogData = document.querySelector('div.blogData');
+
+let dropdownContent = document.querySelectorAll('.dropdown-content');
+let menuIcons = document.querySelectorAll('.menu-icon');
 
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
 
@@ -15,6 +18,37 @@ const createCategoryBadge = () => {
 
     categoryBadgeContainer.append(badgeElement);
 }
+
+// adds on click listener to all comment menus
+menuIcons.forEach(menu => {
+    menu.addEventListener('click', () => {
+        openCommentDropDownMenu(menu);
+    });
+});
+
+// opens the comment drop down menu
+const openCommentDropDownMenu = (element) => {
+    if (element.nextElementSibling.classList.contains('block')) {
+        closeAllCommentDropDownMenu();
+    } else {
+        closeAllCommentDropDownMenu();
+        element.nextElementSibling.classList.add('block');
+    }
+}
+
+// closes all comment drop down menus
+const closeAllCommentDropDownMenu = () => {
+    dropdownContent.forEach(dropDown => {
+        dropDown.classList.remove('block');
+    });
+}
+
+// closes menus when clicking on window
+window.addEventListener('click', (e) => {
+    if (e.target.classList.contains('menu-icon') == false) {
+        closeAllCommentDropDownMenu();
+    }
+})
 
 
 // HELPER FUNCTIONS 

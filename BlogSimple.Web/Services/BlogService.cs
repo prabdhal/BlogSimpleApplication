@@ -1,6 +1,6 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
-using BlogSimple.Web.Settings;
+using BlogSimple.Web.Settings.Interfaces;
 using MongoDB.Driver;
 
 namespace BlogSimple.Model.Services;

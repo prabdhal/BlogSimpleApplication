@@ -1,19 +1,20 @@
 ﻿@using BlogSimple.Model.ViewModels.BlogViewModels;
-@model CreateBlogViewModel;
+@model EditBlogViewModel;
 
 @{
-    ViewData["Title"] = "Create Blog";
+    ViewData["Title"] = "Edit " + Model.Blog.Title;
     Layout = "~/Views/Blog/_DashboardLayoutEditor.cshtml";
 }
 
-<h1>Create Blog</h1>
+<h1>EditBlog</h1>
 
-<h4>Write a Blog!</h4>
+<h4>Blog</h4>
 <hr />
 <div class="row">
-    <div class="col-8">
-        <form asp-action="Create">
+    <div class="col-12">
+        <form asp-action="EditBlog">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Blog.Id" readonly hidden />
             <div class="form-group">
                 <label asp-for="Blog.Title" class="control-label"></label>
                 <input asp-for="Blog.Title" class="form-control" />
@@ -43,7 +44,7 @@
                     <label>Publish now?</label>
                     <input asp-for="Blog.isPublished" type="checkbox" data-toggle="toggle" />
                     <br />
-                    <button class="btn btn-primary" type="submit">Save</button>
+                    <input type="submit" value="Update" class="btn btn-primary" />
                 </div>
             </div>
         </form>

@@ -1,9 +1,7 @@
-﻿using BlogSimple.Model.Models;
-using BlogSimple.Model.ViewModels.BlogViewModels;
+﻿using BlogSimple.Model.ViewModels.BlogViewModels;
 using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace BlogSimple.Web.Controllers;
 

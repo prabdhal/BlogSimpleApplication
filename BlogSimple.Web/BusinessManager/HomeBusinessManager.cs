@@ -3,27 +3,44 @@ using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.BlogViewModels;
 using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services.Interfaces;
 
 namespace BlogSimple.Web.BusinessManager;
 
 public class HomeBusinessManager : IHomeBusinessManager
 {
     private readonly IBlogService _blogService;
+    private readonly ICommentService _commentService;
+    private readonly ICommentReplyService _commentReplyService;
 
-    public HomeBusinessManager(IBlogService blogService)
+    public HomeBusinessManager(
+        IBlogService blogService,
+        ICommentService commentService,
+        ICommentReplyService commentReplyService
+        )
     {
         _blogService = blogService;
+        _commentService = commentService;
+        _commentReplyService = commentReplyService;
     }
 
     public BlogDetailsViewModel GetHomeDetailsViewModel(string id)
     {
         Blog blog = _blogService.Get(id);
         var blogs = _blogService.GetPublishedOnly("");
+        var comments = _commentService.GetAll(blog.Id);
+        var replies = new List<CommentReply>();
+        foreach (var comment in comments)
+        {
+            replies = _commentReplyService.GetAll(comment.Id);
+        }
 
         return new BlogDetailsViewModel
         {
             Blog = blog,
-            AllBlogs = blogs
+            AllBlogs = blogs,
+            Comments = comments,
+            CommentReplies = replies
         };
     }
 
@@ -41,13 +58,13 @@ public class HomeBusinessManager : IHomeBusinessManager
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
-            blogCats.Add(cat.ToString()); 
+            blogCats.Add(cat.ToString());
         }
 
         return new HomeIndexViewModel
         {
             FeaturedBlog = featuredBlog,
-            BlogCategories =  blogCats,
+            BlogCategories = blogCats,
             PublishedBlogs = publishedBlogs,
         };
     }
@@ -61,14 +78,14 @@ public class HomeBusinessManager : IHomeBusinessManager
     {
         var blog = blogs.OrderByDescending(b => b.UpdatedOn)
                         .First();
-        
+
         foreach (Blog b in blogs)
         {
             if (b == blog)
             {
                 blog.isFeatured = true;
                 _blogService.Update(blog.Id, blog);
-            } 
+            }
             else
             {
                 b.isFeatured = false;

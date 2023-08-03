@@ -1,8 +1,12 @@
-﻿namespace BlogSimple.Web.Settings;
+﻿using BlogSimple.Web.Settings.Interfaces;
+
+namespace BlogSimple.Web.Settings;
 
 public class BlogSimpleDatabaseSettings : IBlogSimpleDatabaseSettings
 {
     public string BlogsCollectionName { get; set; }
+    public string CommentsCollectionName { get; set; }
+    public string RepliesCollectionName { get; set; }
     public string ConnectionString { get; set; }
     public string DatabaseName { get; set; }
 }

@@ -1,9 +1,14 @@
-﻿namespace BlogSimple.Model.Models;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+
+namespace BlogSimple.Model.Models;
 
 public class Comment
 {
-    public int Id { get; set; }
-    public ApplicationUser User { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    public ApplicationUser CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     public string Content { get; set; }

@@ -3,6 +3,7 @@ using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.BlogViewModels;
 using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -11,16 +12,22 @@ namespace BlogSimple.Web.BusinessManager;
 
 public class BlogBusinessManager : IBlogBusinessManager
 {
-    private readonly IBlogService _blogService;
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IBlogService _blogService;
+    private readonly ICommentService _commentService;
+    private readonly ICommentReplyService _commentReplyService;
 
     public BlogBusinessManager(
         UserManager<ApplicationUser> userManager,
-        IBlogService blogService
+        IBlogService blogService,
+        ICommentService commentService,
+        ICommentReplyService commentReplyService
         )
     {
-        _blogService = blogService;
         _userManager = userManager;
+        _blogService = blogService;
+        _commentService = commentService;
+        _commentReplyService = commentReplyService;
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
@@ -41,6 +48,12 @@ public class BlogBusinessManager : IBlogBusinessManager
     {
         var blog = _blogService.Get(id);
         List<string> blogCats = new List<string>();
+        var comments = _commentService.GetAll(blog.Id);
+        var replies = new List<CommentReply>();
+        foreach (var comment in comments)
+        {
+            replies = _commentReplyService.GetAll(comment.Id);
+        }
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -51,6 +64,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         {
             BlogCategories = blogCats,
             Blog = blog,
+            Comments = comments,
+            CommentReplies = replies
         };
     }
 
@@ -67,6 +82,28 @@ public class BlogBusinessManager : IBlogBusinessManager
         blog = _blogService.Create(blog);
 
         return blog;
+    }
+
+    public async Task<Comment> CreateComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
+    {
+        Comment comment = blogDetailsViewModel.Comment;
+
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        comment.CommentedBlog = blogDetailsViewModel.Blog;
+        comment.CreatedBy = user;
+        comment.CreatedOn = DateTime.Now;
+        comment.UpdatedOn = DateTime.Now;
+
+        comment = _commentService.Create(comment);
+
+        // get and update comment into blog comments list
+        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+        blog.Comments.Add(comment);
+
+        _blogService.Update(blogDetailsViewModel.Blog.Id, blog);
+
+        return comment;
     }
 
     public EditBlogViewModel GetEditBlogViewModel(string id)
@@ -105,6 +142,15 @@ public class BlogBusinessManager : IBlogBusinessManager
         var blog = _blogService.Get(id);
         if (blog is null)
             return new NotFoundResult();
+
+        var comments = _commentService.GetAll(blog.Id);
+
+        foreach (var comment in comments)
+        {
+            _commentReplyService.RemoveAllByComment(comment.Id);
+        }
+
+        _commentService.RemoveAllByBlog(blog.Id);
 
         _blogService.Remove(blog);
         return blog;
