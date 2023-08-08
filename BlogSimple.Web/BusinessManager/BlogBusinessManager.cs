@@ -48,7 +48,7 @@ public class BlogBusinessManager : IBlogBusinessManager
     {
         var blog = _blogService.Get(id);
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAll(blog.Id);
+        var comments = _commentService.GetAll();
         var replies = new List<CommentReply>();
         foreach (var comment in comments)
         {
@@ -116,6 +116,17 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
+    public EditBlogViewModel GetEditBlogViewModelViaComment(string id)
+    {
+        var comment = _commentService.Get(id);
+        var blog = _blogService.Get(comment.CommentedBlog.Id);
+
+        return new EditBlogViewModel
+        {
+            Blog = blog
+        };
+    }
+
     public ActionResult<EditBlogViewModel> EditBlog(EditBlogViewModel editBlogViewModel, ClaimsPrincipal claimsPrincipal)
     {
         var blog = _blogService.Get(editBlogViewModel.Blog.Id);
@@ -137,15 +148,62 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
+    public ActionResult<BlogDetailsViewModel> EditComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
+    {
+        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+
+        if (blog is null)
+            return new NotFoundResult();
+
+        var comment = _commentService.Get(blogDetailsViewModel.Comment.Id);
+
+        if (comment is null)
+            return new NotFoundResult();
+
+        comment.Content = blogDetailsViewModel.Comment.Content;
+
+        // ****** maybe add the edited comment into blog.comments ******
+
+        List<string> blogCats = new List<string>();
+        var comments = _commentService.GetAll();
+        var replies = new List<CommentReply>();
+        foreach (var c in comments)
+        {
+            replies = _commentReplyService.GetAll(c.Id);
+        }
+
+        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
+        {
+            blogCats.Add(cat.ToString());
+        }
+
+        return new BlogDetailsViewModel
+        {
+            BlogCategories = blogCats,
+            Blog = blog,
+            Comments = comments,
+            CommentReplies = replies
+        };
+    }
+
     public ActionResult<Blog> DeleteBlog(string id)
     {
         var blog = _blogService.Get(id);
         if (blog is null)
             return new NotFoundResult();
 
-        var comments = _commentService.GetAll(blog.Id);
+        var comments = _commentService.GetAll();
+        var blogRelatedComments = new List<Comment>();
 
-        foreach (var comment in comments)
+        foreach (Comment comment in comments)
+        {
+            if (comment.CommentedBlog.Id == blog.Id)
+            {
+                blogRelatedComments.Add(comment);
+            }
+        }
+
+        foreach (var comment in blogRelatedComments)
         {
             _commentReplyService.RemoveAllByComment(comment.Id);
         }
@@ -154,5 +212,10 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         _blogService.Remove(blog);
         return blog;
+    }
+
+    public void DeleteComment(string id)
+    {
+        _commentService.Remove(id);
     }
 }

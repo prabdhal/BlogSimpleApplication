@@ -104,9 +104,6 @@ const setBlogsToDisplay = () => {
 
     sortBlogs();
 
-    console.log('blog search string ' + blogSearchString);
-    console.log('blogs to show ' + blogsToShow);
-    console.log('blogs to show length ' + blogsToShow.length);
     updatePaginationVariables(blogsToShow.length);
 }
 
@@ -143,11 +140,6 @@ const displayBlogs = () => {
     blogsDisplayContainer.innerHTML = '';
 
     let searchHeading = document.createElement('h3');
-    if (blogSearchString == "") {
-    } else {
-        searchHeading.innerHTML = `Search Results: ${blogSearchString}`;
-    }
-    blogsDisplayContainer.append(searchHeading);
 
     if (blogsToShow.length <= 0) {
         // no results
@@ -156,6 +148,16 @@ const displayBlogs = () => {
             `<div class="col-lg-6">
                 <p>Sorry... There are no related results for the above query :( </p>
             </div>`;
+
+        if (blogSearchString == "") {
+            divElement.innerHTML =
+                `<div class="col-lg-6">
+                    <p>Click <a href="/Blog/CreateBlog">here</a> to create your first blog post!</p>
+                </div>`;
+        } else {
+            searchHeading.innerHTML = `Search Results: ${blogSearchString}`;
+        }
+        blogsDisplayContainer.append(searchHeading);
 
         blogsDisplayContainer.append(divElement);
         return;
@@ -285,24 +287,6 @@ searchBarInput.addEventListener('input', (e) => {
     setBlogSearchString(e.target.value);
     setBlogsToDisplay();
     displayBlogs();
-});
-
-window.addEventListener('DOMContentLoaded', event => {
-
-    // Toggle the side navigation
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
-        sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        });
-    }
-
 });
 
 

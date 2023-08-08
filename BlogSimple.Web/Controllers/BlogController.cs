@@ -38,21 +38,13 @@ public class BlogController : Controller
         return View(new CreateBlogViewModel());
     }
 
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> CreateComment(BlogDetailsViewModel blogDetailsViewModel)
-    {
-        Comment comment = await _blogBusinessManager.CreateComment(blogDetailsViewModel, User);
-        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
-    }
-
     // POST: BlogController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateBlog(CreateBlogViewModel createBlogViewModel)
     {
         if (!ModelState.IsValid)
-            return View("Create");
+            return View("CreateBlog");
 
         Blog blog = await _blogBusinessManager.CreateBlog(createBlogViewModel, User);
         return RedirectToAction("Details", new { createBlogViewModel.Blog.Id });
@@ -75,7 +67,7 @@ public class BlogController : Controller
     public IActionResult EditBlog(string id, EditBlogViewModel editBlogViewModel)
     {
         if (!ModelState.IsValid)
-            return View("Edit");
+            return View("EditBlog");
 
         _blogBusinessManager.EditBlog(editBlogViewModel, User);
         return RedirectToAction("Details", new { editBlogViewModel.Blog.Id });
@@ -87,5 +79,36 @@ public class BlogController : Controller
         _blogBusinessManager.DeleteBlog(id);
 
         return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateComment(BlogDetailsViewModel blogDetailsViewModel)
+    {
+        // allow client side validation
+        //if (!ModelState.IsValid)
+        //    return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+
+        Comment comment = await _blogBusinessManager.CreateComment(blogDetailsViewModel, User);
+
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+    }
+
+    // POST: BlogController/EditComment/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult EditComment(string id, BlogDetailsViewModel blogDetailsViewModel)
+    {
+        _blogBusinessManager.EditComment(blogDetailsViewModel, User);
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+    }
+
+    // POST: BlogController/DeleteBlog/5
+    public IActionResult DeleteComment(string id)
+    {
+        var viewModel = _blogBusinessManager.GetEditBlogViewModelViaComment(id);
+        _blogBusinessManager.DeleteComment(id);
+
+        return RedirectToAction("Details", new { viewModel.Blog.Id });
     }
 }

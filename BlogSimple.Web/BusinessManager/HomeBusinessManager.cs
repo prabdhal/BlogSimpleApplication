@@ -28,7 +28,7 @@ public class HomeBusinessManager : IHomeBusinessManager
     {
         Blog blog = _blogService.Get(id);
         var blogs = _blogService.GetPublishedOnly("");
-        var comments = _commentService.GetAll(blog.Id);
+        var comments = _commentService.GetAll();
         var replies = new List<CommentReply>();
         foreach (var comment in comments)
         {

@@ -13,6 +13,9 @@ public interface IBlogBusinessManager
     Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal);
     Task<Comment> CreateComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     EditBlogViewModel GetEditBlogViewModel(string id);
+    EditBlogViewModel GetEditBlogViewModelViaComment(string id);
     ActionResult<EditBlogViewModel> EditBlog(EditBlogViewModel editBlogViewModel, ClaimsPrincipal claimsPrincipal);
+    ActionResult<BlogDetailsViewModel> EditComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     ActionResult<Blog> DeleteBlog(string id);
+    void DeleteComment(string id);
 }

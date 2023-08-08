@@ -14,6 +14,25 @@
 
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Blog))'></div>
+    @foreach (var comment in Model.Comments)
+    {
+        <div hidden class="commentsData" value='@Html.Raw(Json.Serialize(comment))'></div>
+    }
+    @foreach (var reply in Model.CommentReplies)
+    {
+        <div hidden class="repliesData" value='@Html.Raw(Json.Serialize(reply))'></div>
+    } 
+    @{
+        if (SignInManager.IsSignedIn(User))
+        {
+            <div hidden class="userSignedIn" value='true'></div>
+            <div hidden class="signedInUsername" value='@Html.Raw((await UserManager.GetUserAsync(User)).UserName)'></div>
+        }
+        else
+        {
+            <div hidden class="userSignedIn" value='false'></div>
+        }
+    }
 
     <div class="row">
         <div class="col-lg-8">
@@ -42,22 +61,26 @@
                 <div class="card bg-light">
                     <div class="card-body">
                         <!-- Comment form-->
-                        <form class="mb-4" asp-controller="Blog" asp-action="CreateComment">
-                            <input asp-for="Blog.Id" readonly hidden />
-                            <textarea asp-for="Comment.Content" class="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea>
-                            <div class="form-group">
-                                @{
-                                    if (SignInManager.IsSignedIn(User))
-                                    {
-                                        <button class="btn btn-primary" type="submit">Submit</button>   
+                        <div class="write-comment-container mb-4">
+                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                            <form class="create-comment-form mb-4" asp-controller="Blog" asp-action="CreateComment">
+                                <input asp-for="Blog.Id" readonly hidden />
+                                <textarea asp-for="Comment.Content" class="comment-textarea" rows="1" placeholder="Join the discussion and leave a comment!"></textarea>
+                                <div class="form-group create-comment-buttons hide">
+                                    @{
+                                        <button class="btn btn-primary" id="hideCommentButtons">Cancel</button>
+                                        if (SignInManager.IsSignedIn(User))
+                                        {
+                                            <button class="btn btn-primary" id="commentBtn" type="submit">Comment</button>
+                                        }
+                                        else
+                                        {
+                                            <a href="/Account/Login">Login to comment</a>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <button href="/Account/Login">Login to comment</button>
-                                    }
-                                }
-                            </div>
-                        </form>
+                                </div>
+                            </form>
+                        </div>
                         <div>
                             <!-- Comment with nested comments-->
                             @{

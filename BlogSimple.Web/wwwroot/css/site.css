@@ -22,6 +22,26 @@ a {
     cursor: pointer;
 }
 
+.comment-textarea {
+    width: 100%;
+    outline: none;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    resize: none;
+    overflow: hidden;
+    transition: 200ms;
+}
+
+textarea.comment-textarea:focus {
+    border-bottom: 2px solid #000000;
+}
+
+.reply-comment-btns-container {
+    display: flex;
+    /*justify-content: flex-end;*/
+}
+
 .form-inline .form-control {
     display: inline-block;
     width: auto;
@@ -92,6 +112,24 @@ a {
     align-items: flex-start;
 }
 
+.write-comment-container {
+    display: flex;
+}
+
+.create-comment-form {
+    width: 100%;
+    margin-left: 10px;
+}
+
+.create-comment-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.create-comment-buttons > button {
+    margin-left: 5px;
+}
+
 .dropdown {
     display: inline-block;
     position: relative;
@@ -127,6 +165,10 @@ a {
 
 .inline {
     display: inline-block;
+}
+
+.hide {
+    display: none;
 }
 
 .card-footer{

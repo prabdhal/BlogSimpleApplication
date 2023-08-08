@@ -23,9 +23,9 @@ public class CommentService : ICommentService
         return _comments.Find(c => c.Id == commentId).FirstOrDefault();
     }
 
-    public List<Comment> GetAll(string blogId)
+    public List<Comment> GetAll()
     {
-        return _comments.Find(c => c.CommentedBlog.Id == blogId).ToList();
+        return _comments.Find(_ => true).ToList();
     }
 
     public Comment Create(Comment comment)
@@ -38,6 +38,11 @@ public class CommentService : ICommentService
     {
         _comments.ReplaceOne(commentId, comment);
         return comment;
+    }
+
+    public void Remove(string commentId)
+    {
+        _comments.DeleteOne(c => c.Id == commentId);
     }
 
     public void Remove(Comment comment)

@@ -19,6 +19,7 @@
                 <input asp-for="Blog.Title" class="form-control" />
                 <span asp-validation-for="Blog.Title" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Blog.Category" class="control-label"></label>
                 <select asp-for="Blog.Category"
@@ -27,16 +28,19 @@
                     <option>-- Select Category --</option>
                 </select>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Blog.Description" class="control-label"></label>
                 <input asp-for="Blog.Description" class="form-control" />
                 <span asp-validation-for="Blog.Description" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <label asp-for="Blog.Content" class="control-label"></label>
                 <textarea asp-for="Blog.Content" id="myEditor" class="form-control"></textarea>
                 <span asp-validation-for="Blog.Content" class="text-danger"></span>
             </div>
+            <br />
             <div class="card-footer">
                 <div class="form-group">
                     <p class="text-muted">Publish now or save for later edits.</p>
