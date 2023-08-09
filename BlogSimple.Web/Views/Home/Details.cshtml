@@ -4,14 +4,13 @@
 @inject UserManager<ApplicationUser> UserManager
 @model BlogDetailsViewModel;
 @{
-    ViewData["Title"] = "View " + @Model.Blog.Title;
+    ViewData["Title"] = "View " + Model.Blog.Title;
     Layout = "~/Views/Home/_HomeLayoutDetails.cshtml";
 }
 
 
 <!-- Page content-->
 <div class="container mt-5">
-
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Blog))'></div>
     @foreach (var comment in Model.Comments)
@@ -21,7 +20,7 @@
     @foreach (var reply in Model.CommentReplies)
     {
         <div hidden class="repliesData" value='@Html.Raw(Json.Serialize(reply))'></div>
-    } 
+    }
     @{
         if (SignInManager.IsSignedIn(User))
         {
@@ -83,45 +82,8 @@
                         </div>
                         <div>
                             <!-- Comment with nested comments-->
-                            @{
-                                if (Model.Blog.Comments.Any())
-                                {
-                                    foreach (Comment comment in Model.Blog.Comments)
-                                    {
-                                    <div class="comment-container">
-                                        <div class="d-flex mb-4">
-                                            <!-- Parent comment-->
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                            <div class="ms-3">
-                                                <div class="fw-bold">@comment.CreatedBy.UserName</div>
-                                                <div class="text-break">@comment.Content</div>
-                                                @foreach (CommentReply reply in comment.Replies)
-                                                {
-                                                    <!-- Child comment -->
-                                                    <div class="d-flex mt-4">
-                                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                        <div class="ms-3">
-                                                            <div class="fw-bold">@reply.CreatedBy.UserName</div>
-                                                            <div>@reply.Content</div>
-                                                        </div>
-                                                    </div>
-                                                }
-                                            </div>
-                                        </div>
-                                        @if (SignInManager.IsSignedIn(User) && comment.CreatedBy.UserName == (await UserManager.GetUserAsync(User)).UserName)
-                                        {
-                                            <div class="dropdown">
-                                                <svg class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                <div class="dropdown-content">
-                                                    <a href="/Blog/EditComment">Edit</a>
-                                                    <a href="/Blog/DeleteComment">Delete</a>
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                    }
-                                }
-                            }
+                            <h3 class="mb-5">@Model.Comments.Count() Comments</h3>
+                            <div id="commentContainer"></div>
                         </div>
                     </div>
                 </div>
@@ -144,20 +106,17 @@
                 <div class="card-header">Categories</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li><a href="#!">Web Design</a></li>
-                                <li><a href="#!">HTML</a></li>
-                                <li><a href="#!">Freebies</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="list-unstyled mb-0">
-                                <li><a href="#!">JavaScript</a></li>
-                                <li><a href="#!">CSS</a></li>
-                                <li><a href="#!">Tutorials</a></li>
-                            </ul>
-                        </div>
+                        <ul class="list-unstyled mb-0">
+                            @{
+                                foreach (var cat in Model.BlogCategories)
+                                {
+                                    <li>
+                                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
+                                    </li>
+
+                                }
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
