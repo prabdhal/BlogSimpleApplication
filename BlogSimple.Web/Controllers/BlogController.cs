@@ -99,7 +99,7 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult EditComment(string id, BlogDetailsViewModel blogDetailsViewModel)
     {
-        _blogBusinessManager.EditComment(blogDetailsViewModel, User);
+        _blogBusinessManager.EditComment(id, blogDetailsViewModel, User);
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 

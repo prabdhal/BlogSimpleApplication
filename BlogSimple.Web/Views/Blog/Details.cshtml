@@ -83,7 +83,47 @@
                         <div>
                             <!-- Comment with nested comments-->
                             <h3 class="mb-5">@Model.Comments.Count() Comments</h3>
-                            <div id="commentContainer"></div>
+                            @*<div id="commentContainer">*@
+                            <!-- Comments -->
+                            @{
+                                foreach (Comment comment in Model.Comments)
+                                {
+                                    <div class="comment-container">
+                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                        <div class="comment-content-container">
+                                            <!-- Parent comment-->
+                                            <div class="ms-3">
+                                                <div class="comment-display-section hide">
+                                                    <div class="fw-bold">@comment.CreatedBy.UserName</div>
+                                                    <div class="text-break">${comments[i].content}</div>
+                                                    <div class="reply-comment-btns-container">
+                                                        <button>Like</button>
+                                                        <button>Reply</button>
+                                                    </div>
+                                                </div>
+                                                <div class="comment-edit-display-section">
+                                                    <form class="create-comment-form mb-4" asp-action="EditComment" asp-route-id="@comment.Id">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <input asp-for="Blog.Id" readonly hidden />
+                                                        <input asp-for="Comment.Id" readonly hidden />
+                                                        <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
+                                                        <span asp-validation-for="Comment.Content" class="text-danger"></span>
+                                                        <div class="form-group create-comment-buttons">
+                                                            <button class="btn btn-primary">Cancel</button>
+                                                            <input class="btn btn-primary" value="Comment" type="submit" />
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                @*<div class="@comment.Id"></div>
+                                                ${getReplies(comments[i])}*@
+                                            </div>
+                                        </div>
+                                        <div class="cmt"></div>
+                                    </div>
+                                }
+                            }
+
+                            @*</div>*@
                         </div>
                     </div>
                 </div>

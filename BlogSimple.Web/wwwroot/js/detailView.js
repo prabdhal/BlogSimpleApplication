@@ -76,15 +76,27 @@ const displayComments = () => {
             divElement.innerHTML =
                 `<!-- Comments -->
                 <div class="comment-container" >
-                    <div class="d-flex mb-4">
+                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                    <div class="comment-content-container">
                         <!-- Parent comment-->
-                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                         <div class="ms-3">
-                            <div class="fw-bold">${comments[i].createdBy.userName}</div>
-                            <div class="text-break">${comments[i].content}</div>
-                            <div class="reply-comment-btns-container">
-                                <button>Like</button>
-                                <button>Reply</button>
+                            <div class="comment-display-section hide">
+                                <div class="fw-bold">${comments[i].createdBy.userName}</div>
+                                <div class="text-break">${comments[i].content}</div>
+                                <div class="reply-comment-btns-container">
+                                    <button>Like</button>
+                                    <button>Reply</button>
+                                </div>
+                            </div>
+                            <div class="comment-edit-display-section">
+                                <form class="create-comment-form mb-4" asp-controller="Blog" asp-action="EditComment">
+                                    <input asp-for="${comments[i].commentedBlog.id}" readonly hidden />
+                                    <textarea asp-for="${comments[i].content}" class="comment-textarea" rows="1">${comments[i].content}</textarea>
+                                    <div class="form-group create-comment-buttons">
+                                        <button class="btn btn-primary">Cancel</button>
+                                        <button class="btn btn-primary" type="submit">Comment</button>
+                                    </div>
+                                </form>
                             </div>
                             <div class="${comments[i].id}"></div>
                             ${getReplies(comments[i])}
@@ -114,14 +126,26 @@ const displayCommentCustomizeButtons = (comment, classToAppend) => {
         commentButtonsDisplay.innerHTML =
             `<svg class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
              <div class="dropdown-content">
-                <a href="/Blog/EditComment/${comment.id}">Edit</a>
+                <button class="displayEditInputForComment">Edit</button>
                 <a href="/Blog/DeleteComment/${comment.id}">Delete</a>
             <div>`
     }
 
+    //addClickEventListenerToEditBtn();
+
     classToAppend.appendChild(commentButtonsDisplay);
 
     return commentButtonsDisplay;
+}
+
+const addClickEventListenerToEditBtn = () => {
+    displayEditInputForComment.addEventListener('click', () => {
+        // fetches the class with the comment and hides it
+
+        // displays the class with input field
+
+        // displays cancel and edit buttons
+    });
 }
 
 const displayReplies = (comment) => {

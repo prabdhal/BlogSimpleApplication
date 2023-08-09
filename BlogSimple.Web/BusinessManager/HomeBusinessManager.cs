@@ -29,7 +29,7 @@ public class HomeBusinessManager : IHomeBusinessManager
         Blog blog = _blogService.Get(id);
         List<string> blogCats = new List<string>();
         var blogs = _blogService.GetPublishedOnly("");
-        var comments = _commentService.GetAll();
+        var comments = _commentService.GetAllByBlog(id);
         var replies = new List<CommentReply>();
         foreach (var comment in comments)
         {

@@ -44,11 +44,11 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public BlogDetailsViewModel GetDashboardDetailViewModel(string id)
+    public BlogDetailsViewModel GetDashboardDetailViewModel(string blogId)
     {
-        var blog = _blogService.Get(id);
+        var blog = _blogService.Get(blogId);
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAll();
+        var comments = _commentService.GetAllByBlog(blogId);
         var replies = new List<CommentReply>();
         foreach (var comment in comments)
         {
@@ -106,9 +106,9 @@ public class BlogBusinessManager : IBlogBusinessManager
         return comment;
     }
 
-    public EditBlogViewModel GetEditBlogViewModel(string id)
+    public EditBlogViewModel GetEditBlogViewModel(string blogId)
     {
-        var blog = _blogService.Get(id);
+        var blog = _blogService.Get(blogId);
 
         return new EditBlogViewModel
         {
@@ -116,9 +116,9 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public EditBlogViewModel GetEditBlogViewModelViaComment(string id)
+    public EditBlogViewModel GetEditBlogViewModelViaComment(string commentId)
     {
-        var comment = _commentService.Get(id);
+        var comment = _commentService.Get(commentId);
         var blog = _blogService.Get(comment.CommentedBlog.Id);
 
         return new EditBlogViewModel
@@ -148,24 +148,22 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public ActionResult<BlogDetailsViewModel> EditComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
+    public ActionResult<BlogDetailsViewModel> EditComment(string commentId, BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
     {
         var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
 
         if (blog is null)
             return new NotFoundResult();
 
-        var comment = _commentService.Get(blogDetailsViewModel.Comment.Id);
+        var comment = _commentService.Get(commentId);
 
         if (comment is null)
             return new NotFoundResult();
 
         comment.Content = blogDetailsViewModel.Comment.Content;
 
-        // ****** maybe add the edited comment into blog.comments ******
-
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAll();
+        var comments = _commentService.GetAllByBlog(blog.Id);
         var replies = new List<CommentReply>();
         foreach (var c in comments)
         {
@@ -181,18 +179,19 @@ public class BlogBusinessManager : IBlogBusinessManager
         {
             BlogCategories = blogCats,
             Blog = blog,
+            Comment = _commentService.Update(commentId, comment),
             Comments = comments,
             CommentReplies = replies
         };
     }
 
-    public ActionResult<Blog> DeleteBlog(string id)
+    public ActionResult<Blog> DeleteBlog(string blogId)
     {
-        var blog = _blogService.Get(id);
+        var blog = _blogService.Get(blogId);
         if (blog is null)
             return new NotFoundResult();
 
-        var comments = _commentService.GetAll();
+        var comments = _commentService.GetAllByBlog(blogId);
         var blogRelatedComments = new List<Comment>();
 
         foreach (Comment comment in comments)
@@ -214,8 +213,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         return blog;
     }
 
-    public void DeleteComment(string id)
+    public void DeleteComment(string commentId)
     {
-        _commentService.Remove(id);
+        _commentService.Remove(commentId);
     }
 }

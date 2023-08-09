@@ -2,6 +2,8 @@
 using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings.Interfaces;
 using MongoDB.Driver;
+using static System.Reflection.Metadata.BlobBuilder;
+using System.Reflection.Metadata;
 
 namespace BlogSimple.Web.Services;
 
@@ -23,9 +25,9 @@ public class CommentService : ICommentService
         return _comments.Find(c => c.Id == commentId).FirstOrDefault();
     }
 
-    public List<Comment> GetAll()
+    public List<Comment> GetAllByBlog(string blogId)
     {
-        return _comments.Find(_ => true).ToList();
+        return _comments.Find(c => c.CommentedBlog.Id == blogId).ToList();
     }
 
     public Comment Create(Comment comment)
@@ -36,7 +38,7 @@ public class CommentService : ICommentService
 
     public Comment Update(string commentId, Comment comment)
     {
-        _comments.ReplaceOne(commentId, comment);
+        _comments.ReplaceOne(comment => comment.Id == commentId, comment);
         return comment;
     }
 

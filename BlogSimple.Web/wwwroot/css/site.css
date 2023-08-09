@@ -107,9 +107,19 @@ textarea.comment-textarea:focus {
 
 
 .comment-container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+}
+
+.comment-content-container {
+    width: 100%;
+    flex-grow: 100;
+}
+
+.cmt {
+    flex-grow: 1;
 }
 
 .write-comment-container {
