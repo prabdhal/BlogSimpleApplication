@@ -127,10 +127,13 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public ActionResult<EditBlogViewModel> EditBlog(EditBlogViewModel editBlogViewModel, ClaimsPrincipal claimsPrincipal)
+    public async Task<ActionResult<EditBlogViewModel>> EditBlog(EditBlogViewModel editBlogViewModel, ClaimsPrincipal claimsPrincipal)
     {
-        var blog = _blogService.Get(editBlogViewModel.Blog.Id);
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+        if (user is null)
+            return new NotFoundResult();
 
+        var blog = _blogService.Get(editBlogViewModel.Blog.Id);
         if (blog is null)
             return new NotFoundResult();
 
@@ -148,19 +151,69 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public ActionResult<BlogDetailsViewModel> EditComment(string commentId, BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
+    public async Task<ActionResult<BlogDetailsViewModel>> EditComment(string commentId, BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
     {
-        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+        if (user is null)
+            return new NotFoundResult();
 
+        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
         if (blog is null)
             return new NotFoundResult();
 
         var comment = _commentService.Get(commentId);
-
         if (comment is null)
             return new NotFoundResult();
 
         comment.Content = blogDetailsViewModel.Comment.Content;
+
+        List<string> blogCats = new List<string>();
+        var comments = _commentService.GetAllByBlog(blog.Id);
+        var replies = new List<CommentReply>();
+        foreach (var c in comments)
+        {
+            replies = _commentReplyService.GetAll(c.Id);
+        }
+
+        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
+        {
+            blogCats.Add(cat.ToString());
+        }
+
+        return new BlogDetailsViewModel
+        {
+            BlogCategories = blogCats,
+            Blog = blog,
+            Comment = _commentService.Update(commentId, comment),
+            Comments = comments,
+            CommentReplies = replies
+        };
+    }
+
+    public async Task<ActionResult<BlogDetailsViewModel>> LikeComment(string commentId, BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+        if (user is null)
+            return new NotFoundResult();
+
+        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+        if (blog is null)
+            return new NotFoundResult();
+
+        var comment = _commentService.Get(commentId);
+        if (comment is null)
+            return new NotFoundResult();
+
+        var userAlreadyLiked = comment.CommentLikedByUsers.Where(u => u.Id == user.Id).FirstOrDefault();
+
+        if (userAlreadyLiked is null)
+        {
+            comment.CommentLikedByUsers.Add(user);
+        }
+        else
+        {
+            comment.CommentLikedByUsers.Remove(userAlreadyLiked);
+        }
 
         List<string> blogCats = new List<string>();
         var comments = _commentService.GetAllByBlog(blog.Id);

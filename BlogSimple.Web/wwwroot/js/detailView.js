@@ -25,17 +25,16 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 
 // opens the comment drop down menu
-const openCommentDropDownMenuContent = (el, comment) => {
-    closeAllCommentDropDownModal();
+const openCommentDropDownMenuContent = (el) => {
     if (el.nextElementSibling.style.display == 'block') {
-        el.nextElementSibling.style.display = 'none';
+        closeAllCommentDropDownModal();
     } else {
         el.nextElementSibling.style.display = 'block';
     }
     console.log('openCommentDropDownMenu');
 }
 
-//  
+//  displays the edit comment container
 const displayEditInputForComment = (el) => {
     let commentContainer = el.parentElement.parentElement.previousElementSibling.previousElementSibling.nextElementSibling.firstElementChild.firstElementChild;
     let editCommentContainer = commentContainer.nextElementSibling;

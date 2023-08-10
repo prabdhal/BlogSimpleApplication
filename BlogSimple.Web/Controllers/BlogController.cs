@@ -97,9 +97,9 @@ public class BlogController : Controller
     // POST: BlogController/EditComment/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult EditComment(string id, BlogDetailsViewModel blogDetailsViewModel)
+    public async Task<IActionResult> EditComment(string id, BlogDetailsViewModel blogDetailsViewModel)
     {
-        _blogBusinessManager.EditComment(id, blogDetailsViewModel, User);
+        await _blogBusinessManager.EditComment(id, blogDetailsViewModel, User);
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 
@@ -110,5 +110,14 @@ public class BlogController : Controller
         _blogBusinessManager.DeleteComment(id);
 
         return RedirectToAction("Details", new { viewModel.Blog.Id });
+    }
+
+    // POST: BlogController/LikeComment/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> LikeComment(string id, BlogDetailsViewModel blogDetailsViewModel)
+    {
+        await _blogBusinessManager.LikeComment(id, blogDetailsViewModel, User);
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 }

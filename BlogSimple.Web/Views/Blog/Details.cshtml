@@ -79,10 +79,18 @@
                                                     <div class="comment-date">@comment.CreatedOn</div>
                                                 </div>
                                                 <div class="text-break">@comment.Content</div>
-                                                <div class="reply-comment-btns-container">
-                                                    <button>Like</button>
-                                                    <button>Reply</button>
-                                                </div>
+                                                <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="LikeComment" asp-route-id="@comment.Id">
+                                                    <input asp-for="Blog.Id" readonly hidden />
+                                                    <input asp-for="Comment.Id" readonly hidden />
+                                                    <button type="submit">
+                                                        Like 
+                                                        @if (comment.CommentLikedByUsers.Any()) 
+                                                        {
+                                                            @comment.CommentLikedByUsers.Count();
+                                                        }
+                                                    </button>
+                                                    <button type="button">Reply</button>
+                                                </form>
                                                 </div>
                                                 <div class="comment-edit-display-section">
                                                     <form class="create-comment-form mb-4" asp-action="EditComment" asp-route-id="@comment.Id">
