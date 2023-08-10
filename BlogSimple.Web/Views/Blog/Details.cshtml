@@ -13,25 +13,6 @@
 <div class="container mt-5">
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Blog))'></div>
-    @foreach (var comment in Model.Comments)
-    {
-        <div hidden class="commentsData" value='@Html.Raw(Json.Serialize(comment))'></div>
-    }
-    @foreach (var reply in Model.CommentReplies)
-    {
-        <div hidden class="repliesData" value='@Html.Raw(Json.Serialize(reply))'></div>
-    }
-    @{
-        if (SignInManager.IsSignedIn(User))
-        {
-            <div hidden class="userSignedIn" value='true'></div>
-            <div hidden class="signedInUsername" value='@Html.Raw((await UserManager.GetUserAsync(User)).UserName)'></div>
-        } 
-        else
-        {
-            <div hidden class="userSignedIn" value='false'></div>
-        }
-    }
 
     <div class="row">
         <div class="col-lg-8">
@@ -83,7 +64,6 @@
                         <div>
                             <!-- Comment with nested comments-->
                             <h3 class="mb-5">@Model.Comments.Count() Comments</h3>
-                            @*<div id="commentContainer">*@
                             <!-- Comments -->
                             @{
                                 foreach (Comment comment in Model.Comments)
@@ -93,13 +73,16 @@
                                         <div class="comment-content-container">
                                             <!-- Parent comment-->
                                             <div class="ms-3">
-                                                <div class="comment-display-section hide">
+                                                <div class="comment-display-section">
+                                                <div class="comment-name-date">
                                                     <div class="fw-bold">@comment.CreatedBy.UserName</div>
-                                                    <div class="text-break">${comments[i].content}</div>
-                                                    <div class="reply-comment-btns-container">
-                                                        <button>Like</button>
-                                                        <button>Reply</button>
-                                                    </div>
+                                                    <div class="comment-date">@comment.CreatedOn</div>
+                                                </div>
+                                                <div class="text-break">@comment.Content</div>
+                                                <div class="reply-comment-btns-container">
+                                                    <button>Like</button>
+                                                    <button>Reply</button>
+                                                </div>
                                                 </div>
                                                 <div class="comment-edit-display-section">
                                                     <form class="create-comment-form mb-4" asp-action="EditComment" asp-route-id="@comment.Id">
@@ -109,7 +92,7 @@
                                                         <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
                                                         <span asp-validation-for="Comment.Content" class="text-danger"></span>
                                                         <div class="form-group create-comment-buttons">
-                                                            <button class="btn btn-primary">Cancel</button>
+                                                            <button class="btn btn-primary" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
                                                             <input class="btn btn-primary" value="Comment" type="submit" />
                                                         </div>
                                                     </form>
@@ -118,12 +101,16 @@
                                                 ${getReplies(comments[i])}*@
                                             </div>
                                         </div>
-                                        <div class="cmt"></div>
+                                        <div class="dropdown">
+                                            <svg onclick="openCommentDropDownMenuContent(this)" class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                            <div class="dropdown-content">
+                                                <a onclick="displayEditInputForComment(this)">Edit</a>
+                                                <a onclick="displayDeleteCommentModal('@comment.Id')">Delete</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 }
                             }
-
-                            @*</div>*@
                         </div>
                     </div>
                 </div>
@@ -167,4 +154,22 @@
             </div>
         </div>
     </div>
+</div>
+
+
+
+<!-- Delete Comment Modal -->
+<div id="deleteCommentModal" class="delete-comment-modal">
+    <span onclick="hideDeleteCommentModal()" class="close" title="Close Modal">&times;</span>
+    <form class="modal-content" id="deleteCommentModalForm" method="post">
+        <div class="container">
+            <h1>Delete comment</h1>
+            <p>Delete your comment permanently?</p>
+
+            <div class="clearfix">
+                <button type="button" onclick="hideDeleteCommentModal()">Cancel</button>
+                <button type="submit">Delete</button>
+            </div>
+        </div>
+    </form>
 </div>
