@@ -33,7 +33,7 @@ public class HomeBusinessManager : IHomeBusinessManager
         var replies = new List<CommentReply>();
         foreach (var comment in comments)
         {
-            replies = _commentReplyService.GetAll(comment.Id);
+            replies = _commentReplyService.GetAllByComment(comment.Id);
         }
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))

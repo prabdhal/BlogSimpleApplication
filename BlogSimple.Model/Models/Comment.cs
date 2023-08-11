@@ -15,6 +15,6 @@ public class Comment
     [Required(ErrorMessage = "Comment is empty!")]
     public string Content { get; set; }
     public List<ApplicationUser> CommentLikedByUsers { get; set; } = new List<ApplicationUser>();
-    public IEnumerable<CommentReply> Replies { get; set; } = Enumerable.Empty<CommentReply>();
+    public List<CommentReply> Replies { get; set; } = new List<CommentReply>();
     public Blog CommentedBlog { get; set; }
 }

@@ -94,6 +94,19 @@ public class BlogController : Controller
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> CreateReply(BlogDetailsViewModel blogDetailsViewModel)
+    {
+        // allow client side validation
+        //if (!ModelState.IsValid)
+        //    return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+
+        CommentReply reply = await _blogBusinessManager.CreateReply(blogDetailsViewModel, User);
+
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+    }
+
     // POST: BlogController/EditComment/5
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -103,11 +116,29 @@ public class BlogController : Controller
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 
+    // POST: BlogController/EditComment/5
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditReply(string id, BlogDetailsViewModel blogDetailsViewModel)
+    {
+        await _blogBusinessManager.EditReply(id, blogDetailsViewModel, User);
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+    }
+
     // POST: BlogController/DeleteBlog/5
     public IActionResult DeleteComment(string id)
     {
         var viewModel = _blogBusinessManager.GetEditBlogViewModelViaComment(id);
         _blogBusinessManager.DeleteComment(id);
+
+        return RedirectToAction("Details", new { viewModel.Blog.Id });
+    }
+
+    // POST: BlogController/DeleteBlog/5
+    public IActionResult DeleteReply(string id)
+    {
+        var viewModel = _blogBusinessManager.GetEditBlogViewModelViaReply(id);
+        _blogBusinessManager.DeleteReply(id);
 
         return RedirectToAction("Details", new { viewModel.Blog.Id });
     }

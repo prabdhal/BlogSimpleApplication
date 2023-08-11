@@ -4,10 +4,11 @@ namespace BlogSimple.Web.Services.Interfaces;
 
 public interface ICommentReplyService
 {
-    List<CommentReply> GetAll(string commentId);
-    CommentReply Get(string commentId);
-    CommentReply Create(CommentReply comment);
-    CommentReply Update(string commentId, CommentReply comment);
-    void Remove(CommentReply comment);
+    List<CommentReply> GetAllByComment(string commentId);
+    CommentReply Get(string replyId);
+    CommentReply Create(CommentReply reply);
+    CommentReply Update(string replyId, CommentReply reply);
+    void Remove(string replyId);
+    void Remove(CommentReply reply);
     void RemoveAllByComment(string commentId);
 }

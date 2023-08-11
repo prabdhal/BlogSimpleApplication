@@ -18,35 +18,41 @@ public class CommentReplyService : ICommentReplyService
         _replies = db.GetCollection<CommentReply>(blogSettings.RepliesCollectionName);
     }
 
-    public CommentReply Get(string commentId)
+    public CommentReply Get(string replyId)
     {
-        return _replies.Find(c => c.Id == commentId).FirstOrDefault();
+        return _replies.Find(r => r.Id == replyId).FirstOrDefault();
     }
 
-    public List<CommentReply> GetAll(string commentId)
+    public List<CommentReply> GetAllByComment(string commentId)
     {
-        return _replies.Find(c => c.RepliedComment.Id == commentId).ToList();
+        var r = _replies.Find(r => r.RepliedComment.Id == commentId).ToList();
+        return r;
     }
 
-    public CommentReply Create(CommentReply comment)
+    public CommentReply Create(CommentReply reply)
     {
-        _replies.InsertOne(comment);
-        return comment;
+        _replies.InsertOne(reply);
+        return reply;
     }
 
-    public CommentReply Update(string commentId, CommentReply comment)
+    public CommentReply Update(string replyId, CommentReply reply)
     {
-        _replies.ReplaceOne(commentId, comment);
-        return comment;
+        _replies.ReplaceOne(r => r.Id == replyId, reply);
+        return reply;
     }
 
-    public void Remove(CommentReply comment)
+    public void Remove(string replyId)
     {
-        _replies.DeleteOne(c => c == comment);
+        _replies.DeleteOne(r => r.Id == replyId);
+    }
+
+    public void Remove(CommentReply reply)
+    {
+        _replies.DeleteOne(r => r == reply);
     }
 
     public void RemoveAllByComment(string commentId)
     {
-        _replies.DeleteMany(c => c.RepliedComment.Id == commentId);
+        _replies.DeleteMany(r => r.RepliedComment.Id == commentId);
     }
 }

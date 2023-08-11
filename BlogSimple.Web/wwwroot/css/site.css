@@ -22,6 +22,15 @@ a {
     cursor: pointer;
 }
 
+.comment-content-container {
+    margin: 0 0 15px 15px;
+}
+
+.comment-display-editform-dropdown-container {
+    display: flex;
+    justify-content: space-between;
+}
+
 .comment-name-date {
     display: flex;
 }
@@ -45,8 +54,17 @@ a {
     display: none;
 }
 
+.reply-edit-display-section {
+    display: none;
+}
+
 .comment-display-section {
     text-align: left
+}
+
+.reply-display-section {
+    text-align: left;
+    margin-left: 20px;
 }
 
 textarea.comment-textarea:focus {
@@ -140,6 +158,10 @@ textarea.comment-textarea:focus {
 
 .write-comment-container {
     display: flex;
+}
+
+.write-reply-container {
+    display: none;
 }
 
 .create-comment-form {

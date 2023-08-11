@@ -2,8 +2,6 @@
 using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings.Interfaces;
 using MongoDB.Driver;
-using static System.Reflection.Metadata.BlobBuilder;
-using System.Reflection.Metadata;
 
 namespace BlogSimple.Web.Services;
 
