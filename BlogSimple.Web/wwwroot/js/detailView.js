@@ -29,8 +29,12 @@ const displayCreateReplyForm = (el) => {
 
 const hideCreateReplyForm = (el) => {
     console.log(el.parentElement.parentElement.parentElement);
-    let replyForm = el.parentElement.parentElement.parentElement;
+    console.log(el.parentElement.previousElementSibling);
 
+    let replyForm = el.parentElement.parentElement.parentElement;
+    let replyFormTextArea = el.parentElement.previousElementSibling;
+
+    replyFormTextArea.value = '';
     replyForm.style.display = 'none';
 }
 
@@ -112,21 +116,23 @@ const hideDeleteCommentModal = () => {
 }
 
 // displays comment section buttons 
-commentTextarea.addEventListener('click', () => displayCommentButtons());
+const displayCommentButtons = (el) => {
+    console.log(el.nextElementSibling)
 
-const displayCommentButtons = () => {
-    if (createCommentButtons.classList.contains('hide')) {
-        createCommentButtons.classList.remove('hide');
-    }
+    let commentFormBtns = el.nextElementSibling;
+
+    commentFormBtns.style.display = 'flex';
 }
 
-hideCommentButtonsBtn.addEventListener('click', (e) => hideCommentButtons(e));
+// hides comment section buttons 
+const hideCommentButtons = (el) => {
+    console.log(el.parentElement);
 
-const hideCommentButtons = (e) => {
-    e.preventDefault();
-    if (createCommentButtons.classList.contains('hide') == false) {
-        createCommentButtons.classList.add('hide');
-    }
+    let commentForm = el.parentElement;
+    let commentFormTextArea = el.parentElement.previousElementSibling;
+
+    commentFormTextArea.value = '';
+    commentForm.style.display = 'none';
 }
 
 commentBtn.addEventListener('click', (e) => commentButtonValidationCheck(e));

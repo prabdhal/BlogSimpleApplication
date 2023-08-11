@@ -170,6 +170,11 @@ textarea.comment-textarea:focus {
 }
 
 .create-comment-buttons {
+    display: none;
+    justify-content: flex-end;
+}
+
+.create-reply-buttons {
     display: flex;
     justify-content: flex-end;
 }
