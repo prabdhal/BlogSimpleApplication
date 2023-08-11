@@ -13,25 +13,6 @@
 <div class="container mt-5">
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Blog))'></div>
-    @foreach (var comment in Model.Comments)
-    {
-        <div hidden class="commentsData" value='@Html.Raw(Json.Serialize(comment))'></div>
-    }
-    @foreach (var reply in Model.CommentReplies)
-    {
-        <div hidden class="repliesData" value='@Html.Raw(Json.Serialize(reply))'></div>
-    }
-    @{
-        if (SignInManager.IsSignedIn(User))
-        {
-            <div hidden class="userSignedIn" value='true'></div>
-            <div hidden class="signedInUsername" value='@Html.Raw((await UserManager.GetUserAsync(User)).UserName)'></div>
-        }
-        else
-        {
-            <div hidden class="userSignedIn" value='false'></div>
-        }
-    }
 
     <div class="row">
         <div class="col-lg-8">
@@ -91,28 +72,29 @@
                                         <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                                         <div class="comment-content-container">
                                             <!-- Parent comment-->
-                                                <div class="comment-display-section">
-                                                    <div class="comment-display-editform-dropdown-container mb-4">
-                                                        <div>
-                                                            <div class="comment-name-date">
-                                                                <div class="fw-bold">@comment.CreatedBy.UserName</div>
-                                                                <div class="comment-date">@comment.CreatedOn</div>
-                                                            </div>
-                                                            <div class="text-break">@comment.Content</div>
-                                                            <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="LikeComment" asp-route-id="@comment.Id">
-                                                                <input asp-for="Blog.Id" readonly hidden />
-                                                                <input asp-for="Comment.Id" readonly hidden />
-                                                                <button type="submit">
-                                                                    Like 
-                                                                    @if (comment.CommentLikedByUsers.Any()) 
-                                                                    {
-                                                                        @comment.CommentLikedByUsers.Count();
-                                                                    }
-                                                                </button>
-                                                                <button type="button" onclick="displayCreateReplyForm(this)">Reply</button>
-                                                            </form>
+                                            <div class="comment-display-section">
+                                                <div class="comment-display-editform-dropdown-container mb-4">
+                                                    <div>
+                                                        <div class="comment-name-date">
+                                                            <div class="fw-bold">@comment.CreatedBy.UserName</div>
+                                                            <div class="comment-date">@comment.CreatedOn</div>
                                                         </div>
-                                                        <div>
+                                                        <div class="text-break">@comment.Content</div>
+                                                        <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="LikeComment" asp-route-id="@comment.Id">
+                                                            <input asp-for="Blog.Id" readonly hidden />
+                                                            <input asp-for="Comment.Id" readonly hidden />
+                                                            <button type="submit">
+                                                                Like
+                                                                @if (comment.CommentLikedByUsers.Any())
+                                                                {
+                                                                    @comment.CommentLikedByUsers.Count()
+                                                                    ;
+                                                                }
+                                                            </button>
+                                                            <button type="button" onclick="displayCreateReplyForm(this)">Reply</button>
+                                                        </form>
+                                                    </div>
+                                                    <div>
                                                         @{
                                                             if (SignInManager.IsSignedIn(User))
                                                             {
@@ -128,49 +110,49 @@
                                                                 }
                                                             }
                                                         }
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="comment-edit-display-section">
-                                                    <form class="create-comment-form" asp-action="EditComment" asp-route-id="@comment.Id">
-                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                        <input asp-for="Blog.Id" readonly hidden />
-                                                        <input asp-for="Comment.Id" readonly hidden />
-                                                        <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
-                                                        <span asp-validation-for="Comment.Content" class="text-danger"></span>
-                                                        <div class="form-group create-reply-buttons">
-                                                            <button class="btn btn-primary" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
-                                                            <input class="btn btn-primary" value="Comment" type="submit" />
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="write-reply-container mb-4">
-                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                    <form class="create-comment-form" asp-controller="Blog" asp-action="CreateReply">
-                                                        <input asp-for="Blog.Id" readonly hidden />
-                                                        <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
-                                                        <input asp-for="CommentReply.Id" readonly hidden />
-                                                        <textarea asp-for="CommentReply.Content" class="comment-textarea" rows="1" placeholder="Add a reply..."></textarea>
-                                                        <div class="form-group create-reply-buttons">
-                                                            @{
+                                            </div>
+                                            <div class="comment-edit-display-section">
+                                                <form class="create-comment-form" asp-action="EditComment" asp-route-id="@comment.Id">
+                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                    <input asp-for="Blog.Id" readonly hidden />
+                                                    <input asp-for="Comment.Id" readonly hidden />
+                                                    <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
+                                                    <span asp-validation-for="Comment.Content" class="text-danger"></span>
+                                                    <div class="form-group create-reply-buttons">
+                                                        <button class="btn btn-primary" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
+                                                        <input class="btn btn-primary" value="Comment" type="submit" />
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="write-reply-container mb-4">
+                                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                <form class="create-comment-form" asp-controller="Blog" asp-action="CreateReply">
+                                                    <input asp-for="Blog.Id" readonly hidden />
+                                                    <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
+                                                    <input asp-for="CommentReply.Id" readonly hidden />
+                                                    <textarea asp-for="CommentReply.Content" class="comment-textarea" rows="1" placeholder="Add a reply..."></textarea>
+                                                    <div class="form-group create-reply-buttons">
+                                                        @{
                                                             <button class="btn btn-primary" type="button" onclick="hideCreateReplyForm(this)">Cancel</button>
-                                                                if (SignInManager.IsSignedIn(User))
-                                                                {
-                                                                    <button class="btn btn-primary" type="submit">Reply</button>
-                                                                }
-                                                                else
-                                                                {
-                                                                    <a href="/Account/Login">Login to reply</a>
-                                                                }
+                                                            if (SignInManager.IsSignedIn(User))
+                                                            {
+                                                                <button class="btn btn-primary" type="submit">Reply</button>
                                                             }
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <!-- Replies -->
-                                                @foreach (CommentReply reply in comment.Replies)
+                                                            else
+                                                            {
+                                                                <a href="/Account/Login">Login to reply</a>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- Replies -->
+                                            @foreach (CommentReply reply in comment.Replies)
+                                            {
+                                                @if (comment.Replies.Any())
                                                 {
-                                                    @if (comment.Replies.Any())
-                                                    {
                                                     <div class="comment-container">
                                                         <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
                                                         <div class="comment-content-container">
@@ -218,8 +200,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    }
                                                 }
+                                            }
                                         </div>
                                     </div>
                                 }

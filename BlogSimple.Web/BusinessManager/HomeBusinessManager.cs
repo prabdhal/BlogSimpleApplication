@@ -30,11 +30,6 @@ public class HomeBusinessManager : IHomeBusinessManager
         List<string> blogCats = new List<string>();
         var blogs = _blogService.GetPublishedOnly("");
         var comments = _commentService.GetAllByBlog(id);
-        var replies = new List<CommentReply>();
-        foreach (var comment in comments)
-        {
-            replies = _commentReplyService.GetAllByComment(comment.Id);
-        }
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -46,7 +41,6 @@ public class HomeBusinessManager : IHomeBusinessManager
             BlogCategories = blogCats,
             Blog = blog,
             Comments = comments,
-            CommentReplies = replies
         };
     }
 

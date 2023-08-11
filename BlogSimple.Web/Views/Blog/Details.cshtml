@@ -187,9 +187,9 @@
                                                                 <form class="create-comment-form" asp-action="EditReply" asp-route-id="@reply.Id">
                                                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                                                     <input asp-for="Blog.Id" readonly hidden />
-                                                                    <input asp-for="Comment.Id" readonly hidden />
-                                                                    <input asp-for="CommentReply.Id" readonly hidden />
-                                                                    <textarea asp-for="@reply.Content" class="comment-textarea" rows="1">@reply.Content</textarea>
+                                                                    <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
+                                                                    <input asp-for="CommentReply.Id" name="CommentReply.Id" value="@reply.Id" readonly hidden />
+                                                                    <textarea asp-for="@reply.Content" class="comment-textarea" rows="1" name="CommentReply.Content" value="@reply.Content">@reply.Content</textarea>
                                                                     <span asp-validation-for="CommentReply.Content" class="text-danger"></span>
                                                                     <div class="form-group create-reply-buttons">
                                                                         <button class="btn btn-primary" onclick="hideAllEditReplyInputs()" type="button">Cancel</button>

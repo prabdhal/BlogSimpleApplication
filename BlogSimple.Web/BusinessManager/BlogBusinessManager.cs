@@ -51,14 +51,6 @@ public class BlogBusinessManager : IBlogBusinessManager
         var blog = _blogService.Get(blogId);
         List<string> blogCats = new List<string>();
         var comments = _commentService.GetAllByBlog(blogId);
-        var replies = new List<CommentReply>();
-        foreach (var comment in comments)
-        {
-            foreach (var reply in comments)
-            {
-                replies = _commentReplyService.GetAllByComment(comment.Id);
-            }
-        }
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -69,8 +61,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         {
             BlogCategories = blogCats,
             Blog = blog,
-            Comments = comments,
-            CommentReplies = replies
+            Comments = comments
         };
     }
 
@@ -204,11 +195,6 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         List<string> blogCats = new List<string>();
         var comments = _commentService.GetAllByBlog(blog.Id);
-        var replies = new List<CommentReply>();
-        foreach (var c in comments)
-        {
-            replies = _commentReplyService.GetAllByComment(c.Id);
-        }
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -221,7 +207,6 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = _commentService.Update(commentId, comment),
             Comments = comments,
-            CommentReplies = replies
         };
     }
 
@@ -245,13 +230,18 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         reply.Content = blogDetailsViewModel.CommentReply.Content;
 
+        CommentReply cr = comment.Replies.Where(r => r.Id == replyId).FirstOrDefault();
+        
+        if (comment.Replies.Contains(cr))
+        {
+            comment.Replies.Remove(cr);
+            comment.Replies.Add(reply);
+        }
+
         List<string> blogCats = new List<string>();
         var comments = _commentService.GetAllByBlog(blog.Id);
-        var replies = new List<CommentReply>();
-        foreach (var c in comments)
-        {
-            replies = _commentReplyService.GetAllByComment(c.Id);
-        }
+
+        _commentService.Update(comment.Id, comment);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -265,7 +255,6 @@ public class BlogBusinessManager : IBlogBusinessManager
             Comment = comment,
             Comments = comments,
             CommentReply = _commentReplyService.Update(replyId, reply),
-            CommentReplies = replies
         };
     }
 
@@ -296,11 +285,6 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         List<string> blogCats = new List<string>();
         var comments = _commentService.GetAllByBlog(blog.Id);
-        var replies = new List<CommentReply>();
-        foreach (var c in comments)
-        {
-            replies = _commentReplyService.GetAllByComment(c.Id);
-        }
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -313,7 +297,6 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = _commentService.Update(commentId, comment),
             Comments = comments,
-            CommentReplies = replies
         };
     }
 
