@@ -4,18 +4,23 @@ const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer')
 
 let dropdownContents = document.querySelectorAll('.dropdown-content');
 const commentTextarea = document.querySelector('.comment-textarea'); 
-const createCommentButtons = document.querySelector('.create-comment-buttons'); 
-const hideCommentButtonsBtn = document.querySelector('#hideCommentButtons'); 
 const commentBtn = document.querySelector('#commentBtn'); 
 
+// comment display and edit sections
 const commentDisplaySections = document.querySelectorAll('.comment-display-section');
 const commentEditDisplaySections = document.querySelectorAll('.comment-edit-display-section');
 
+// reply display and edit sections
 const replyDisplaySections = document.querySelectorAll('.reply-display-section');
 const replyEditDisplaySections = document.querySelectorAll('.reply-edit-display-section');
 
+// comment modals
 const deleteCommentModal = document.querySelector('.delete-comment-modal');
 const deleteCommentModalForm = document.querySelector('#deleteCommentModalForm');
+
+// reply modals 
+const deleteReplyModal = document.querySelector('.delete-reply-modal');
+const deleteReplyModalForm = document.querySelector('#deleteReplyModalForm');
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -78,6 +83,7 @@ const closeAllCommentDropDownModal = () => {
     });
 }
 
+// hides all edit comment textarea
 const hideAllEditCommentInputs = () => {
     commentEditDisplaySections.forEach(editDisplay => {
         editDisplay.style.display = 'none';
@@ -86,6 +92,7 @@ const hideAllEditCommentInputs = () => {
     displayAllReplies();
 }
 
+// hides all edit reply textarea
 const hideAllEditReplyInputs = () => {
     replyEditDisplaySections.forEach(editDisplay => {
         editDisplay.style.display = 'none';
@@ -94,25 +101,43 @@ const hideAllEditReplyInputs = () => {
     displayAllReplies();
 }
 
+// displays all comments
 const displayAllComments = () => {
     commentDisplaySections.forEach(commentDisplay => {
         commentDisplay.style.display = 'block';
     });
 }
 
+// displays all replies
 const displayAllReplies = () => {
     replyDisplaySections.forEach(replyDisplay => {
         replyDisplay.style.display = 'flex';
     });
 }
 
+// displays delete comment modal 
 const displayDeleteCommentModal = (commentId) => {
     deleteCommentModal.style.display = 'block';
     deleteCommentModalForm.action = `/Blog/DeleteComment/${commentId}`;
 }
 
+// displays delete reply modal
+const displayDeleteReplyModal = (replyId) => {
+    console.log(replyId);
+    console.log(deleteReplyModal);
+    console.log(deleteReplyModal.style.display);
+    deleteReplyModal.style.display = 'block';
+    deleteReplyModalForm.action = `/Blog/DeleteReply/${replyId}`;
+}
+
+// hides deletes comment modal 
 const hideDeleteCommentModal = () => {
     deleteCommentModal.style.display = 'none';
+}
+
+// hides deletes reply modal 
+const hideDeleteReplyModal = () => {
+    deleteReplyModal.style.display = 'none';
 }
 
 // displays comment section buttons 

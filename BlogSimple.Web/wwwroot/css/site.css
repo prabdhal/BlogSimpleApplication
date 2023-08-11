@@ -273,6 +273,21 @@ button:hover {
     margin-top: 56px; /* 5% from the top, 15% from the bottom and centered */
 }
 
+/* The Modal (background) */
+.delete-reply-modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 10000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: #474e5d;
+    padding-top: 50px;
+    margin-top: 56px; /* 5% from the top, 15% from the bottom and centered */
+}
+
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;

@@ -66,144 +66,152 @@
                             <h3 class="mb-5">@Model.Comments.Count() Comments</h3>
                             <!-- Comments -->
                             @{
-                                foreach (Comment comment in Model.Comments)
+                                if (Model.Comments.Any())
                                 {
-                                    <div class="comment-container">
-                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                        <div class="comment-content-container">
-                                            <!-- Parent comment-->
-                                            <div class="comment-display-section">
-                                                <div class="comment-display-editform-dropdown-container mb-4">
-                                                    <div>
-                                                        <div class="comment-name-date">
-                                                            <div class="fw-bold">@comment.CreatedBy.UserName</div>
-                                                            <div class="comment-date">@comment.CreatedOn</div>
+                                    foreach (Comment comment in Model.Comments)
+                                    {
+                                        <div class="comment-container">
+                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="comment-content-container">
+                                                <!-- Parent comment-->
+                                                <div class="comment-display-section">
+                                                    <div class="comment-display-editform-dropdown-container mb-4">
+                                                        <div>
+                                                            <div class="comment-name-date">
+                                                                <div class="fw-bold">@comment.CreatedBy.UserName</div>
+                                                                <div class="comment-date">@comment.CreatedOn</div>
+                                                            </div>
+                                                            <div class="text-break">@comment.Content</div>
+                                                            <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="LikeComment" asp-route-id="@comment.Id">
+                                                                <input asp-for="Blog.Id" readonly hidden />
+                                                                <input asp-for="Comment.Id" readonly hidden />
+                                                                <button type="submit">
+                                                                    Like
+                                                                    @if (comment.CommentLikedByUsers.Any())
+                                                                    {
+                                                                        @comment.CommentLikedByUsers.Count()
+                                                                        ;
+                                                                    }
+                                                                </button>
+                                                                <button type="button" onclick="displayCreateReplyForm(this)">Reply</button>
+                                                            </form>
                                                         </div>
-                                                        <div class="text-break">@comment.Content</div>
-                                                        <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="LikeComment" asp-route-id="@comment.Id">
-                                                            <input asp-for="Blog.Id" readonly hidden />
-                                                            <input asp-for="Comment.Id" readonly hidden />
-                                                            <button type="submit">
-                                                                Like
-                                                                @if (comment.CommentLikedByUsers.Any())
+                                                        <div>
+                                                            @{
+                                                                if (SignInManager.IsSignedIn(User))
                                                                 {
-                                                                    @comment.CommentLikedByUsers.Count()
-                                                                    ;
-                                                                }
-                                                            </button>
-                                                            <button type="button" onclick="displayCreateReplyForm(this)">Reply</button>
-                                                        </form>
-                                                    </div>
-                                                    <div>
-                                                        @{
-                                                            if (SignInManager.IsSignedIn(User))
-                                                            {
-                                                                if (((await UserManager.GetUserAsync(User)).UserName) == comment.CreatedBy.UserName)
-                                                                {
-                                                                    <div class="dropdown">
-                                                                        <svg onclick="openCommentDropDownMenuContent(this)" class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                                        <div class="dropdown-content">
-                                                                            <a onclick="displayEditInputForComment(this)">Edit</a>
-                                                                            <a onclick="displayDeleteCommentModal('@comment.Id')">Delete</a>
+                                                                    if (((await UserManager.GetUserAsync(User)).UserName) == comment.CreatedBy.UserName)
+                                                                    {
+                                                                        <div class="dropdown">
+                                                                            <svg onclick="openCommentDropDownMenuContent(this)" class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                            <div class="dropdown-content">
+                                                                                <a onclick="displayEditInputForComment(this)">Edit</a>
+                                                                                <a onclick="displayDeleteCommentModal('@comment.Id')">Delete</a>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
+                                                                    }
                                                                 }
                                                             }
-                                                        }
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="comment-edit-display-section">
-                                                <form class="create-comment-form" asp-action="EditComment" asp-route-id="@comment.Id">
-                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                    <input asp-for="Blog.Id" readonly hidden />
-                                                    <input asp-for="Comment.Id" readonly hidden />
-                                                    <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
-                                                    <span asp-validation-for="Comment.Content" class="text-danger"></span>
-                                                    <div class="form-group create-reply-buttons">
-                                                        <button class="btn btn-primary" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
-                                                        <input class="btn btn-primary" value="Comment" type="submit" />
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="write-reply-container mb-4">
-                                                <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                <form class="create-comment-form" asp-controller="Blog" asp-action="CreateReply">
-                                                    <input asp-for="Blog.Id" readonly hidden />
-                                                    <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
-                                                    <input asp-for="CommentReply.Id" readonly hidden />
-                                                    <textarea asp-for="CommentReply.Content" class="comment-textarea" rows="1" placeholder="Add a reply..."></textarea>
-                                                    <div class="form-group create-reply-buttons">
-                                                        @{
-                                                            <button class="btn btn-primary" type="button" onclick="hideCreateReplyForm(this)">Cancel</button>
-                                                            if (SignInManager.IsSignedIn(User))
-                                                            {
-                                                                <button class="btn btn-primary" type="submit">Reply</button>
+                                                <div class="comment-edit-display-section">
+                                                    <form class="create-comment-form" asp-action="EditComment" asp-route-id="@comment.Id">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <input asp-for="Blog.Id" readonly hidden />
+                                                        <input asp-for="Comment.Id" readonly hidden />
+                                                        <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
+                                                        <span asp-validation-for="Comment.Content" class="text-danger"></span>
+                                                        <div class="form-group create-reply-buttons">
+                                                            <button class="btn btn-primary" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
+                                                            <input class="btn btn-primary" value="Comment" type="submit" />
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="write-reply-container mb-4">
+                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                    <form class="create-comment-form" asp-controller="Blog" asp-action="CreateReply">
+                                                        <input asp-for="Blog.Id" readonly hidden />
+                                                        <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
+                                                        <input asp-for="CommentReply.Id" readonly hidden />
+                                                        <textarea asp-for="CommentReply.Content" class="comment-textarea" rows="1" placeholder="Add a reply..."></textarea>
+                                                        <div class="form-group create-reply-buttons">
+                                                            @{
+                                                                <button class="btn btn-primary" type="button" onclick="hideCreateReplyForm(this)">Cancel</button>
+                                                                if (SignInManager.IsSignedIn(User))
+                                                                {
+                                                                    <button class="btn btn-primary" type="submit">Reply</button>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a href="/Account/Login">Login to reply</a>
+                                                                }
                                                             }
-                                                            else
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- Replies -->
+                                                @{
+                                                    if (Model.CommentReplies.Any())
+                                                    {
+                                                        @foreach (CommentReply reply in Model.CommentReplies)
+                                                        {
+                                                            if (reply.RepliedComment.Id == comment.Id)
                                                             {
-                                                                <a href="/Account/Login">Login to reply</a>
-                                                            }
-                                                        }
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <!-- Replies -->
-                                            @foreach (CommentReply reply in comment.Replies)
-                                            {
-                                                @if (comment.Replies.Any())
-                                                {
-                                                    <div class="comment-container">
-                                                        <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                        <div class="comment-content-container">
-                                                            <div class="comment-display-section">
-                                                                <div class="comment-display-editform-dropdown-container">
-                                                                    <div>
-                                                                        <div class="comment-name-date">
-                                                                            <div class="fw-bold">@reply.CreatedBy.UserName</div>
-                                                                            <div class="comment-date">@reply.CreatedOn</div>
-                                                                        </div>
-                                                                        <div class="text-break">@reply.Content</div>
-                                                                    </div>
-                                                                    <div>
-                                                                        @{
-                                                                            if (SignInManager.IsSignedIn(User))
-                                                                            {
-                                                                                if (((await UserManager.GetUserAsync(User)).UserName) == reply.CreatedBy.UserName)
-                                                                                {
-                                                                                    <div class="dropdown">
-                                                                                        <svg onclick="openCommentDropDownMenuContent(this)" class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                                                                                        <div class="dropdown-content">
-                                                                                            <a onclick="displayEditInputForReply(this)">Edit</a>
-                                                                                            <a onclick="displayDeleteReplyModal('@comment.Id')">Delete</a>
-                                                                                        </div>
+                                                                <div class="comment-container">
+                                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                                    <div class="comment-content-container">
+                                                                        <div class="comment-display-section">
+                                                                            <div class="comment-display-editform-dropdown-container">
+                                                                                <div>
+                                                                                    <div class="comment-name-date">
+                                                                                        <div class="fw-bold">@reply.CreatedBy.UserName</div>
+                                                                                        <div class="comment-date">@reply.CreatedOn</div>
                                                                                     </div>
-                                                                                }
-                                                                            }
-                                                                        }
+                                                                                    <div class="text-break">@reply.Content</div>
+                                                                                </div>
+                                                                                <div>
+                                                                                    @{
+                                                                                        if (SignInManager.IsSignedIn(User))
+                                                                                        {
+                                                                                            if (((await UserManager.GetUserAsync(User)).UserName) == reply.CreatedBy.UserName)
+                                                                                            {
+                                                                                                <div class="dropdown">
+                                                                                                    <svg onclick="openCommentDropDownMenuContent(this)" class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                                                                                    <div class="dropdown-content">
+                                                                                                        <a onclick="displayEditInputForReply(this)">Edit</a>
+                                                                                                        <a onclick="displayDeleteReplyModal('@reply.Id')">Delete</a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="reply-edit-display-section">
+                                                                            <form class="create-comment-form" asp-action="EditReply" asp-route-id="@reply.Id">
+                                                                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                                                <input asp-for="Blog.Id" readonly hidden />
+                                                                                <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
+                                                                                <input asp-for="CommentReply.Id" name="CommentReply.Id" value="@reply.Id" readonly hidden />
+                                                                                <textarea asp-for="@reply.Content" class="comment-textarea" rows="1" name="CommentReply.Content" value="@reply.Content">@reply.Content</textarea>
+                                                                                <span asp-validation-for="CommentReply.Content" class="text-danger"></span>
+                                                                                <div class="form-group create-reply-buttons">
+                                                                                    <button class="btn btn-primary" onclick="hideAllEditReplyInputs()" type="button">Cancel</button>
+                                                                                    <input class="btn btn-primary" value="Reply" type="submit" />
+                                                                                </div>
+                                                                            </form>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="reply-edit-display-section">
-                                                                <form class="create-comment-form" asp-action="EditReply" asp-route-id="@reply.Id">
-                                                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                                    <input asp-for="Blog.Id" readonly hidden />
-                                                                    <input asp-for="Comment.Id" readonly hidden />
-                                                                    <input asp-for="CommentReply.Id" readonly hidden />
-                                                                    <textarea asp-for="@reply.Content" class="comment-textarea" rows="1">@reply.Content</textarea>
-                                                                    <span asp-validation-for="CommentReply.Content" class="text-danger"></span>
-                                                                    <div class="form-group create-reply-buttons">
-                                                                        <button class="btn btn-primary" onclick="hideAllEditReplyInputs()" type="button">Cancel</button>
-                                                                        <input class="btn btn-primary" value="Reply" type="submit" />
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                            }
+                                                        }
+                                                    }
                                                 }
-                                            }
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 }
                             }
                         </div>
@@ -249,4 +257,38 @@
             </div>
         </div>
     </div>
+</div>
+
+
+
+<!-- Delete Comment Modal -->
+<div id="deleteCommentModal" class="delete-comment-modal">
+    <span onclick="hideDeleteCommentModal()" class="close" title="Close Modal">&times;</span>
+    <form class="modal-content" id="deleteCommentModalForm" method="post">
+        <div class="container">
+            <h1>Delete comment</h1>
+            <p>Delete your comment permanently?</p>
+
+            <div class="clearfix">
+                <button type="button" onclick="hideDeleteCommentModal()">Cancel</button>
+                <button type="submit">Delete</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Delete Reply Modal -->
+<div id="deleteReplyModal" class="delete-reply-modal">
+    <span onclick="hideDeleteReplyModal()" class="close" title="Close Modal">&times;</span>
+    <form class="modal-content" id="deleteReplyModalForm" method="post">
+        <div class="container">
+            <h1>Delete reply</h1>
+            <p>Delete your reply permanently?</p>
+
+            <div class="clearfix">
+                <button type="button" onclick="hideDeleteReplyModal()">Cancel</button>
+                <button type="submit">Delete</button>
+            </div>
+        </div>
+    </form>
 </div>

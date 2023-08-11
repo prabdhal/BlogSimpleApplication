@@ -2,6 +2,7 @@
 using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings.Interfaces;
 using MongoDB.Driver;
+using System.ComponentModel.Design;
 
 namespace BlogSimple.Web.Services;
 
@@ -23,10 +24,19 @@ public class CommentReplyService : ICommentReplyService
         return _replies.Find(r => r.Id == replyId).FirstOrDefault();
     }
 
+    public List<CommentReply> GetAll()
+    {
+        return _replies.Find(_ => true).ToList();
+    }
+
     public List<CommentReply> GetAllByComment(string commentId)
     {
-        var r = _replies.Find(r => r.RepliedComment.Id == commentId).ToList();
-        return r;
+        return _replies.Find(r => r.RepliedComment.Id == commentId).ToList();
+    }
+
+    public List<CommentReply> GetAllByBlog(string blogId)
+    {
+        return _replies.Find(r => r.RepliedBlog.Id == blogId).ToList();
     }
 
     public CommentReply Create(CommentReply reply)
@@ -54,5 +64,9 @@ public class CommentReplyService : ICommentReplyService
     public void RemoveAllByComment(string commentId)
     {
         _replies.DeleteMany(r => r.RepliedComment.Id == commentId);
+    }
+    public void RemoveAllByBlog(string blogId)
+    {
+        _replies.DeleteMany(r => r.RepliedBlog.Id == blogId);
     }
 }

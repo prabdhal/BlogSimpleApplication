@@ -23,6 +23,11 @@ public class CommentService : ICommentService
         return _comments.Find(c => c.Id == commentId).FirstOrDefault();
     }
 
+    public List<Comment> GetAll()
+    {
+        return _comments.Find(_ => true).ToList();
+    }
+
     public List<Comment> GetAllByBlog(string blogId)
     {
         return _comments.Find(c => c.CommentedBlog.Id == blogId).ToList();

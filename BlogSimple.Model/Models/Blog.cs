@@ -29,5 +29,4 @@ public class Blog
     
     [DisplayName("Last Updated")]
     public DateTime UpdatedOn { get; set; }
-    public List<Comment> Comments { get; set; } = new List<Comment>();
 }

@@ -10,4 +10,5 @@ public class BlogDetailsViewModel
     public IEnumerable<Comment> Comments { get; set; }
     public Comment Comment { get; set; }
     public CommentReply CommentReply { get; set; }
+    public List<CommentReply> CommentReplies { get; set; } = new List<CommentReply>();
 }

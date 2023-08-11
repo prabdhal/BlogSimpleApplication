@@ -4,6 +4,7 @@ namespace BlogSimple.Web.Services.Interfaces;
 
 public interface ICommentService
 {
+    List<Comment> GetAll();
     List<Comment> GetAllByBlog(string blogId);
     Comment Get(string commentId);
     Comment Create(Comment comment);
