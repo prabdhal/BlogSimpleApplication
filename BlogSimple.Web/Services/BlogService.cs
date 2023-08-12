@@ -18,12 +18,12 @@ public class BlogService : IBlogService
         _blogs = db.GetCollection<Blog>(blogSettings.BlogsCollectionName);
     }
 
-    public List<Blog> GetAll()
+    public async Task<List<Blog>> GetAll()
     {
-        return _blogs.Find(_ => true).ToList();
+        return await _blogs.Find(_ => true).ToListAsync();
     }
 
-    public List<Blog> GetAll(string searchString)
+    public async Task<List<Blog>> GetAll(string searchString)
     {
         var search = searchString.ToLower();
 
@@ -33,10 +33,10 @@ public class BlogService : IBlogService
             b.Category.ToString().ToLower().Contains(search) |
             b.Content.ToLower().Contains(search));
 
-        return _blogs.Find(filterSearch).ToList();
+        return await _blogs.Find(filterSearch).ToListAsync();
     }
 
-    public List<Blog> GetPublishedOnly(string searchString)
+    public async Task<List<Blog>> GetPublishedOnly(string searchString)
     {
         var search = searchString.ToLower();
 
@@ -48,33 +48,33 @@ public class BlogService : IBlogService
 
         var filterByPublished = Builders<Blog>.Filter.Where(b => b.isPublished);
 
-        return _blogs.Find(filterSearch & filterByPublished).ToList();
+        return await _blogs.Find(filterSearch & filterByPublished).ToListAsync();
     }
 
-    public Blog Get(string id)
+    public async Task<Blog> Get(string id)
     {
-        return _blogs.Find(blog => blog.Id == id).FirstOrDefault();
+        return await _blogs.Find(blog => blog.Id == id).FirstOrDefaultAsync();
     }
 
-    public Blog Create(Blog blog)
+    public async Task<Blog> Create(Blog blog)
     {
-        _blogs.InsertOne(blog);
+        await _blogs.InsertOneAsync(blog);
         return blog;
     }
 
-    public Blog Update(string id, Blog blog)
+    public async Task<Blog> Update(string id, Blog blog)
     {
-        _blogs.ReplaceOne(blog => blog.Id == id, blog);
+        await _blogs.ReplaceOneAsync(blog => blog.Id == id, blog);
         return blog;
     }
 
-    public void Remove(string id)
+    public async void Remove(string id)
     {
-        _blogs.DeleteOne(blog => blog.Id == id);
+        await _blogs.DeleteOneAsync(blog => blog.Id == id);
     }
 
-    public void Remove(Blog blog)
+    public async void Remove(Blog blog)
     {
-        _blogs.DeleteOne(b => b == blog);
+        await _blogs.DeleteOneAsync(b => b == blog);
     }
 }

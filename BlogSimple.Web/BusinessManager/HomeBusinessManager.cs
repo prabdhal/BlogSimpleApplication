@@ -24,13 +24,13 @@ public class HomeBusinessManager : IHomeBusinessManager
         _commentReplyService = commentReplyService;
     }
 
-    public BlogDetailsViewModel GetHomeDetailsViewModel(string id)
+    public async Task<BlogDetailsViewModel> GetHomeDetailsViewModel(string id)
     {
-        Blog blog = _blogService.Get(id);
+        Blog blog = await _blogService.Get(id);
         List<string> blogCats = new List<string>();
-        var blogs = _blogService.GetPublishedOnly("");
-        var comments = _commentService.GetAllByBlog(id);
-        var replies = _commentReplyService.GetAllByBlog(id);
+        var blogs = await _blogService.GetPublishedOnly("");
+        var comments = await _commentService.GetAllByBlog(id);
+        var replies = await _commentReplyService.GetAllByBlog(id);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -47,17 +47,16 @@ public class HomeBusinessManager : IHomeBusinessManager
         };
     }
 
-    public HomeIndexViewModel GetHomeIndexViewModel(string searchString)
+    public async Task<HomeIndexViewModel> GetHomeIndexViewModel(string searchString)
     {
-        IEnumerable<Blog> publishedBlogs = _blogService.GetPublishedOnly(searchString ?? string.Empty);
+        IEnumerable<Blog> publishedBlogs = await _blogService.GetPublishedOnly(searchString ?? string.Empty);
         Blog featuredBlog = new Blog();
         List<string> blogCats = new List<string>();
 
         if (publishedBlogs.Any())
         {
-            featuredBlog = DetermineFeaturedBlog(publishedBlogs);
+            featuredBlog = await DetermineFeaturedBlog(publishedBlogs);
         }
-
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -77,7 +76,7 @@ public class HomeBusinessManager : IHomeBusinessManager
     /// </summary>
     /// <param name="blogs"></param>
     /// <returns></returns>
-    private Blog DetermineFeaturedBlog(IEnumerable<Blog> blogs)
+    private async Task<Blog> DetermineFeaturedBlog(IEnumerable<Blog> blogs)
     {
         var blog = blogs.OrderByDescending(b => b.UpdatedOn)
                         .First();
@@ -87,15 +86,14 @@ public class HomeBusinessManager : IHomeBusinessManager
             if (b == blog)
             {
                 blog.isFeatured = true;
-                _blogService.Update(blog.Id, blog);
+                await _blogService.Update(blog.Id, blog);
             }
             else
             {
                 b.isFeatured = false;
-                _blogService.Update(b.Id, b);
+                await _blogService.Update(b.Id, b);
             }
         }
-
 
         return blog;
     }

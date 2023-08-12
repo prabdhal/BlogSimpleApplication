@@ -1,0 +1,70 @@
+﻿@using BlogSimple.Model.ViewModels.AccountViewModels;
+@model AboutMeViewModel;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!-- Page content-->
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Post content-->
+            <article>
+                <!-- Post header-->
+                <header class="mb-4">
+                    <!-- Post title-->
+                    <h1 class="fw-bolder mb-1"></h1>
+                    <!-- Post meta content-->
+                    <div class="text-muted fst-italic mb-2">Joined on </div>
+                    @*<div class="text-muted fst-italic mb-2">@Model.AboutUser.Description</div>*@
+                    <!-- Post categories-->
+                    <div id="categoryBadgeContainer">
+                    </div>
+                </header>
+                <!-- Preview image figure-->
+                <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                <!-- Post content-->
+                <section class="mb-5">
+                    @*Html.Raw(Model.AboutUser.Content)*@
+                </section>
+            </article>
+        </div>
+        <!-- Side widgets-->
+        <div class="col-lg-4">
+            <!-- Search widget-->
+            <div class="card mb-4">
+                <div class="card-header">Search</div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                        <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Categories widget-->
+            <div class="card mb-4">
+                <div class="card-header">Categories</div>
+                <div class="card-body">
+                    <div class="row">
+                        <ul class="list-unstyled mb-0">
+                            @*{
+                                foreach (var cat in Model.BlogCategories)
+                                {
+                                    <li>
+                                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
+                                    </li>
+                                }
+                            }*@
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Side widget-->
+            <div class="card mb-4">
+                <div class="card-header">Side Widget</div>
+                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+            </div>
+        </div>
+    </div>
+</div>

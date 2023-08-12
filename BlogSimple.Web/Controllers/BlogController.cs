@@ -25,9 +25,9 @@ public class BlogController : Controller
     }
 
     // GET: HomeController/Details/Id
-    public IActionResult Details(string id)
+    public async Task<IActionResult> Details(string id)
     {
-        BlogDetailsViewModel dashboardDetailsViewModal = _blogBusinessManager.GetDashboardDetailViewModel(id);
+        BlogDetailsViewModel dashboardDetailsViewModal = await _blogBusinessManager.GetDashboardDetailViewModel(id);
 
         return View(dashboardDetailsViewModal);
     }
@@ -46,14 +46,14 @@ public class BlogController : Controller
         if (!ModelState.IsValid)
             return View("CreateBlog");
 
-        Blog blog = await _blogBusinessManager.CreateBlog(createBlogViewModel, User);
+        await _blogBusinessManager.CreateBlog(createBlogViewModel, User);
         return RedirectToAction("Details", new { createBlogViewModel.Blog.Id });
     }
 
     // GET: BlogController/Edit/5
-    public IActionResult EditBlog(string id)
+    public async Task<IActionResult> EditBlog(string id)
     {
-        var editBlogViewModel = _blogBusinessManager.GetEditBlogViewModel(id);
+        var editBlogViewModel = await _blogBusinessManager.GetEditBlogViewModel(id);
 
         if (editBlogViewModel is null)
             return new NotFoundResult();
@@ -64,19 +64,19 @@ public class BlogController : Controller
     // POST: BlogController/Edit/5
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult EditBlog(string id, EditBlogViewModel editBlogViewModel)
+    public async Task<IActionResult> EditBlog(EditBlogViewModel editBlogViewModel)
     {
         if (!ModelState.IsValid)
             return View("EditBlog");
 
-        _blogBusinessManager.EditBlog(editBlogViewModel, User);
+        await _blogBusinessManager.EditBlog(editBlogViewModel, User);
         return RedirectToAction("Details", new { editBlogViewModel.Blog.Id });
     }
 
     // POST: BlogController/DeleteBlog/5
-    public IActionResult DeleteBlog(string id)
+    public async Task<IActionResult> DeleteBlog(string id)
     {
-        _blogBusinessManager.DeleteBlog(id);
+        await _blogBusinessManager.DeleteBlog(id);
 
         return RedirectToAction("Index");
     }
@@ -89,7 +89,7 @@ public class BlogController : Controller
         //if (!ModelState.IsValid)
         //    return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
 
-        Comment comment = await _blogBusinessManager.CreateComment(blogDetailsViewModel, User);
+        await _blogBusinessManager.CreateComment(blogDetailsViewModel, User);
 
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
@@ -126,18 +126,18 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/DeleteBlog/5
-    public IActionResult DeleteComment(string id)
+    public async Task<IActionResult> DeleteComment(string id)
     {
-        var viewModel = _blogBusinessManager.GetEditBlogViewModelViaComment(id);
+        var viewModel = await _blogBusinessManager.GetEditBlogViewModelViaComment(id);
         _blogBusinessManager.DeleteComment(id);
 
         return RedirectToAction("Details", new { viewModel.Blog.Id });
     }
 
     // POST: BlogController/DeleteBlog/5
-    public IActionResult DeleteReply(string id)
+    public async Task<IActionResult> DeleteReply(string id)
     {
-        var viewModel = _blogBusinessManager.GetEditBlogViewModelViaReply(id);
+        var viewModel = await _blogBusinessManager.GetEditBlogViewModelViaReply(id);
         _blogBusinessManager.DeleteReply(id);
 
         return RedirectToAction("Details", new { viewModel.Blog.Id });

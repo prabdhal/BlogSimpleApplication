@@ -24,6 +24,12 @@ namespace BlogSimple.Web.Controllers
         }
 
         [Authorize]
+        public IActionResult AboutMe()
+        {
+            return View();
+        }
+
+        [Authorize]
         public IActionResult MyAccount()
         {
             return View();

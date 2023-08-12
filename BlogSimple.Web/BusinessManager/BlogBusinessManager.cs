@@ -6,8 +6,6 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol;
-using System.ComponentModel.Design;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -34,7 +32,7 @@ public class BlogBusinessManager : IBlogBusinessManager
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
     {
-        IEnumerable<Blog> blogs = _blogService.GetAll(searchString ?? string.Empty);
+        IEnumerable<Blog> blogs = await _blogService.GetAll(searchString ?? string.Empty);
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
@@ -46,12 +44,12 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public BlogDetailsViewModel GetDashboardDetailViewModel(string blogId)
+    public async Task<BlogDetailsViewModel> GetDashboardDetailViewModel(string blogId)
     {
-        var blog = _blogService.Get(blogId);
+        var blog = await _blogService.Get(blogId);
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAllByBlog(blogId);
-        var replies = _commentReplyService.GetAllByBlog(blogId);
+        var comments = await _commentService.GetAllByBlog(blogId);
+        var replies = await _commentReplyService.GetAllByBlog(blogId);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -77,7 +75,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         blog.CreatedOn = DateTime.Now;
         blog.UpdatedOn = DateTime.Now;
 
-        blog = _blogService.Create(blog);
+        blog = await _blogService.Create(blog);
 
         return blog;
     }
@@ -93,7 +91,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         comment.CreatedOn = DateTime.Now;
         comment.UpdatedOn = DateTime.Now;
 
-        comment = _commentService.Create(comment);
+        comment = await _commentService.Create(comment);
 
         return comment;
     }
@@ -103,8 +101,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         CommentReply reply = blogDetailsViewModel.CommentReply;
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
-        var comment = _commentService.Get(blogDetailsViewModel.Comment.Id);
+        var blog = await _blogService.Get(blogDetailsViewModel.Blog.Id);
+        var comment = await _commentService.Get(blogDetailsViewModel.Comment.Id);
 
         reply.RepliedBlog = blog;
         reply.RepliedComment = comment;
@@ -112,16 +110,16 @@ public class BlogBusinessManager : IBlogBusinessManager
         reply.CreatedOn = DateTime.Now;
         reply.UpdatedOn = DateTime.Now;
 
-        reply = _commentReplyService.Create(reply);
+        reply = await _commentReplyService.Create(reply);
 
-        _commentService.Update(comment.Id, comment);
+        await _commentService.Update(comment.Id, comment);
 
         return reply;
     }
 
-    public EditBlogViewModel GetEditBlogViewModel(string blogId)
+    public async Task<EditBlogViewModel> GetEditBlogViewModel(string blogId)
     {
-        var blog = _blogService.Get(blogId);
+        var blog = await _blogService.Get(blogId);
 
         return new EditBlogViewModel
         {
@@ -129,10 +127,10 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public EditBlogViewModel GetEditBlogViewModelViaComment(string commentId)
+    public async Task<EditBlogViewModel> GetEditBlogViewModelViaComment(string commentId)
     {
-        var comment = _commentService.Get(commentId);
-        var blog = _blogService.Get(comment.CommentedBlog.Id);
+        var comment = await _commentService.Get(commentId);
+        var blog = await _blogService.Get(comment.CommentedBlog.Id);
 
         return new EditBlogViewModel
         {
@@ -140,11 +138,11 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public EditBlogViewModel GetEditBlogViewModelViaReply(string replyId)
+    public async Task<EditBlogViewModel> GetEditBlogViewModelViaReply(string replyId)
     {
-        var reply = _commentReplyService.Get(replyId);
-        var comment = _commentService.Get(reply.RepliedComment.Id);
-        var blog = _blogService.Get(comment.CommentedBlog.Id);
+        var reply = await _commentReplyService.Get(replyId);
+        var comment = await _commentService.Get(reply.RepliedComment.Id);
+        var blog = await _blogService.Get(comment.CommentedBlog.Id);
 
         return new EditBlogViewModel
         {
@@ -158,7 +156,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var blog = _blogService.Get(editBlogViewModel.Blog.Id);
+        var blog = await _blogService.Get(editBlogViewModel.Blog.Id);
         if (blog is null)
             return new NotFoundResult();
 
@@ -172,7 +170,7 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         return new EditBlogViewModel
         {
-            Blog = _blogService.Update(editBlogViewModel.Blog.Id, blog)
+            Blog = await _blogService.Update(editBlogViewModel.Blog.Id, blog)
         };
     }
 
@@ -182,18 +180,18 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+        var blog = await _blogService.Get(blogDetailsViewModel.Blog.Id);
         if (blog is null)
             return new NotFoundResult();
 
-        var comment = _commentService.Get(commentId);
+        var comment = await _commentService.Get(commentId);
         if (comment is null)
             return new NotFoundResult();
 
         comment.Content = blogDetailsViewModel.Comment.Content;
 
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAllByBlog(blog.Id);
+        var comments = await _commentService.GetAllByBlog(blog.Id);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -204,7 +202,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         {
             BlogCategories = blogCats,
             Blog = blog,
-            Comment = _commentService.Update(commentId, comment),
+            Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
         };
     }
@@ -215,22 +213,22 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+        var blog = await _blogService.Get(blogDetailsViewModel.Blog.Id);
         if (blog is null)
             return new NotFoundResult();
 
-        var comment = _commentService.Get(blogDetailsViewModel.Comment.Id);
+        var comment = await _commentService.Get(blogDetailsViewModel.Comment.Id);
         if (comment is null)
             return new NotFoundResult();
 
-        var reply = _commentReplyService.Get(replyId);
+        var reply = await _commentReplyService.Get(replyId);
         if (reply is null)
             return new NotFoundResult();
 
         reply.Content = blogDetailsViewModel.CommentReply.Content;
 
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAllByBlog(blog.Id);
+        var comments = await _commentService.GetAllByBlog(blog.Id);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -243,7 +241,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = comment,
             Comments = comments,
-            CommentReply = _commentReplyService.Update(replyId, reply),
+            CommentReply = await _commentReplyService.Update(replyId, reply),
         };
     }
 
@@ -253,11 +251,11 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var blog = _blogService.Get(blogDetailsViewModel.Blog.Id);
+        var blog = await _blogService.Get(blogDetailsViewModel.Blog.Id);
         if (blog is null)
             return new NotFoundResult();
 
-        var comment = _commentService.Get(commentId);
+        var comment = await _commentService.Get(commentId);
         if (comment is null)
             return new NotFoundResult();
 
@@ -273,7 +271,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         }
 
         List<string> blogCats = new List<string>();
-        var comments = _commentService.GetAllByBlog(blog.Id);
+        var comments = await _commentService.GetAllByBlog(blog.Id);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -284,22 +282,19 @@ public class BlogBusinessManager : IBlogBusinessManager
         {
             BlogCategories = blogCats,
             Blog = blog,
-            Comment = _commentService.Update(commentId, comment),
+            Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
         };
     }
 
-    public ActionResult<Blog> DeleteBlog(string blogId)
+    public async Task<ActionResult<Blog>> DeleteBlog(string blogId)
     {
-        var blog = _blogService.Get(blogId);
+        var blog = await _blogService.Get(blogId);
         if (blog is null)
             return new NotFoundResult();
 
-        var comments = _commentService.GetAllByBlog(blogId);
-        var replies = _commentReplyService.GetAllByBlog(blogId);
-
-        _commentReplyService.RemoveAllByBlog(blogId);
         _commentService.RemoveAllByBlog(blogId);
+        _commentReplyService.RemoveAllByBlog(blogId);
 
         _blogService.Remove(blog);
         return blog;
@@ -309,14 +304,13 @@ public class BlogBusinessManager : IBlogBusinessManager
     {
         // remove all replies for the comment
         _commentReplyService.RemoveAllByComment(commentId);
-        
+
         // remove comment
         _commentService.Remove(commentId);
     }
 
     public void DeleteReply(string replyId)
     {
-        // remove reply
         _commentReplyService.Remove(replyId);
     }
 }

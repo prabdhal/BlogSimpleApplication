@@ -19,54 +19,54 @@ public class CommentReplyService : ICommentReplyService
         _replies = db.GetCollection<CommentReply>(blogSettings.RepliesCollectionName);
     }
 
-    public CommentReply Get(string replyId)
+    public async Task<CommentReply> Get(string replyId)
     {
-        return _replies.Find(r => r.Id == replyId).FirstOrDefault();
+        return await _replies.Find(r => r.Id == replyId).FirstOrDefaultAsync();
     }
 
-    public List<CommentReply> GetAll()
+    public async Task<List<CommentReply>> GetAll()
     {
-        return _replies.Find(_ => true).ToList();
+        return await _replies.Find(_ => true).ToListAsync();
     }
 
-    public List<CommentReply> GetAllByComment(string commentId)
+    public async Task<List<CommentReply>> GetAllByComment(string commentId)
     {
-        return _replies.Find(r => r.RepliedComment.Id == commentId).ToList();
+        return await _replies.Find(r => r.RepliedComment.Id == commentId).ToListAsync();
     }
 
-    public List<CommentReply> GetAllByBlog(string blogId)
+    public async Task<List<CommentReply>> GetAllByBlog(string blogId)
     {
-        return _replies.Find(r => r.RepliedBlog.Id == blogId).ToList();
+        return await _replies.Find(r => r.RepliedBlog.Id == blogId).ToListAsync();
     }
 
-    public CommentReply Create(CommentReply reply)
+    public async Task<CommentReply> Create(CommentReply reply)
     {
-        _replies.InsertOne(reply);
+        await _replies.InsertOneAsync(reply);
         return reply;
     }
 
-    public CommentReply Update(string replyId, CommentReply reply)
+    public async Task<CommentReply> Update(string replyId, CommentReply reply)
     {
-        _replies.ReplaceOne(r => r.Id == replyId, reply);
+        await _replies.ReplaceOneAsync(r => r.Id == replyId, reply);
         return reply;
     }
 
-    public void Remove(string replyId)
+    public async void Remove(string replyId)
     {
-        _replies.DeleteOne(r => r.Id == replyId);
+        await _replies.DeleteOneAsync(r => r.Id == replyId);
     }
 
-    public void Remove(CommentReply reply)
+    public async void Remove(CommentReply reply)
     {
-        _replies.DeleteOne(r => r == reply);
+        await _replies.DeleteOneAsync(r => r == reply);
     }
 
-    public void RemoveAllByComment(string commentId)
+    public async void RemoveAllByComment(string commentId)
     {
-        _replies.DeleteMany(r => r.RepliedComment.Id == commentId);
+        await _replies.DeleteManyAsync(r => r.RepliedComment.Id == commentId);
     }
-    public void RemoveAllByBlog(string blogId)
+    public async void RemoveAllByBlog(string blogId)
     {
-        _replies.DeleteMany(r => r.RepliedBlog.Id == blogId);
+        await _replies.DeleteManyAsync(r => r.RepliedBlog.Id == blogId);
     }
 }

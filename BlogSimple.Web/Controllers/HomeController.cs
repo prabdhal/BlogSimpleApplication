@@ -14,17 +14,17 @@ public class HomeController : Controller
         _homeBusinessManager = homeBusinessManager;
     }
 
-    public IActionResult Index(string searchString)
+    public async Task<IActionResult> Index(string searchString)
     {
-        HomeIndexViewModel homeIndexViewModal = _homeBusinessManager.GetHomeIndexViewModel(searchString);
+        HomeIndexViewModel homeIndexViewModal = await _homeBusinessManager.GetHomeIndexViewModel(searchString);
 
         return View(homeIndexViewModal);
     }
 
     // GET: HomeController/Details/Id
-    public ActionResult Details(string id)
+    public async Task<ActionResult> Details(string id)
     {
-        BlogDetailsViewModel viewModel = _homeBusinessManager.GetHomeDetailsViewModel(id);
+        BlogDetailsViewModel viewModel = await _homeBusinessManager.GetHomeDetailsViewModel(id);
 
         return View(viewModel);
     }

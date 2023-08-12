@@ -18,45 +18,45 @@ public class CommentService : ICommentService
         _comments = db.GetCollection<Comment>(blogSettings.CommentsCollectionName);
     }
 
-    public Comment Get(string commentId)
+    public async Task<Comment> Get(string commentId)
     {
-        return _comments.Find(c => c.Id == commentId).FirstOrDefault();
+        return await _comments.Find(c => c.Id == commentId).FirstOrDefaultAsync();
     }
 
-    public List<Comment> GetAll()
+    public async Task<List<Comment>> GetAll()
     {
-        return _comments.Find(_ => true).ToList();
+        return await _comments.Find(_ => true).ToListAsync();
     }
 
-    public List<Comment> GetAllByBlog(string blogId)
+    public async Task<List<Comment>> GetAllByBlog(string blogId)
     {
-        return _comments.Find(c => c.CommentedBlog.Id == blogId).ToList();
+        return await _comments.Find(c => c.CommentedBlog.Id == blogId).ToListAsync();
     }
 
-    public Comment Create(Comment comment)
+    public async Task<Comment> Create(Comment comment)
     {
-        _comments.InsertOne(comment);
+        await _comments.InsertOneAsync(comment);
         return comment;
     }
 
-    public Comment Update(string commentId, Comment comment)
+    public async Task<Comment> Update(string commentId, Comment comment)
     {
-        _comments.ReplaceOne(comment => comment.Id == commentId, comment);
+        await _comments.ReplaceOneAsync(comment => comment.Id == commentId, comment);
         return comment;
     }
 
-    public void Remove(string commentId)
+    public async void Remove(string commentId)
     {
-        _comments.DeleteOne(c => c.Id == commentId);
+        await _comments.DeleteOneAsync(c => c.Id == commentId);
     }
 
-    public void Remove(Comment comment)
+    public async void Remove(Comment comment)
     {
-        _comments.DeleteOne(c => c == comment);
+        await _comments.DeleteOneAsync(c => c == comment);
     }
 
-    public void RemoveAllByBlog(string blogId)
+    public async void RemoveAllByBlog(string blogId)
     {
-        _comments.DeleteMany(c => c.CommentedBlog.Id == blogId);
+        await _comments.DeleteManyAsync(c => c.CommentedBlog.Id == blogId);
     }
 }

@@ -4,12 +4,12 @@ namespace BlogSimple.Model.Services.Interfaces;
 
 public interface IBlogService
 {
-    List<Blog> GetAll();
-    List<Blog> GetAll(string searchString);
-    List<Blog> GetPublishedOnly(string searchString);
-    Blog Get(string id);
-    Blog Create(Blog blog);
-    Blog Update(string id, Blog blog);
+    Task<List<Blog>> GetAll();
+    Task<List<Blog>> GetAll(string searchString);
+    Task<List<Blog>> GetPublishedOnly(string searchString);
+    Task<Blog> Get(string id);
+    Task<Blog> Create(Blog blog);
+    Task<Blog> Update(string id, Blog blog);
     void Remove(string id);
     void Remove(Blog blog);
 }
