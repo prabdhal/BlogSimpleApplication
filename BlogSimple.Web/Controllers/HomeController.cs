@@ -1,5 +1,4 @@
-﻿using BlogSimple.Model.ViewModels.BlogViewModels;
-using BlogSimple.Model.ViewModels.HomeViewModels;
+﻿using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,13 +18,5 @@ public class HomeController : Controller
         HomeIndexViewModel homeIndexViewModal = await _homeBusinessManager.GetHomeIndexViewModel(searchString);
 
         return View(homeIndexViewModal);
-    }
-
-    // GET: HomeController/Details/Id
-    public async Task<ActionResult> Details(string id)
-    {
-        BlogDetailsViewModel viewModel = await _homeBusinessManager.GetHomeDetailsViewModel(id);
-
-        return View(viewModel);
     }
 }

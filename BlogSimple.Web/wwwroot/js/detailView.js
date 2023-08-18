@@ -24,6 +24,8 @@ const deleteReplyModalForm = document.querySelector('#deleteReplyModalForm');
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+
+
 // displays reply form 
 const displayCreateReplyForm = (el) => {
     console.log(el.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling);

@@ -1,50 +1,17 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
-using BlogSimple.Model.ViewModels.BlogViewModels;
 using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
-using BlogSimple.Web.Services.Interfaces;
 
 namespace BlogSimple.Web.BusinessManager;
 
 public class HomeBusinessManager : IHomeBusinessManager
 {
     private readonly IBlogService _blogService;
-    private readonly ICommentService _commentService;
-    private readonly ICommentReplyService _commentReplyService;
 
-    public HomeBusinessManager(
-        IBlogService blogService,
-        ICommentService commentService,
-        ICommentReplyService commentReplyService
-        )
+    public HomeBusinessManager(IBlogService blogService)
     {
         _blogService = blogService;
-        _commentService = commentService;
-        _commentReplyService = commentReplyService;
-    }
-
-    public async Task<BlogDetailsViewModel> GetHomeDetailsViewModel(string id)
-    {
-        Blog blog = await _blogService.Get(id);
-        List<string> blogCats = new List<string>();
-        var blogs = await _blogService.GetPublishedOnly("");
-        var comments = await _commentService.GetAllByBlog(id);
-        var replies = await _commentReplyService.GetAllByBlog(id);
-
-        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
-        {
-            blogCats.Add(cat.ToString());
-        }
-
-        return new BlogDetailsViewModel
-        {
-            AllBlogs = blogs,
-            BlogCategories = blogCats,
-            Blog = blog,
-            Comments = comments,
-            CommentReplies = replies
-        };
     }
 
     public async Task<HomeIndexViewModel> GetHomeIndexViewModel(string searchString)
@@ -85,12 +52,12 @@ public class HomeBusinessManager : IHomeBusinessManager
         {
             if (b == blog)
             {
-                blog.isFeatured = true;
+                blog.IsFeatured = true;
                 await _blogService.Update(blog.Id, blog);
             }
             else
             {
-                b.isFeatured = false;
+                b.IsFeatured = false;
                 await _blogService.Update(b.Id, b);
             }
         }

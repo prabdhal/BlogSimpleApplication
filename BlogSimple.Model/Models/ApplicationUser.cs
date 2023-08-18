@@ -1,5 +1,7 @@
 ﻿using AspNetCore.Identity.MongoDbCore.Models;
+using Microsoft.AspNetCore.Identity;
 using MongoDbGenericRepository.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogSimple.Model.Models;
 

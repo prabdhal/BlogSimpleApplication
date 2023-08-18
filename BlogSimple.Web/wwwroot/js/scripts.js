@@ -25,7 +25,9 @@ let blogCategoryIdx = 100;
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-
+// controller paths
+let blogDetailsPath = '/Blog/Details';
+let blogImagePath = '../UserFiles/Blogs';
 
 // sets blogCategoryIdx
 const setBlogCategory = (selectedCategory) => {
@@ -135,15 +137,15 @@ const displayFeaturedBlog = () => {
     const divElement = document.createElement('div');
     divElement.innerHTML =
         `<div class="card mb-4">
-                <a href="/Home/Details/${featuredBlog.id}">
+                <a href="${blogDetailsPath}/${featuredBlog.id}">
                         <div class="banner-tag ${getBlogCategoryClass(featuredBlog.category)}">
                             <div>${getBlogCategoryName(featuredBlog.category)}</div >
                         </div>
-                        <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
+                        <img class="card-img-top" src="${blogImagePath}/${featuredBlog.id}/HeaderImage.jpg" alt="${featuredBlog.title}" />
                     </a>
                 <div class="card-body">
                     <div class="small text-muted">Last updated on ${month} ${date}, ${year}</div>
-                    <h2 class="card-title h4"><a href="/Home/Details/${featuredBlog.id}">${featuredBlog.title}</a></h2>
+                    <h2 class="card-title h4"><a href="${blogDetailsPath}/${featuredBlog.id}">${featuredBlog.title}</a></h2>
                     <p class="card-text text-truncate">${featuredBlog.description}</p>
                 </div>
             </div>`;
@@ -194,15 +196,15 @@ const displayBlogs = () => {
         divElement.classList = "col-lg-6";
         divElement.innerHTML =
            `<div class="card mb-4">
-                    <a href="/Home/Details/${blogsToShow[i].id}">
+                    <a href="${blogDetailsPath}/${blogsToShow[i].id}">
                         <div class="banner-tag ${getBlogCategoryClass(blogsToShow[i].category)}">
                             <div>${getBlogCategoryName(blogsToShow[i].category)}</div >
                         </div>
-                        <img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="..." />
+                        <img class="card-img-top" src="${blogImagePath}/${blogsToShow[i].id}/HeaderImage.jpg" alt="${blogsToShow[i].title}" />
                     </a>
                     <div class="card-body">
                         <div class="small text-muted">Last updated on ${month} ${day}, ${year}</div>
-                        <h2 class="card-title h4"><a href="/Home/Details/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
+                        <h2 class="card-title h4"><a href="${blogDetailsPath}/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
                         <p class="card-text text-truncate">${blogsToShow[i].description}</p>
                     </div>
                 </div>`;

@@ -1,7 +1,6 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.BlogViewModels;
-using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -16,18 +15,21 @@ public class BlogBusinessManager : IBlogBusinessManager
     private readonly IBlogService _blogService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
+    private readonly IWebHostEnvironment webHostEnvironment;
 
     public BlogBusinessManager(
         UserManager<ApplicationUser> userManager,
         IBlogService blogService,
         ICommentService commentService,
-        ICommentReplyService commentReplyService
+        ICommentReplyService commentReplyService,
+            IWebHostEnvironment webHostEnvironment
         )
     {
         _userManager = userManager;
         _blogService = blogService;
         _commentService = commentService;
         _commentReplyService = commentReplyService;
+        this.webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
@@ -44,12 +46,13 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public async Task<BlogDetailsViewModel> GetDashboardDetailViewModel(string blogId)
+    public async Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id)
     {
-        var blog = await _blogService.Get(blogId);
+        Blog blog = await _blogService.Get(id);
         List<string> blogCats = new List<string>();
-        var comments = await _commentService.GetAllByBlog(blogId);
-        var replies = await _commentReplyService.GetAllByBlog(blogId);
+        var blogs = await _blogService.GetPublishedOnly("");
+        var comments = await _commentService.GetAllByBlog(id);
+        var replies = await _commentReplyService.GetAllByBlog(id);
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -58,11 +61,39 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         return new BlogDetailsViewModel
         {
+            AllBlogs = blogs,
             BlogCategories = blogCats,
             Blog = blog,
             Comments = comments,
             CommentReplies = replies
         };
+    }
+
+    /// <summary>
+    /// Determines the featured blog by popularity and returns it. 
+    /// </summary>
+    /// <param name="blogs"></param>
+    /// <returns></returns>
+    private async Task<Blog> DetermineFeaturedBlog(IEnumerable<Blog> blogs)
+    {
+        var blog = blogs.OrderByDescending(b => b.UpdatedOn)
+                        .First();
+
+        foreach (Blog b in blogs)
+        {
+            if (b == blog)
+            {
+                blog.IsFeatured = true;
+                await _blogService.Update(blog.Id, blog);
+            }
+            else
+            {
+                b.IsFeatured = false;
+                await _blogService.Update(b.Id, b);
+            }
+        }
+
+        return blog;
     }
 
     public async Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
@@ -77,7 +108,28 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         blog = await _blogService.Create(blog);
 
+        // stores image file name 
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}\HeaderImage.jpg";
+
+        EnsureFolder(pathToImage);
+
+        using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+        {
+            await createViewModel.HeaderImage.CopyToAsync(fileStream);
+        }
+
         return blog;
+    }
+
+
+    private void EnsureFolder(string path)
+    {
+        string directoryName = Path.GetDirectoryName(path);
+        if (directoryName.Length > 0)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+        }
     }
 
     public async Task<Comment> CreateComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal)
@@ -164,7 +216,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         blog.Category = editBlogViewModel.Blog.Category;
         blog.Description = editBlogViewModel.Blog.Description;
         blog.Content = editBlogViewModel.Blog.Content;
-        blog.isPublished = editBlogViewModel.Blog.isPublished;
+        blog.IsPublished = editBlogViewModel.Blog.IsPublished;
         blog.UpdatedOn = DateTime.Now;
 
 

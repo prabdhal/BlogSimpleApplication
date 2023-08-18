@@ -46,7 +46,7 @@ public class BlogService : IBlogService
             b.Category.ToString().ToLower().Contains(search) |
             b.Content.ToLower().Contains(search));
 
-        var filterByPublished = Builders<Blog>.Filter.Where(b => b.isPublished);
+        var filterByPublished = Builders<Blog>.Filter.Where(b => b.IsPublished);
 
         return await _blogs.Find(filterSearch & filterByPublished).ToListAsync();
     }

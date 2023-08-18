@@ -20,8 +20,8 @@ public class Blog
     public BlogCategory Category { get; set; }
     [Required(ErrorMessage = "Please enter the blog content.")]
     public string Content { get; set; } = String.Empty;
-    public bool isPublished { get; set; } = false;
-    public bool isFeatured { get; set; } = false;
+    public bool IsPublished { get; set; } = false;
+    public bool IsFeatured { get; set; } = false;
 
     [DisplayName("Author")]
     public ApplicationUser CreatedBy { get; set; } = new ApplicationUser();

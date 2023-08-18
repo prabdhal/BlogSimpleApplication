@@ -1,11 +1,12 @@
 ﻿@using BlogSimple.Model.ViewModels.BlogViewModels;
 @using Microsoft.AspNetCore.Identity;
+@using BlogSimple.Model.ViewModels.HomeViewModels;
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @model BlogDetailsViewModel;
 @{
     ViewData["Title"] = "View " + Model.Blog.Title;
-    Layout = "~/Views/Blog/_DashboardLayoutDetails.cshtml";
+    Layout = "~/Views/Home/_HomeLayoutDetails.cshtml";
 }
 
 
@@ -30,9 +31,11 @@
                     </div>
                 </header>
                 <!-- Preview image figure-->
-                <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                <figure class="mb-4">
+                    <img class="img-fluid rounded" src="~/UserFiles/Blogs/@Model.Blog.Id/HeaderImage.jpg" alt="@Model.Blog.Title" />
+                </figure>
                 <!-- Post content-->
-                <section class="mb-5">
+                <section class="mb-5 text-left">
                     @Html.Raw(Model.Blog.Content)
                 </section>
             </article>

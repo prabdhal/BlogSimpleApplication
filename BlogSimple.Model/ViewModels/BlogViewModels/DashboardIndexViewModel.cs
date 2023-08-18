@@ -1,6 +1,6 @@
 ﻿using BlogSimple.Model.Models;
 
-namespace BlogSimple.Model.ViewModels.HomeViewModels;
+namespace BlogSimple.Model.ViewModels.BlogViewModels;
 
 public class DashboardIndexViewModel
 {
