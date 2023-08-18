@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="text-left">
-        <form asp-action="EditBlog">
+        <form asp-action="EditBlog" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="Blog.Id" readonly hidden />
             <div class="form-group">
@@ -20,6 +20,16 @@
                 <input asp-for="Blog.Title" class="form-control" />
                 <span asp-validation-for="Blog.Title" class="text-danger"></span>
             </div>
+
+            <br />
+            <div class="form-group">
+                <label asp-for="HeaderImage"></label>
+                <div class="custom-file">
+                    <input asp-for="HeaderImage" class="form-control" accept="image/*" />
+                    <label class="custom-file-label text-left">Choose file</label>
+                </div>
+            </div>
+
             <br />
             <div class="form-group">
                 <label asp-for="Blog.Category" class="control-label"></label>
@@ -30,18 +40,21 @@
                 </select>
                 <span asp-validation-for="Blog.Category" class="text-danger"></span>
             </div>
+
             <br />
             <div class="form-group">
                 <label asp-for="Blog.Description" class="control-label"></label>
                 <input asp-for="Blog.Description" class="form-control" />
                 <span asp-validation-for="Blog.Description" class="text-danger"></span>
             </div>
+
             <br />
             <div class="form-group">
                 <label asp-for="Blog.Content" class="control-label"></label>
                 <textarea asp-for="Blog.Content" id="myEditor" class="form-control"></textarea>
                 <span asp-validation-for="Blog.Content" class="text-danger"></span>
             </div>
+
             <br />
             <div class="card-footer">
                 <div class="form-group">
