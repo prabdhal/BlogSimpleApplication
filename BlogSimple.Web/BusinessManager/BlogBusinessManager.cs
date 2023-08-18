@@ -5,6 +5,8 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -69,33 +71,6 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    /// <summary>
-    /// Determines the featured blog by popularity and returns it. 
-    /// </summary>
-    /// <param name="blogs"></param>
-    /// <returns></returns>
-    private async Task<Blog> DetermineFeaturedBlog(IEnumerable<Blog> blogs)
-    {
-        var blog = blogs.OrderByDescending(b => b.UpdatedOn)
-                        .First();
-
-        foreach (Blog b in blogs)
-        {
-            if (b == blog)
-            {
-                blog.IsFeatured = true;
-                await _blogService.Update(blog.Id, blog);
-            }
-            else
-            {
-                b.IsFeatured = false;
-                await _blogService.Update(b.Id, b);
-            }
-        }
-
-        return blog;
-    }
-
     public async Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
     {
         Blog blog = createViewModel.Blog;
@@ -114,12 +89,24 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         EnsureFolder(pathToImage);
 
+        IFormFile headerImg = createViewModel.HeaderImage;
+
         using (var fileStream = new FileStream(pathToImage, FileMode.Create))
         {
-            await createViewModel.HeaderImage.CopyToAsync(fileStream);
+            await headerImg.CopyToAsync(fileStream);
         }
 
         return blog;
+    }
+
+    private IFormFile GetDefaultImage()
+    {
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\images\default-image.jpg";
+        using (var stream = File.OpenRead(pathToImage))
+        {
+            return new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
+        }
     }
 
 
@@ -219,6 +206,18 @@ public class BlogBusinessManager : IBlogBusinessManager
         blog.IsPublished = editBlogViewModel.Blog.IsPublished;
         blog.UpdatedOn = DateTime.Now;
 
+        if (editBlogViewModel.HeaderImage != null)
+        {
+            string webRootPath = webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}\HeaderImage.jpg";
+
+            EnsureFolder(pathToImage);
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await editBlogViewModel.HeaderImage.CopyToAsync(fileStream);
+            }
+        }
 
         return new EditBlogViewModel
         {
@@ -347,6 +346,17 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         _commentService.RemoveAllByBlog(blogId);
         _commentReplyService.RemoveAllByBlog(blogId);
+
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}";
+
+        string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
+        foreach (string file in files)
+        {
+            File.Delete(file);
+        }
+        //then delete folder
+        Directory.Delete(pathToImage);
 
         _blogService.Remove(blog);
         return blog;

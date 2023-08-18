@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Shared\Components\Header\" />
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
