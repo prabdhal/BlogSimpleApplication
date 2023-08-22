@@ -1,4 +1,7 @@
 ﻿using BlogSimple.Model.Models;
+using BlogSimple.Model.ViewModels.AccountViewModels;
+using BlogSimple.Model.ViewModels.BlogViewModels;
+using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,25 +11,49 @@ namespace BlogSimple.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
+        private readonly IAccountBusinessManager _accountBusinessManager;
 
         public AccountController(
-            UserManager<ApplicationUser> userManager,
+            UserManager<User> userManager,
             RoleManager<ApplicationRole> roleManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<User> signInManager,
+            IAccountBusinessManager accountBusinessManager
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _accountBusinessManager = accountBusinessManager;
+        }
+
+        public async Task<IActionResult> AboutMe()
+        {
+            AboutMeViewModel aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModel(User);
+
+            return View(aboutMeViewModel);
         }
 
         [Authorize]
-        public IActionResult AboutMe()
+        public async Task<ActionResult> UpdateAboutMe()
         {
-            return View();
+            var aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModel(User);
+
+            if (aboutMeViewModel is null)
+                return new NotFoundResult();
+
+            return View(aboutMeViewModel);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateAboutMe(AboutMeViewModel aboutMeViewModel)
+        {
+            await _accountBusinessManager.EditUser(aboutMeViewModel, User);
+            return RedirectToAction("AboutMe");
         }
 
         [Authorize]
@@ -58,7 +85,7 @@ namespace BlogSimple.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser user = await _userManager.FindByNameAsync(username);
+                User user = await _userManager.FindByNameAsync(username);
                 if (user != null)
                 {
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
@@ -78,10 +105,18 @@ namespace BlogSimple.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser newUser = new ApplicationUser
+                User newUser = new User
                 {
-                    UserName = user.Username,
-                    Email = user.Email
+                    FirstName = user.FirstName, 
+                    LastName = user.LastName,
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Description = null,
+                    Content = null,
+                    PortfolioLink = null,
+                    TwitterLink = null,
+                    GitHubLink = null,
+                    LinkedInLink = null 
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);

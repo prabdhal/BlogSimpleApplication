@@ -1,8 +1,10 @@
 ﻿using BlogSimple.Model.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogSimple.Model.ViewModels.AccountViewModels;
 
 public class AboutMeViewModel
 {
-    public AboutUser AboutUser { get; set; }
+    public User User { get; set; }
+    public IFormFile HeaderImage { get; set; }
 }

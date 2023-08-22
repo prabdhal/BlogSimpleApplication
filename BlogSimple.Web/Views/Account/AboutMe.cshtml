@@ -1,8 +1,8 @@
 ﻿@using BlogSimple.Model.ViewModels.AccountViewModels;
 @model AboutMeViewModel;
 @using Microsoft.AspNetCore.Identity;
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 <!-- Page content-->
 <div class="container mt-5">
@@ -16,17 +16,21 @@
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1"></h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2">Joined on </div>
-                    @*<div class="text-muted fst-italic mb-2">@Model.AboutUser.Description</div>*@
+                    <div class="text-muted fst-italic mb-2">Description: @Model.User.Description</div>
                     <!-- Post categories-->
                     <div id="categoryBadgeContainer">
                     </div>
                 </header>
                 <!-- Preview image figure-->
-                <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
+                <figure class="mb-4"><img class="img-fluid rounded" src="~/UserFiles/Users/@Model.User.Id/HeaderImage.jpg" alt="@Model.User.FirstName @Model.User.LastName"></figure>
                 <!-- Post content-->
                 <section class="mb-5">
-                    @*Html.Raw(Model.AboutUser.Content)*@
+                    <div class="card-body">
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+                        }
+                    </div>
                 </section>
             </article>
         </div>

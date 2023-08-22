@@ -5,22 +5,20 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System.IO;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
 
 public class BlogBusinessManager : IBlogBusinessManager
 {
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly IBlogService _blogService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
     private readonly IWebHostEnvironment webHostEnvironment;
 
     public BlogBusinessManager(
-        UserManager<ApplicationUser> userManager,
+        UserManager<User> userManager,
         IBlogService blogService,
         ICommentService commentService,
         ICommentReplyService commentReplyService,
@@ -108,7 +106,6 @@ public class BlogBusinessManager : IBlogBusinessManager
             return new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
         }
     }
-
 
     private void EnsureFolder(string path)
     {

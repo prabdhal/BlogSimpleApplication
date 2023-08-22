@@ -27,19 +27,22 @@ builder.Services.AddSingleton<IBlogSimpleDatabaseSettings>(e =>
 builder.Services.AddSingleton<IMongoClient>(e =>
     new MongoClient(builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString")));
 
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentReplyService, CommentReplyService>();
 
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
+builder.Services.AddScoped<IAccountBusinessManager, AccountBusinessManager>();
 
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-    .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(
+builder.Services.AddIdentity<User, ApplicationRole>()
+    .AddMongoDbStores<User, ApplicationRole, Guid>(
     builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString"),
     builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:DatabaseName"));
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = false);
 
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();

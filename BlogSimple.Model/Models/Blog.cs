@@ -24,7 +24,7 @@ public class Blog
     public bool IsFeatured { get; set; } = false;
 
     [DisplayName("Author")]
-    public ApplicationUser CreatedBy { get; set; } = new ApplicationUser();
+    public User CreatedBy { get; set; } = new User();
     
     [DisplayName("Created On")]
     public DateTime CreatedOn { get; set; }
