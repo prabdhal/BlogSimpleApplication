@@ -23,9 +23,10 @@ public class UserService : IUserService
         return user;
     }
 
-    public async Task<User> Get(string userName)
+    public async Task<User> Get(string id)
     {
-        return await _users.Find(u => u.UserName == userName).FirstOrDefaultAsync();
+        var user = await _users.Find(u => u.Id == Guid.Parse(id)).FirstOrDefaultAsync();
+        return user;
     }
 
     public async Task<List<User>> GetAll()

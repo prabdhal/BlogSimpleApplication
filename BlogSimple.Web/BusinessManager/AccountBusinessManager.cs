@@ -26,10 +26,20 @@ public class AccountBusinessManager : IAccountBusinessManager
     }
 
 
-    public async Task<AboutMeViewModel> GetAboutMeViewModel(ClaimsPrincipal claimsPrincipal)
+    public async Task<AboutMeViewModel> GetAboutMeViewModel(string id, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userService.Get(id);
+
+        return new AboutMeViewModel
+        {
+            User = user,
+        };
+    }
+
+
+    public async Task<AboutMeViewModel> GetAboutMeViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-
 
         return new AboutMeViewModel
         {

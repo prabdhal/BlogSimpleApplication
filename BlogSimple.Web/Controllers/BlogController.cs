@@ -44,8 +44,8 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateBlog(CreateBlogViewModel createBlogViewModel)
     {
-        if (!ModelState.IsValid)
-            return View("CreateBlog");
+        //if (!ModelState.IsValid)
+        //    return View("CreateBlog");
 
         await _blogBusinessManager.CreateBlog(createBlogViewModel, User);
         return RedirectToAction("Details", new { createBlogViewModel.Blog.Id });

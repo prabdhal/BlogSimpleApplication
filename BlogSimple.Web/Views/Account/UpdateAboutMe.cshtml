@@ -4,6 +4,12 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@{
+    ViewData["Title"] = "Update About Me";
+    Layout = "~/Views/Blog/_DashboardLayoutEditor.cshtml";
+}
+
+
 <!-- Page content-->
 <div class="container mt-5">
 
@@ -71,8 +77,8 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input asp-for="User.Content" class="form-control" type="text" />
                                 <label asp-for="User.Content"></label>
+                                <textarea asp-for="User.Content" id="myEditor" class="form-control" type="text"></textarea>
                                 <span asp-validation-for="User.Content" class="text-danger"></span>
                             </div>
                             <div class="mt-4 mb-0">

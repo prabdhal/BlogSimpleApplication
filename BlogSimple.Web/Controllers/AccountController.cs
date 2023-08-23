@@ -29,9 +29,9 @@ namespace BlogSimple.Web.Controllers
             _accountBusinessManager = accountBusinessManager;
         }
 
-        public async Task<IActionResult> AboutMe()
+        public async Task<IActionResult> AboutMe(string id)
         {
-            AboutMeViewModel aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModel(User);
+            AboutMeViewModel aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModel(id, User);
 
             return View(aboutMeViewModel);
         }
@@ -39,7 +39,7 @@ namespace BlogSimple.Web.Controllers
         [Authorize]
         public async Task<ActionResult> UpdateAboutMe()
         {
-            var aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModel(User);
+            var aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModelForSignedInUser(User);
 
             if (aboutMeViewModel is null)
                 return new NotFoundResult();
@@ -53,7 +53,7 @@ namespace BlogSimple.Web.Controllers
         public async Task<IActionResult> UpdateAboutMe(AboutMeViewModel aboutMeViewModel)
         {
             await _accountBusinessManager.EditUser(aboutMeViewModel, User);
-            return RedirectToAction("AboutMe");
+            return RedirectToAction("AboutMe", new { aboutMeViewModel.User.Id });
         }
 
         [Authorize]
