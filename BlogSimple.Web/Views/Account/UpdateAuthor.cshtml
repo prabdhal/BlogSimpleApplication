@@ -1,5 +1,5 @@
 ﻿@using BlogSimple.Model.ViewModels.AccountViewModels;
-@model AboutMeViewModel;
+@model AuthorViewModel;
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -36,7 +36,7 @@
                         {
                             <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
                         }
-                        <form asp-controller="Account" asp-action="UpdateAboutMe" method="post" enctype="multipart/form-data">
+                        <form asp-controller="Account" asp-action="UpdateAuthor" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                             <div class="form-group">
@@ -49,37 +49,37 @@
                             </div>
 
                             <div class="form-floating mb-3">
-                                <input asp-for="User.Description" class="form-control" type="text" />
-                                <label asp-for="User.Description"></label>
-                                <span asp-validation-for="User.Description" class="text-danger"></span>
+                                <input asp-for="AccountUser.Description" class="form-control" type="text" />
+                                <label asp-for="AccountUser.Description"></label>
+                                <span asp-validation-for="AccountUser.Description" class="text-danger"></span>
                             </div>
 
 
                             <div class="form-floating mb-3">
-                                <input asp-for="User.PortfolioLink" class="form-control" />
-                                <label asp-for="User.PortfolioLink"></label>
-                                <span asp-validation-for="User.PortfolioLink" class="text-danger"></span>
+                                <input asp-for="AccountUser.PortfolioLink" class="form-control" />
+                                <label asp-for="AccountUser.PortfolioLink"></label>
+                                <span asp-validation-for="AccountUser.PortfolioLink" class="text-danger"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input asp-for="User.TwitterLink" class="form-control" />
-                                <label asp-for="User.TwitterLink"></label>
-                                <span asp-validation-for="User.TwitterLink" class="text-danger"></span>
+                                <input asp-for="AccountUser.TwitterLink" class="form-control" />
+                                <label asp-for="AccountUser.TwitterLink"></label>
+                                <span asp-validation-for="AccountUser.TwitterLink" class="text-danger"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input asp-for="User.GitHubLink" class="form-control" />
-                                <label asp-for="User.GitHubLink"></label>
-                                <span asp-validation-for="User.GitHubLink" class="text-danger"></span>
+                                <input asp-for="AccountUser.GitHubLink" class="form-control" />
+                                <label asp-for="AccountUser.GitHubLink"></label>
+                                <span asp-validation-for="AccountUser.GitHubLink" class="text-danger"></span>
                             </div>
                             <div class="form-floating mb-3">
-                                <input asp-for="User.LinkedInLink" class="form-control" />
-                                <label asp-for="User.LinkedInLink"></label>
-                                <span asp-validation-for="User.LinkedInLink" class="text-danger"></span>
+                                <input asp-for="AccountUser.LinkedInLink" class="form-control" />
+                                <label asp-for="AccountUser.LinkedInLink"></label>
+                                <span asp-validation-for="AccountUser.LinkedInLink" class="text-danger"></span>
                             </div>
 
                             <div class="form-floating mb-3">
-                                <label asp-for="User.Content"></label>
-                                <textarea asp-for="User.Content" id="myEditor" class="form-control" type="text"></textarea>
-                                <span asp-validation-for="User.Content" class="text-danger"></span>
+                                <label asp-for="AccountUser.Content"></label>
+                                <textarea asp-for="AccountUser.Content" id="myEditor" class="form-control" type="text"></textarea>
+                                <span asp-validation-for="AccountUser.Content" class="text-danger"></span>
                             </div>
                             <div class="mt-4 mb-0">
                                 <div class="d-grid">

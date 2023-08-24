@@ -3,7 +3,6 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -26,39 +25,37 @@ public class AccountBusinessManager : IAccountBusinessManager
     }
 
 
-    public async Task<AboutMeViewModel> GetAboutMeViewModel(string id, ClaimsPrincipal claimsPrincipal)
+    public async Task<AuthorViewModel> GetAuthorViewModel(string id, ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userService.Get(id);
 
-        return new AboutMeViewModel
+        return new AuthorViewModel
         {
-            User = user,
+            AccountUser = user,
         };
     }
 
 
-    public async Task<AboutMeViewModel> GetAboutMeViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal)
+    public async Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        return new AboutMeViewModel
+        return new AuthorViewModel
         {
-            User = user,
+            AccountUser = user,
         };
     }
 
-    public async Task<ActionResult<AboutMeViewModel>> EditUser(AboutMeViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal)
+    public async Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        if (user is null)
-            return new NotFoundResult();
 
-        user.Description = aboutViewModel.User.Description;
-        user.Content = aboutViewModel.User.Content;
-        user.PortfolioLink = aboutViewModel.User.PortfolioLink;
-        user.TwitterLink = aboutViewModel.User.TwitterLink;
-        user.GitHubLink = aboutViewModel.User.GitHubLink;
-        user.LinkedInLink = aboutViewModel.User.LinkedInLink;
+        user.Description = aboutViewModel.AccountUser.Description;
+        user.Content = aboutViewModel.AccountUser.Content;
+        user.PortfolioLink = aboutViewModel.AccountUser.PortfolioLink;
+        user.TwitterLink = aboutViewModel.AccountUser.TwitterLink;
+        user.GitHubLink = aboutViewModel.AccountUser.GitHubLink;
+        user.LinkedInLink = aboutViewModel.AccountUser.LinkedInLink;
 
         if (aboutViewModel.HeaderImage != null)
         {
@@ -73,9 +70,9 @@ public class AccountBusinessManager : IAccountBusinessManager
             }
         }
 
-        return new AboutMeViewModel
+        return new AuthorViewModel
         {
-            User = await _userService.Update(user.UserName, user)
+            AccountUser = await _userService.Update(user.UserName, user)
         };
     }
 

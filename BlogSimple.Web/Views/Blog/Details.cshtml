@@ -24,7 +24,8 @@
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1">@Model.Blog.Title</h1>
                     <!-- Post meta content-->
-                    <div class="text-muted fst-italic mb-2">Posted on @Model.Blog.CreatedOn.ToString("MMM d, yyyy") by <a href="/Account/AboutMe/@Model.Blog.CreatedBy.Id">@Model.Blog.CreatedBy</a>
+                    <div class="text-muted fst-italic mb-2">
+                        Posted on @Model.Blog.CreatedOn.ToString("MMM d, yyyy") by <a href="/Account/Author/@Model.Blog.CreatedBy.Id">@Model.Blog.CreatedBy</a>
                     </div>
                     <div class="text-muted fst-italic mb-2">Last Updated on @Model.Blog.UpdatedOn.ToString("MMM d, yyyy")</div>
                     <!-- Post categories-->

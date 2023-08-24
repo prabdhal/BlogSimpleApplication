@@ -124,7 +124,6 @@ const setPageNumber = (num) => {
 
 // displays the featured blog 
 const displayFeaturedBlog = () => {
-    //featuredBlogContainer.innerHTML = '';
     if (featuredBlog.id == null) return;
     console.log('display featured blog: ' + featuredBlog);
 

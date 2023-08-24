@@ -29,31 +29,31 @@ namespace BlogSimple.Web.Controllers
             _accountBusinessManager = accountBusinessManager;
         }
 
-        public async Task<IActionResult> AboutMe(string id)
+        public async Task<IActionResult> Author(string id)
         {
-            AboutMeViewModel aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModel(id, User);
+            AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id, User);
 
-            return View(aboutMeViewModel);
+            return View(authorViewModel);
         }
 
         [Authorize]
-        public async Task<ActionResult> UpdateAboutMe()
+        public async Task<ActionResult> UpdateAuthor()
         {
-            var aboutMeViewModel = await _accountBusinessManager.GetAboutMeViewModelForSignedInUser(User);
+            var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
 
-            if (aboutMeViewModel is null)
+            if (authorViewModel is null)
                 return new NotFoundResult();
 
-            return View(aboutMeViewModel);
+            return View(authorViewModel);
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateAboutMe(AboutMeViewModel aboutMeViewModel)
+        public async Task<IActionResult> UpdateAuthor(AuthorViewModel authorViewModel)
         {
-            await _accountBusinessManager.EditUser(aboutMeViewModel, User);
-            return RedirectToAction("AboutMe", new { aboutMeViewModel.User.Id });
+            authorViewModel = await _accountBusinessManager.EditUser(authorViewModel, User);
+            return RedirectToAction("Author", new { authorViewModel.AccountUser.Id });
         }
 
         [Authorize]

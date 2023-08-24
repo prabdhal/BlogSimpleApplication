@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace BlogSimple.Model.ViewModels.AccountViewModels;
 
-public class AboutMeViewModel
+public class AuthorViewModel
 {
-    public User User { get; set; }
+    public User AccountUser { get; set; }
     public IFormFile HeaderImage { get; set; }
 }

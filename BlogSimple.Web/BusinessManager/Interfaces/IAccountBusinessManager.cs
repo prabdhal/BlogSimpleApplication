@@ -1,12 +1,11 @@
 ﻿using BlogSimple.Model.ViewModels.AccountViewModels;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager.Interfaces;
 
 public interface IAccountBusinessManager
 {
-    Task<AboutMeViewModel> GetAboutMeViewModel(string id, ClaimsPrincipal claimsPrincipal);
-    Task<AboutMeViewModel> GetAboutMeViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal);
-    Task<ActionResult<AboutMeViewModel>> EditUser(AboutMeViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal);
+    Task<AuthorViewModel> GetAuthorViewModel(string id, ClaimsPrincipal claimsPrincipal);
+    Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal);
+    Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal);
 }
