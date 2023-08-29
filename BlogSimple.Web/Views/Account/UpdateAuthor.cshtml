@@ -11,113 +11,114 @@
 
 
 <!-- Page content-->
-<div class="container mt-5">
+<h1 class="text-left">Update Bio</h1>
 
-    <div class="row">
-        <div class="col-lg-8 text-left">
+<h4 class="text-left">My Bio</h4>
+<hr />
+<div class="row">
+    <div class="col-lg-8 text-left">
+        <!-- Post content-->
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h1 class="fw-bolder mb-1"></h1>
+                <!-- Post categories-->
+                <div id="categoryBadgeContainer">
+                </div>
+            </header>
+            <!-- Preview image figure-->
+            @*<figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>*@
             <!-- Post content-->
-            <article>
-                <!-- Post header-->
-                <header class="mb-4">
-                    <!-- Post title-->
-                    <h1 class="fw-bolder mb-1"></h1>
-                    <!-- Post categories-->
-                    <div id="categoryBadgeContainer">
-                    </div>
-                </header>
-                <!-- Preview image figure-->
-                @*<figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>*@
-                <!-- Post content-->
-                <section class="mb-5">
-                    <div class="card-body">
-                        @if (ViewBag.Message != null)
+            <section class="mb-5">
+                <div class="card-body">
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+                    }
+                    <form asp-controller="Account" asp-action="UpdateAuthor" method="post" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group">
+                            <label asp-for="HeaderImage"></label>
+                            <div class="form-floating mb-3">
+                                <div class="custom-file">
+                                    <input asp-for="HeaderImage" class="form-control" accept="image/*" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-floating mb-3">
+                            <input asp-for="AccountUser.PortfolioLink" class="form-control" />
+                            <label asp-for="AccountUser.PortfolioLink"></label>
+                            <span asp-validation-for="AccountUser.PortfolioLink" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="AccountUser.TwitterLink" class="form-control" />
+                            <label asp-for="AccountUser.TwitterLink"></label>
+                            <span asp-validation-for="AccountUser.TwitterLink" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="AccountUser.GitHubLink" class="form-control" />
+                            <label asp-for="AccountUser.GitHubLink"></label>
+                            <span asp-validation-for="AccountUser.GitHubLink" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="AccountUser.LinkedInLink" class="form-control" />
+                            <label asp-for="AccountUser.LinkedInLink"></label>
+                            <span asp-validation-for="AccountUser.LinkedInLink" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <label asp-for="AccountUser.Content"></label>
+                            <textarea asp-for="AccountUser.Content" id="myEditor" class="form-control" type="text"></textarea>
+                            <span asp-validation-for="AccountUser.Content" class="text-danger"></span>
+                        </div>
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid">
+                                <input type="submit" value="Update" class="btn btn-primary btn-block" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </article>
+    </div>
+    <!-- Side widgets-->
+    <div class="col-lg-4">
+        <!-- Search widget-->
+        @*<div class="card mb-4">
+            <div class="card-header">Search</div>
+            <div class="card-body">
+                <div class="input-group">
+                    <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                    <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
+                </div>
+            </div>
+        </div>
+        <!-- Categories widget-->
+        <div class="card mb-4">
+            <div class="card-header">Categories</div>
+            <div class="card-body">
+                <div class="row">
+                    <ul class="list-unstyled mb-0">
                         {
-                            <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+                        foreach (var cat in Model.BlogCategories)
+                        {
+                        <li>
+                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
+                        </li>
                         }
-                        <form asp-controller="Account" asp-action="UpdateAuthor" method="post" enctype="multipart/form-data">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                            <div class="form-group">
-                                <label asp-for="HeaderImage"></label>
-                                <div class="form-floating mb-3">
-                                    <div class="custom-file">
-                                        <input asp-for="HeaderImage" class="form-control" accept="image/*" />
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-floating mb-3">
-                                <input asp-for="AccountUser.PortfolioLink" class="form-control" />
-                                <label asp-for="AccountUser.PortfolioLink"></label>
-                                <span asp-validation-for="AccountUser.PortfolioLink" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="AccountUser.TwitterLink" class="form-control" />
-                                <label asp-for="AccountUser.TwitterLink"></label>
-                                <span asp-validation-for="AccountUser.TwitterLink" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="AccountUser.GitHubLink" class="form-control" />
-                                <label asp-for="AccountUser.GitHubLink"></label>
-                                <span asp-validation-for="AccountUser.GitHubLink" class="text-danger"></span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input asp-for="AccountUser.LinkedInLink" class="form-control" />
-                                <label asp-for="AccountUser.LinkedInLink"></label>
-                                <span asp-validation-for="AccountUser.LinkedInLink" class="text-danger"></span>
-                            </div>
-
-                            <div class="form-floating mb-3">
-                                <label asp-for="AccountUser.Content"></label>
-                                <textarea asp-for="AccountUser.Content" id="myEditor" class="form-control" type="text"></textarea>
-                                <span asp-validation-for="AccountUser.Content" class="text-danger"></span>
-                            </div>
-                            <div class="mt-4 mb-0">
-                                <div class="d-grid">
-                                    <input type="submit" value="Update" class="btn btn-primary btn-block" />
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-            </article>
-        </div>
-        <!-- Side widgets-->
-        <div class="col-lg-4">
-            <!-- Search widget-->
-            <div class="card mb-4">
-                <div class="card-header">Search</div>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                        <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
-                    </div>
+                        }
+                    </ul>
                 </div>
             </div>
-            <!-- Categories widget-->
-            <div class="card mb-4">
-                <div class="card-header">Categories</div>
-                <div class="card-body">
-                    <div class="row">
-                        <ul class="list-unstyled mb-0">
-                            @*{
-                                foreach (var cat in Model.BlogCategories)
-                                {
-                                    <li>
-                                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
-                                    </li>
-                                }
-                            }*@
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Side widget-->
-            <div class="card mb-4">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-            </div>
         </div>
+        <!-- Side widget-->
+        <div class="card mb-4">
+            <div class="card-header">Side Widget</div>
+            <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+        </div>*@
     </div>
 </div>
