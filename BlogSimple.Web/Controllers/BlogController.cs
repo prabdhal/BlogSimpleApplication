@@ -69,8 +69,8 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditBlog(EditBlogViewModel editBlogViewModel)
     {
-        if (!ModelState.IsValid)
-            return View("EditBlog");
+        //if (!ModelState.IsValid)
+            //return View("EditBlog");
 
         await _blogBusinessManager.EditBlog(editBlogViewModel, User);
         return RedirectToAction("Details", new { editBlogViewModel.Blog.Id });

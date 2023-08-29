@@ -31,7 +31,7 @@ namespace BlogSimple.Web.Controllers
 
         public async Task<IActionResult> Author(string id)
         {
-            AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id, User);
+            AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);
 
             return View(authorViewModel);
         }
@@ -57,9 +57,10 @@ namespace BlogSimple.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult MyAccount()
+        public async Task<ActionResult> MyAccount()
         {
-            return View();
+            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
+            return View(myAccountViewModel);
         }
 
         public IActionResult Login()
@@ -111,7 +112,6 @@ namespace BlogSimple.Web.Controllers
                     LastName = user.LastName,
                     UserName = user.UserName,
                     Email = user.Email,
-                    Description = null,
                     Content = null,
                     PortfolioLink = null,
                     TwitterLink = null,

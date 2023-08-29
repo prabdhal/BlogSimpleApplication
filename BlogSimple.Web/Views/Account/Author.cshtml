@@ -6,7 +6,7 @@
 
 @{
     ViewData["Title"] = "Author";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Home/_HomeLayoutDetails.cshtml";
 }
 
 <!-- Page content-->
@@ -17,14 +17,16 @@
             <!-- Post content-->
             <article>
                 <!-- Post header-->
-                <header class="mb-4">
+                <header class="mb-4 text-left">
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-2">About @Model.AccountUser.UserName</h1>
+                    <div class="text-muted fst-italic mb-1">Member since @Model.AccountUser.CreatedOn.ToShortDateString()</div>
+                    <br />
                     <figure class="mb-4"><img class="img-fluid rounded" src="~/UserFiles/Users/@Model.AccountUser.Id/HeaderImage.jpg" alt="@Model.AccountUser.UserName Bio Image"></figure>
-                    <div class="text-muted fst-italic mb-1">Joined on @Model.AccountUser.CreatedOn.ToShortDateString()</div>
                     <div class="m-auto">
                         @if (Model.AccountUser.PortfolioLink != null)
                         {
+                            <div>Find me at: </div>
                             <div class="text-left">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" viewBox="0 -1.5 32 32" fill="none">
                                     <path d="M12.8612 27.943C12.8281 28.4061 13.1949 28.8 13.6592 28.8H18.3408C18.8051 28.8 19.1719 28.4061 19.1388 27.943L18.4 17.6H13.6L12.8612 27.943Z" fill="url(#paint0_linear_103_1792)" />

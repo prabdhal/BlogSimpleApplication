@@ -1,4 +1,5 @@
 ﻿using BlogSimple.Model.Models;
+using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
@@ -11,23 +12,38 @@ public class AccountBusinessManager : IAccountBusinessManager
 {
     private readonly UserManager<User> _userManager;
     private readonly IUserService _userService;
+    private readonly IBlogService _blogService;
     private readonly IWebHostEnvironment webHostEnvironment;
 
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
+        IBlogService blogService,
         IWebHostEnvironment webHostEnvironment
         )
     {
         _userManager = userManager;
         _userService = userService;
+        _blogService = blogService;
         this.webHostEnvironment = webHostEnvironment;
     }
 
-
-    public async Task<AuthorViewModel> GetAuthorViewModel(string id, ClaimsPrincipal claimsPrincipal)
+    public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
     {
-        var user = await _userService.Get(id);
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+        var publishedBlog = await _blogService.GetAll(user);
+        var publishedBlogCount = publishedBlog.Count();
+
+        return new MyAccountViewModel
+        {
+            AccountUser = user,
+            PublishedBlogsCount = publishedBlogCount
+        };
+    }
+
+    public async Task<AuthorViewModel> GetAuthorViewModel(string userId)
+    {
+        var user = await _userService.Get(userId);
 
         return new AuthorViewModel
         {
@@ -50,7 +66,6 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        user.Description = aboutViewModel.AccountUser.Description;
         user.Content = aboutViewModel.AccountUser.Content;
         user.PortfolioLink = aboutViewModel.AccountUser.PortfolioLink;
         user.TwitterLink = aboutViewModel.AccountUser.TwitterLink;

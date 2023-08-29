@@ -5,7 +5,8 @@ namespace BlogSimple.Web.BusinessManager.Interfaces;
 
 public interface IAccountBusinessManager
 {
-    Task<AuthorViewModel> GetAuthorViewModel(string id, ClaimsPrincipal claimsPrincipal);
+    Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal);
+    Task<AuthorViewModel> GetAuthorViewModel(string userId);
     Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal);
     Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal);
 }

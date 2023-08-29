@@ -36,6 +36,14 @@ public class BlogService : IBlogService
         return await _blogs.Find(filterSearch).ToListAsync();
     }
 
+    public async Task<List<Blog>> GetAll(User user)
+    {
+        // Need to filter by contains text
+        var filterSearch = Builders<Blog>.Filter.Where(b => b.CreatedBy == user & b.IsPublished == true);
+
+        return await _blogs.Find(filterSearch).ToListAsync();
+    }
+
     public async Task<List<Blog>> GetPublishedOnly(string searchString)
     {
         var search = searchString.ToLower();

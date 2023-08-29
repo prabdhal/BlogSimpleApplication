@@ -20,14 +20,8 @@
     @await Component.InvokeAsync("Navigation")
 
     <!-- Page header with logo and tagline-->
-    <header class="py-5 bg-light border-bottom mb-4">
-        <div class="container">
-            <div class="text-center my-5">
-                <h1 class="fw-bolder">Welcome to Blog Simple!</h1>
-                <p class="lead mb-0">Where making blogs is made simple!</p>
-            </div>
-        </div>
-    </header>
+    @await Component.InvokeAsync("Header")
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
