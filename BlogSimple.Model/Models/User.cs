@@ -31,4 +31,6 @@ public class User : ApplicationUser
     public string GitHubLink { get; set; }
     [Display(Name = "LinkedIn Link")]
     public string LinkedInLink { get; set; }
+
+    public List<Blog> FavoritedBlogs { get; set; } = new List<Blog>();  
 }

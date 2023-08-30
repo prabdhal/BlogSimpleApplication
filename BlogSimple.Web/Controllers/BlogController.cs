@@ -31,6 +31,16 @@ public class BlogController : Controller
         return View(favoriteBlogsViewModel);
     }
 
+    // POST: BlogController/FavoriteBlog/5
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> FavoriteBlog(string id)
+    {
+        var blogDetailsViewModel = await _blogBusinessManager.FavoriteBlog(id, User);
+        return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
+    }
+
     // GET: HomeController/Details/Id
     public async Task<IActionResult> Details(string id)
     {

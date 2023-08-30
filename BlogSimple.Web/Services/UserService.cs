@@ -16,6 +16,15 @@ public class UserService : IUserService
     {
         var db = mongoClient.GetDatabase(blogSettings.DatabaseName);
         _users = db.GetCollection<User>(blogSettings.UsersCollectionName);
+
+        //var update = Builders<User>.Update.Set("FavoritedBlogs", new List<Blog>());
+        //var remove = Builders<User>.Update.Unset("FavoriteBlogs");
+        //var filter = Builders<User>.Filter.Empty;
+        //var options = new UpdateOptions { IsUpsert = true };
+
+
+        //_users.UpdateMany(filter, remove, options);
+        //_users.UpdateMany(filter, update, options);
     }
     public async Task<User> Create(User user)
     {
@@ -40,7 +49,7 @@ public class UserService : IUserService
     }
 
     public async Task<User> Update(string userName, User user)
-    {
+    {        
         await _users.ReplaceOneAsync(u => u.UserName == userName, user);
         return user;
     }

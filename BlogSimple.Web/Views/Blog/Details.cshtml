@@ -19,6 +19,31 @@
         <div class="col-lg-8 text-left">
             <!-- Post content-->
             <article>
+                <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="FavoriteBlog" asp-route-id="@Model.Blog.Id">
+                    <input asp-for="Blog.Id" readonly hidden />
+                    @if (Model.Blog.CreatedBy.FavoritedBlogs != null)
+                    {
+                        @if (Model.Blog.CreatedBy.FavoritedBlogs.Contains(Model.Blog))
+                        {
+                        <button type="submit">
+                            Unfavorite
+                        </button>
+                        }
+                        else
+                        {
+                            <button type="submit">
+                                Favorite
+                            </button>
+                        }
+                    }
+                    else
+                        {
+                        <button type="submit">
+                            Favorite
+                        </button>
+                        }
+                </form>
+
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->

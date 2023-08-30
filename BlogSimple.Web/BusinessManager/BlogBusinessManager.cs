@@ -13,6 +13,7 @@ public class BlogBusinessManager : IBlogBusinessManager
 {
     private readonly UserManager<User> _userManager;
     private readonly IBlogService _blogService;
+    private readonly IUserService _userService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
     private readonly IWebHostEnvironment webHostEnvironment;
@@ -20,6 +21,7 @@ public class BlogBusinessManager : IBlogBusinessManager
     public BlogBusinessManager(
         UserManager<User> userManager,
         IBlogService blogService,
+        IUserService userService,
         ICommentService commentService,
         ICommentReplyService commentReplyService,
             IWebHostEnvironment webHostEnvironment
@@ -27,6 +29,7 @@ public class BlogBusinessManager : IBlogBusinessManager
     {
         _userManager = userManager;
         _blogService = blogService;
+        _userService = userService;
         _commentService = commentService;
         _commentReplyService = commentReplyService;
         this.webHostEnvironment = webHostEnvironment;
@@ -46,9 +49,51 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
-    public Task<FavoriteBlogsViewModel> GetFavoriteBlogsViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
+    public async Task<FavoriteBlogsViewModel> GetFavoriteBlogsViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
     {
-        throw new NotImplementedException();
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        var usersFavoriteBlogs = user.FavoritedBlogs.ToList();
+
+        return new FavoriteBlogsViewModel
+        {
+            UsersFavoriteBlogs = usersFavoriteBlogs,
+        };
+    }
+
+    public async Task<BlogDetailsViewModel> FavoriteBlog(string id, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        var blog = await _blogService.Get(id);
+
+        var userAlreadyFavorited = user.FavoritedBlogs.Where(b => b.Id == blog.Id).FirstOrDefault();
+
+        if (userAlreadyFavorited is null)
+        {
+            user.FavoritedBlogs.Add(blog);
+        }
+        else
+        {
+            user.FavoritedBlogs.Remove(blog);
+        }
+        var savedUser = await _userService.Update(user.UserName, user);
+
+        List<string> blogCats = new List<string>();
+        var comments = await _commentService.GetAllByBlog(blog.Id);
+
+        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
+        {
+            blogCats.Add(cat.ToString());
+        }
+
+        return new BlogDetailsViewModel
+        {
+            BlogCategories = blogCats,
+            Blog = blog,
+            Comment = null,
+            Comments = comments,
+        };
     }
 
     public async Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id)
