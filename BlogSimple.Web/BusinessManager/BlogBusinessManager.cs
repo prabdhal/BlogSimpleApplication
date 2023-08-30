@@ -46,6 +46,11 @@ public class BlogBusinessManager : IBlogBusinessManager
         };
     }
 
+    public Task<FavoriteBlogsViewModel> GetFavoriteBlogsViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id)
     {
         Blog blog = await _blogService.Get(id);

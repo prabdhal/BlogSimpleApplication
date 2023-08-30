@@ -6,6 +6,7 @@ public interface ICommentReplyService
 {
     Task<CommentReply> Get(string replyId);
     Task<List<CommentReply>> GetAll();
+    Task<List<CommentReply>> GetAll(User user);
     Task<List<CommentReply>> GetAllByComment(string commentId);
     Task<List<CommentReply>> GetAllByBlog(string blogId);
     Task<CommentReply> Create(CommentReply reply);

@@ -13,18 +13,24 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly UserManager<User> _userManager;
     private readonly IUserService _userService;
     private readonly IBlogService _blogService;
+    private readonly ICommentService _commentService;
+    private readonly ICommentReplyService _replyService;
     private readonly IWebHostEnvironment webHostEnvironment;
 
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
         IBlogService blogService,
+        ICommentService commentService,
+        ICommentReplyService replyService,
         IWebHostEnvironment webHostEnvironment
         )
     {
         _userManager = userManager;
         _userService = userService;
         _blogService = blogService;
+        _commentService = commentService;
+        _replyService = replyService;
         this.webHostEnvironment = webHostEnvironment;
     }
 
@@ -34,10 +40,15 @@ public class AccountBusinessManager : IAccountBusinessManager
         var publishedBlog = await _blogService.GetAll(user);
         var publishedBlogCount = publishedBlog.Count();
 
+        var comments = await _commentService.GetAll(user);
+        var replies = await _replyService.GetAll(user);
+        var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
+
         return new MyAccountViewModel
         {
             AccountUser = user,
-            PublishedBlogsCount = publishedBlogCount
+            PublishedBlogsCount = publishedBlogCount,
+            TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
         };
     }
 

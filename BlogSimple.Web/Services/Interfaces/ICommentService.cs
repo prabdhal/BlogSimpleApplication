@@ -5,6 +5,7 @@ namespace BlogSimple.Web.Services.Interfaces;
 public interface ICommentService
 {
     Task<List<Comment>> GetAll();
+    Task<List<Comment>> GetAll(User user);
     Task<List<Comment>> GetAllByBlog(string blogId);
     Task<Comment> Get(string commentId);
     Task<Comment> Create(Comment comment);

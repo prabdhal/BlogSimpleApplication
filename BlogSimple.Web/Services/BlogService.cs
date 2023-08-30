@@ -38,8 +38,8 @@ public class BlogService : IBlogService
 
     public async Task<List<Blog>> GetAll(User user)
     {
-        // Need to filter by contains text
-        var filterSearch = Builders<Blog>.Filter.Where(b => b.CreatedBy == user & b.IsPublished == true);
+        // Need to filter by by user blogs
+        var filterSearch = Builders<Blog>.Filter.Where(b => b.CreatedBy.UserName == user.UserName & b.IsPublished == true);
 
         return await _blogs.Find(filterSearch).ToListAsync();
     }

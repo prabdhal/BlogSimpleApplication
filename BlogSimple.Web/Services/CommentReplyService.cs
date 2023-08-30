@@ -2,7 +2,6 @@
 using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings.Interfaces;
 using MongoDB.Driver;
-using System.ComponentModel.Design;
 
 namespace BlogSimple.Web.Services;
 
@@ -27,6 +26,14 @@ public class CommentReplyService : ICommentReplyService
     public async Task<List<CommentReply>> GetAll()
     {
         return await _replies.Find(_ => true).ToListAsync();
+    }
+
+    public async Task<List<CommentReply>> GetAll(User user)
+    {
+        // Need to filter by user comments
+        var filterSearch = Builders<CommentReply>.Filter.Where(c => c.CreatedBy.UserName == user.UserName);
+
+        return await _replies.Find(filterSearch).ToListAsync();
     }
 
     public async Task<List<CommentReply>> GetAllByComment(string commentId)

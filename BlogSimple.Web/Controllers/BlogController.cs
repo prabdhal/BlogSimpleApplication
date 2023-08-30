@@ -23,6 +23,14 @@ public class BlogController : Controller
         return View(blogListViewModal);
     }
 
+    [Authorize]
+    public async Task<IActionResult> FavoriteBlogs(string searchString)
+    {
+        FavoriteBlogsViewModel favoriteBlogsViewModel = await _blogBusinessManager.GetFavoriteBlogsViewModel(searchString, User);
+
+        return View(favoriteBlogsViewModel);
+    }
+
     // GET: HomeController/Details/Id
     public async Task<IActionResult> Details(string id)
     {
