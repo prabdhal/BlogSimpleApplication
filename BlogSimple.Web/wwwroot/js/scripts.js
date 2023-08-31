@@ -16,7 +16,7 @@ var blogCategoryData = JSON.parse(document.querySelector('#blogCategoryData').ge
 let blogsToShow = [];
 
 // pagination values 
-const maxBlogsPerPage = 2;
+const maxBlogsPerPage = 6;
 let currentPageNumber = 1;
 
 // search string and category
