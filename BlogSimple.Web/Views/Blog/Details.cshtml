@@ -21,27 +21,30 @@
             <article>
                 <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="FavoriteBlog" asp-route-id="@Model.Blog.Id">
                     <input asp-for="Blog.Id" readonly hidden />
-                    @if (Model.Blog.CreatedBy.FavoritedBlogs != null)
+                    @{
+                    if (Model.User.FavoritedBlogs != null)
                     {
-                        @if (Model.Blog.CreatedBy.FavoritedBlogs.Contains(Model.Blog))
-                        {
-                        <button type="submit">
-                            Unfavorite
-                        </button>
+                            var blog = Model.User.FavoritedBlogs.Where(b => b.Id == Model.Blog.Id).FirstOrDefault();
+                            if (blog != null)
+                            {
+                                <button type="submit">
+                                    Unfavorite
+                                </button>
+                            }
+                            else
+                            {
+                                <button type="submit">
+                                    Favorite
+                                </button>
+                            }
                         }
-                        else
-                        {
-                            <button type="submit">
-                                Favorite
-                            </button>
-                        }
-                    }
                     else
-                        {
+                    {
                         <button type="submit">
                             Favorite
                         </button>
                         }
+                    }
                 </form>
 
                 <!-- Post header-->

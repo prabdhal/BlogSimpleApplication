@@ -44,7 +44,7 @@ public class BlogController : Controller
     // GET: HomeController/Details/Id
     public async Task<IActionResult> Details(string id)
     {
-        BlogDetailsViewModel dashboardDetailsViewModal = await _blogBusinessManager.GetBlogDetailsViewModel(id);
+        BlogDetailsViewModel dashboardDetailsViewModal = await _blogBusinessManager.GetBlogDetailsViewModel(id, User);
 
         return View(dashboardDetailsViewModal);
     }

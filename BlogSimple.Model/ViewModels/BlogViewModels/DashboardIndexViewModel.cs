@@ -5,4 +5,5 @@ namespace BlogSimple.Model.ViewModels.BlogViewModels;
 public class DashboardIndexViewModel
 {
     public IEnumerable<Blog> UserBlogs { get; set; }
+    public User User { get; set; }
 }

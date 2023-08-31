@@ -75,7 +75,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         }
         else
         {
-            user.FavoritedBlogs.Remove(blog);
+            var removeBlog = user.FavoritedBlogs.Where(b => b.Id == blog.Id).FirstOrDefault();
+            user.FavoritedBlogs.Remove(removeBlog);
         }
         var savedUser = await _userService.Update(user.UserName, user);
 
@@ -93,16 +94,19 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = null,
             Comments = comments,
+            User = user
         };
     }
 
-    public async Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id)
+    public async Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id, ClaimsPrincipal claimsPrincipal)
     {
         Blog blog = await _blogService.Get(id);
         List<string> blogCats = new List<string>();
         var blogs = await _blogService.GetPublishedOnly("");
         var comments = await _commentService.GetAllByBlog(id);
         var replies = await _commentReplyService.GetAllByBlog(id);
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -115,7 +119,8 @@ public class BlogBusinessManager : IBlogBusinessManager
             BlogCategories = blogCats,
             Blog = blog,
             Comments = comments,
-            CommentReplies = replies
+            CommentReplies = replies,
+            User = user
         };
     }
 
@@ -302,6 +307,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
+            User = user
         };
     }
 
@@ -340,6 +346,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Comment = comment,
             Comments = comments,
             CommentReply = await _commentReplyService.Update(replyId, reply),
+            User = user
         };
     }
 
@@ -382,6 +389,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
+            User = user
         };
     }
 

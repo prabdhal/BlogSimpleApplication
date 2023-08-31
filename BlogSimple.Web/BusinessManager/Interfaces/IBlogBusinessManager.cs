@@ -10,7 +10,7 @@ public interface IBlogBusinessManager
     Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<FavoriteBlogsViewModel> GetFavoriteBlogsViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<BlogDetailsViewModel> FavoriteBlog(string id, ClaimsPrincipal claimsPrincipal);
-    Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id);
+    Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id, ClaimsPrincipal claimsPrincipal);
     Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal);
     Task<Comment> CreateComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     Task<CommentReply> CreateReply(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal);
