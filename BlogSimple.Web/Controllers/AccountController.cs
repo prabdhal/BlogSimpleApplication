@@ -1,6 +1,5 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.ViewModels.AccountViewModels;
-using BlogSimple.Model.ViewModels.BlogViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -108,7 +107,7 @@ namespace BlogSimple.Web.Controllers
             {
                 User newUser = new User
                 {
-                    FirstName = user.FirstName, 
+                    FirstName = user.FirstName,
                     LastName = user.LastName,
                     UserName = user.UserName,
                     Email = user.Email,
@@ -116,7 +115,7 @@ namespace BlogSimple.Web.Controllers
                     PortfolioLink = null,
                     TwitterLink = null,
                     GitHubLink = null,
-                    LinkedInLink = null 
+                    LinkedInLink = null
                 };
 
                 IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);

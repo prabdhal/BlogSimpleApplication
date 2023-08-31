@@ -43,12 +43,14 @@ public class AccountBusinessManager : IAccountBusinessManager
         var comments = await _commentService.GetAll(user);
         var replies = await _replyService.GetAll(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
+        var favoritedBlogsCount = user.FavoritedBlogs.Count();
 
         return new MyAccountViewModel
         {
             AccountUser = user,
             PublishedBlogsCount = publishedBlogCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
+            FavoriteBlogsCount = favoritedBlogsCount
         };
     }
 

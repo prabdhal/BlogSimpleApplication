@@ -22,7 +22,7 @@
                 <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="FavoriteBlog" asp-route-id="@Model.Blog.Id">
                     <input asp-for="Blog.Id" readonly hidden />
                     @{
-                    if (Model.User.FavoritedBlogs != null)
+                    if (Model.User != null)
                     {
                             var blog = Model.User.FavoritedBlogs.Where(b => b.Id == Model.Blog.Id).FirstOrDefault();
                             if (blog != null)

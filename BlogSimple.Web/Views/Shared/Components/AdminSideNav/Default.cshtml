@@ -1,5 +1,7 @@
 ﻿﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<User> UserManager
+@*@using BlogSimple.Model.ViewModels.AccountViewModels;
+@model MyAccountViewModel;*@
 
 
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -16,10 +18,14 @@
             <a class="nav-link" asp-controller="Blog" asp-action="CreateBlog">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Create Post
-            </a>
+            </a>@*
+            <a class="nav-link" asp-controller="Account" asp-action="Author" asp-route-id="@Model.AccountUser.Id">
+                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                View Bio
+            </a>*@
             <a class="nav-link" asp-controller="Account" asp-action="UpdateAuthor">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Update Author
+                Update Bio
             </a>
             <a class="nav-link" asp-controller="Home" asp-action="Index">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
