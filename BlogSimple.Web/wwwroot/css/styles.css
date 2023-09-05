@@ -4241,11 +4241,11 @@ textarea.form-control-lg {
 }
 
 .card-header {
-  padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
-  margin-bottom: 0;
-  color: var(--bs-card-cap-color);
-  background-color: var(--bs-card-cap-bg);
-  border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+    margin-bottom: 0;
+    color: var(--bs-card-cap-color);
+    background-color: var(--bs-card-cap-bg);
+    border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
 .card-header:first-child {
   border-radius: var(--bs-card-inner-border-radius) var(--bs-card-inner-border-radius) 0 0;
@@ -10920,7 +10920,7 @@ body {
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav {
   width: 225px;
-  height: 100vh;
+  height: 98vh;
   z-index: 1038;
 }
 .sb-nav-fixed #layoutSidenav #layoutSidenav_nav .sb-sidenav {
@@ -10975,7 +10975,7 @@ body {
 .sb-sidenav {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 98vh;
   flex-wrap: nowrap;
 }
 .sb-sidenav .sb-sidenav-menu {
