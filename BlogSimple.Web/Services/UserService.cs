@@ -38,6 +38,12 @@ public class UserService : IUserService
         return user;
     }
 
+    public async Task<User> Get(Guid id)
+    {
+        var user = await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
+        return user;
+    }
+
     public async Task<List<User>> GetAll()
     {
         return await _users.Find(_ => true).ToListAsync();

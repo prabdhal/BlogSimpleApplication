@@ -144,6 +144,10 @@ textarea.comment-textarea:focus {
     background-color: #000000;
 }
 
+.bg-dark-light {
+    background-color: #343a40 !important;
+}
+
 /* The hero image */
 .hero-image {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/blog-simple-hero-image.jpg");

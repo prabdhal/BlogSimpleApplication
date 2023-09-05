@@ -41,11 +41,14 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
+        var loggedInUser = await _userService.Get(user.Id);
+
         var userBlogs = blogs.Where(b => b.CreatedBy.Email == user.Email);
 
         return new DashboardIndexViewModel
         {
             UserBlogs = userBlogs,
+            AccountUser = loggedInUser,
         };
     }
 
@@ -58,6 +61,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         return new FavoriteBlogsViewModel
         {
             UsersFavoriteBlogs = usersFavoriteBlogs,
+            AccountUser = user
         };
     }
 
@@ -94,7 +98,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = null,
             Comments = comments,
-            User = user
+            AccountUser = user
         };
     }
 
@@ -120,8 +124,21 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comments = comments,
             CommentReplies = replies,
-            User = user
+            AccountUser = user
         };
+    }
+
+    public async Task<CreateBlogViewModel> GetCreateViewModel(ClaimsPrincipal claimsPrincipal)
+    {
+        CreateBlogViewModel createViewModel = new CreateBlogViewModel();
+
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        User loggedInUser = await _userService.Get(user.Id);
+
+        createViewModel.AccountUser = loggedInUser;
+
+        return createViewModel;
     }
 
     public async Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
@@ -208,13 +225,18 @@ public class BlogBusinessManager : IBlogBusinessManager
         return reply;
     }
 
-    public async Task<EditBlogViewModel> GetEditBlogViewModel(string blogId)
+    public async Task<EditBlogViewModel> GetEditBlogViewModel(string blogId,  ClaimsPrincipal claimsPrincipal)
     {
         var blog = await _blogService.Get(blogId);
 
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        User loggedInUser = await _userService.Get(user.Id);
+
         return new EditBlogViewModel
         {
-            Blog = blog
+            Blog = blog,
+            AccountUser = loggedInUser
         };
     }
 
@@ -307,7 +329,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
-            User = user
+            AccountUser = user
         };
     }
 
@@ -346,7 +368,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Comment = comment,
             Comments = comments,
             CommentReply = await _commentReplyService.Update(replyId, reply),
-            User = user
+            AccountUser = user
         };
     }
 
@@ -389,7 +411,7 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
-            User = user
+            AccountUser = user
         };
     }
 

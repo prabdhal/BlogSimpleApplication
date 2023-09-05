@@ -11,10 +11,11 @@ public interface IBlogBusinessManager
     Task<FavoriteBlogsViewModel> GetFavoriteBlogsViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<BlogDetailsViewModel> FavoriteBlog(string id, ClaimsPrincipal claimsPrincipal);
     Task<BlogDetailsViewModel> GetBlogDetailsViewModel(string id, ClaimsPrincipal claimsPrincipal);
+    Task<CreateBlogViewModel> GetCreateViewModel(ClaimsPrincipal claimsPrincipal);
     Task<Blog> CreateBlog(CreateBlogViewModel createViewModel, ClaimsPrincipal claimsPrincipal);
     Task<Comment> CreateComment(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     Task<CommentReply> CreateReply(BlogDetailsViewModel blogDetailsViewModel, ClaimsPrincipal claimsPrincipal);
-    Task<EditBlogViewModel> GetEditBlogViewModel(string blogId);
+    Task<EditBlogViewModel> GetEditBlogViewModel(string blogId, ClaimsPrincipal claimsPrincipal);
     Task<EditBlogViewModel> GetEditBlogViewModelViaComment(string commentId);
     Task<EditBlogViewModel> GetEditBlogViewModelViaReply(string replyId);
     Task<ActionResult<EditBlogViewModel>> EditBlog(EditBlogViewModel editBlogViewModel, ClaimsPrincipal claimsPrincipal);

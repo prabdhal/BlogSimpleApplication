@@ -35,9 +35,9 @@
                         <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="FavoriteBlog" asp-route-id="@Model.Blog.Id">
                             <input asp-for="Blog.Id" readonly hidden />
                             @{
-                                if (Model.User != null)
+                                if (Model.AccountUser != null)
                                 {
-                                    var blog = Model.User.FavoritedBlogs.Where(b => b.Id == Model.Blog.Id).FirstOrDefault();
+                                    var blog = Model.AccountUser.FavoritedBlogs.Where(b => b.Id == Model.Blog.Id).FirstOrDefault();
                                     if (blog != null)
                                     {
                                         <button type="submit" class="svgButton">
@@ -269,7 +269,7 @@
                 <div class="card-header">Search</div>
                 <div class="card-body">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                        <input class="form-control" type="text" placeholder="Search for blogs..." aria-label="Search for blogs..." aria-describedby="button-search" />
                         <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
                     </div>
                 </div>

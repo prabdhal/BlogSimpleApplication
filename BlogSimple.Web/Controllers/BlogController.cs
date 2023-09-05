@@ -51,9 +51,11 @@ public class BlogController : Controller
 
     [Authorize]
     // GET: BlogController/Create
-    public IActionResult CreateBlog()
+    public async Task<IActionResult> CreateBlog()
     {
-        return View(new CreateBlogViewModel());
+        CreateBlogViewModel createBlogViewModel = await _blogBusinessManager.GetCreateViewModel(User);
+
+        return View(createBlogViewModel);
     }
 
     // POST: BlogController/Create
@@ -73,7 +75,7 @@ public class BlogController : Controller
     // GET: BlogController/Edit/5
     public async Task<IActionResult> EditBlog(string id)
     {
-        var editBlogViewModel = await _blogBusinessManager.GetEditBlogViewModel(id);
+        var editBlogViewModel = await _blogBusinessManager.GetEditBlogViewModel(id, User);
 
         if (editBlogViewModel is null)
             return new NotFoundResult();

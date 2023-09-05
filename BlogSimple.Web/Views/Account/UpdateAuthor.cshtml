@@ -5,7 +5,7 @@
 @inject UserManager<User> UserManager
 
 @{
-    ViewData["Title"] = "Update About Me";
+    ViewData["Title"] = "Update Bio";
     Layout = "~/Views/Blog/_DashboardLayoutEditor.cshtml";
 }
 
@@ -40,15 +40,16 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="form-group">
-                            <label asp-for="HeaderImage"></label>
+                            <label asp-for="HeaderImage">Header Image</label>
                             <div class="form-floating mb-3">
                                 <div class="custom-file">
                                     <input asp-for="HeaderImage" class="form-control" accept="image/*" />
                                 </div>
                             </div>
                         </div>
+                        <br />
 
-
+                        Links
                         <div class="form-floating mb-3">
                             <input asp-for="AccountUser.PortfolioLink" class="form-control" />
                             <label asp-for="AccountUser.PortfolioLink"></label>
@@ -69,9 +70,11 @@
                             <label asp-for="AccountUser.LinkedInLink"></label>
                             <span asp-validation-for="AccountUser.LinkedInLink" class="text-danger"></span>
                         </div>
+                        <br />
 
+                        Content
                         <div class="form-floating mb-3">
-                            <label asp-for="AccountUser.Content"></label>
+                            <label asp-for="AccountUser.Content">Content</label>
                             <textarea asp-for="AccountUser.Content" id="myEditor" class="form-control" type="text"></textarea>
                             <span asp-validation-for="AccountUser.Content" class="text-danger"></span>
                         </div>

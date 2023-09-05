@@ -2,66 +2,66 @@
 
 @{
     ViewData["Title"] = "My Account";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Blog/_DashboardLayoutIndex.cshtml";
 }
 
-<h1>My Account</h1>
+<div class="container">
 
-<div>
-    <h4>@Model.AccountUser.UserName</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            First Name: 
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AccountUser.FirstName
-        </dd>
-        <dt class="col-sm-2">
-            Last Name: 
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AccountUser.LastName
-        </dd>
-        <dt class="col-sm-2">
-            UserName:
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AccountUser.UserName
-        </dd>
-        <dt class="col-sm-2">
-            Email Address:
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AccountUser.Email
-        </dd>
-        <dt class="col-sm-2">
-            Joined On:
-        </dt>
-        <dd class="col-sm-10">
-            @Model.AccountUser.CreatedOn
-        </dd>
-        <dt class="col-sm-2">
-            Published Blogs:
-        </dt>
-        <dd class="col-sm-10">
-            @Model.PublishedBlogsCount
-        </dd>
-        <dt class="col-sm-2">
-            Total Comments:
-        </dt>
-        <dd class="col-sm-10">
-            @Model.TotalCommentsAndRepliesCount
-        </dd>
-        <dt class="col-sm-2">
-            Blogs Favorited:
-        </dt>
-        <dd class="col-sm-10">
-            @Model.FavoriteBlogsCount
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-controller="Blog" asp-action="Index">Back to List</a>
+    <h1>My Account</h1>
+
+    <div>
+        <h4>@Model.AccountUser.UserName</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                First Name:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.AccountUser.FirstName
+            </dd>
+            <dt class="col-sm-2">
+                Last Name:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.AccountUser.LastName
+            </dd>
+            <dt class="col-sm-2">
+                UserName:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.AccountUser.UserName
+            </dd>
+            <dt class="col-sm-2">
+                Email Address:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.AccountUser.Email
+            </dd>
+            <dt class="col-sm-2">
+                Joined On:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.AccountUser.CreatedOn
+            </dd>
+            <dt class="col-sm-2">
+                Published Blogs:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.PublishedBlogsCount
+            </dd>
+            <dt class="col-sm-2">
+                Total Comments:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.TotalCommentsAndRepliesCount
+            </dd>
+            <dt class="col-sm-2">
+                Blogs Favorited:
+            </dt>
+            <dd class="col-sm-10">
+                @Model.FavoriteBlogsCount
+            </dd>
+        </dl>
+    </div>
+
 </div>

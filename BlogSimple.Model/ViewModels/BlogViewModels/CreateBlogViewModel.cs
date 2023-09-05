@@ -7,4 +7,5 @@ public class CreateBlogViewModel
 {
     public Blog Blog { get; set; }
     public IFormFile HeaderImage { get; set; }
+    public User AccountUser { get; set; }
 }

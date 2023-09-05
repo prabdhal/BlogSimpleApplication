@@ -9,4 +9,5 @@ public class EditBlogViewModel
     public Blog Blog { get; set; }
     [Display(Name = "Header Image")]
     public IFormFile HeaderImage { get; set; }
+    public User AccountUser { get; set; }
 }

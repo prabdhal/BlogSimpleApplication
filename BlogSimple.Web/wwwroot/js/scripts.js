@@ -23,6 +23,9 @@ let currentPageNumber = 1;
 let blogSearchString = "";
 let blogCategoryIdx = 100;
 
+let hideFeaturedBlog = false;
+let clickedCat = false;
+
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 // controller paths
@@ -34,8 +37,12 @@ const setBlogCategory = (selectedCategory) => {
     // toggle blog category on/off upon clicking same category
     if (selectedCategory == getBlogCategoryName(blogCategoryIdx)) {
         blogCategoryIdx = 100;
+        clickedCat = false;
     } else {
         blogCategoryIdx = getBlogCategoryIdx(selectedCategory);
+        console.log('hide featured Blog!');
+        hideFeaturedBlog = true;
+        clickedCat = true;
     }
     
     setBlogSearchString("");
@@ -61,7 +68,15 @@ const setUpBlogCategoryList = () => {
 
 // sets blogSearchString 
 const setBlogSearchString = (searchString) => {
-    blogSearchString = searchString;
+    blogSearchString = searchString.toLowerCase();
+    hideFeaturedBlog = false;
+    console.log(blogSearchString);
+
+    if (blogSearchString == '' && clickedCat == false) {
+        console.log('hide featured Blog!');
+        hideFeaturedBlog = true;
+    }
+
     currentPageNumber = 1;
 }
 
@@ -71,11 +86,17 @@ const setBlogsToDisplay = () => {
 
     let blogCategory = blogCategoryIdx;
 
+    displayFeaturedBlog();
+
     blogsData.forEach(b => {
         let blog = JSON.parse(b.getAttribute("value"));
 
         // exclude featured blogs
-        if (blog.isFeatured) return;
+        if (blog.isFeatured && hideFeaturedBlog) return;
+
+        console.log('title includes: ' + blog.title.toString().toLowerCase().includes(blogSearchString));
+        console.log('description includes: ' + blog.description.toString().toLowerCase().includes(blogSearchString));
+        console.log('content includes: ' + blog.content.toString().toLowerCase().includes(blogSearchString));
 
         if (blog.title.toString().toLowerCase().includes(blogSearchString) ||
             blog.description.toString().toLowerCase().includes(blogSearchString) ||
@@ -124,7 +145,10 @@ const setPageNumber = (num) => {
 
 // displays the featured blog 
 const displayFeaturedBlog = () => {
-    if (featuredBlog.id == null) return;
+
+    featuredBlogContainer.innerHTML = '';
+
+    if (featuredBlog.id == null || hideFeaturedBlog == false) return;
     console.log('display featured blog: ' + featuredBlog);
 
     var createdOnDate = new Date(featuredBlog.createdOn);
@@ -159,7 +183,9 @@ const displayBlogs = () => {
     blogsDisplayContainer.innerHTML = '';
 
     let searchHeading = document.createElement('h3');
-    if (blogSearchString == "") {
+    if (blogSearchString == "" && clickedCat == false) {
+        searchHeading.innerHTML = ``;
+    } else if (blogSearchString == "" && clickedCat) {
         searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)}`;
     } else {
         searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)} - ${blogSearchString}`;
@@ -184,7 +210,7 @@ const displayBlogs = () => {
     for (var i = curBlogIdx; i < blogIdxOnCurrentPage; i++) {
 
         if (blogsToShow[i] == null) return;
-        if (blogsToShow[i].isFeatured) return;
+        if (blogsToShow[i].isFeatured && hideFeaturedBlog) return;
 
         var createdOnDate = new Date(blogsToShow[i].createdOn);
         var year = createdOnDate.getFullYear();
@@ -361,7 +387,6 @@ setBlogSearchString("")
 setUpBlogCategoryList();
 setBlogsToDisplay();
 displayBlogs();
-displayFeaturedBlog();
 
 
 
