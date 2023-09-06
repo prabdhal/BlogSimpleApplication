@@ -15,8 +15,8 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index(string searchString)
     {
-        HomeIndexViewModel homeIndexViewModal = await _homeBusinessManager.GetHomeIndexViewModel(searchString);
+        HomeIndexViewModel homeIndexViewModel = await _homeBusinessManager.GetHomeIndexViewModel(searchString);
 
-        return View(homeIndexViewModal);
+        return View(homeIndexViewModel);
     }
 }
