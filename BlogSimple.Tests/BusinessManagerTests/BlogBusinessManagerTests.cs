@@ -142,8 +142,40 @@ public class BlogBusinessManagerTests
         // Act
         var result = _blogBusinessManager.EditBlog(viewModel, claimsPrincipal);
 
-        Console.WriteLine("result");
         // Assert
         result.Should().BeOfType<Task<ActionResult<EditBlogViewModel>>>();
     }
+
+    [Fact]
+    public void BlogBusinessManager_DeleteBlog_ReturnBlog()
+    {
+        // Arrange
+        Blog blog = new Blog();
+        string deleteBlogId = "1";
+        blog.Id = deleteBlogId;
+        A.CallTo(() => _blogService.Get(deleteBlogId)).Returns(blog);
+        A.CallTo(() => _commentService.RemoveAllByBlog(deleteBlogId));
+        A.CallTo(() => _commentReplyService.RemoveAllByBlog(deleteBlogId));
+
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}";
+
+        string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
+        foreach (string file in files)
+        {
+            File.Delete(file);
+        }
+        //then delete folder
+        Directory.Delete(pathToImage);
+
+        A.CallTo(() => _blogService.Remove(blog));
+
+        // Act
+        var result = _blogBusinessManager.DeleteBlog(deleteBlogId);
+
+        // Assert
+        result.Should().BeOfType<Task<ActionResult<Blog>>>();
+    }
+
+
 }
