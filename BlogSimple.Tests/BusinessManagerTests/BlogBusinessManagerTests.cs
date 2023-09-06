@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSimple.Tests.BusinessManagerTests;
 
@@ -41,18 +42,18 @@ public class BlogBusinessManagerTests
     public async void BlogBusinessManager_CreateBlog_ReturnBlog()
     {
         // Arrange
-        CreateBlogViewModel viewModel = A.Fake<CreateBlogViewModel>();
+        CreateBlogViewModel createViewModel = A.Fake<CreateBlogViewModel>();
         Blog b = A.Fake<Blog>();
-        var u = A.Fake<ClaimsPrincipal>();
+        ClaimsPrincipal claimsPrincipal = A.Fake<ClaimsPrincipal>();
         User user = new User();
         IFormFile headerImage = A.Fake<IFormFile>();
-        viewModel.HeaderImage = headerImage;
+        createViewModel.HeaderImage = headerImage;
 
-        A.CallTo(() => _userManager.GetUserAsync(u)).Returns(user);
+        A.CallTo(() => _userManager.GetUserAsync(claimsPrincipal)).Returns(user);
 
         // Act
-        viewModel.Blog = b;
-        Blog blog = viewModel.Blog;
+        createViewModel.Blog = b;
+        Blog blog = createViewModel.Blog;
         blog.CreatedBy = user;
         blog.CreatedOn = DateTime.Now;
         blog.UpdatedOn = DateTime.Now;
@@ -64,17 +65,18 @@ public class BlogBusinessManagerTests
 
         EnsureFolder(pathToImage);
 
-        IFormFile headerImg = viewModel.HeaderImage;
+        IFormFile headerImg = createViewModel.HeaderImage;
 
         using (var fileStream = new FileStream(pathToImage, FileMode.Create))
         {
             await headerImg.CopyToAsync(fileStream);
         }
 
-        var result = _blogBusinessManager.CreateBlog(viewModel, u);
+        var result = _blogBusinessManager.CreateBlog(createViewModel, claimsPrincipal);
 
         // Assert
         result.Should().BeOfType<Task<Blog>>();
+        result.Result.CreatedBy.Should().BeOfType<User>();
     }
 
     private void EnsureFolder(string path)
@@ -84,5 +86,64 @@ public class BlogBusinessManagerTests
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
         }
+    }
+
+    [Fact]
+    public async void BlogBusinessManager_EditBlog_ReturnEditViewModel()
+    {
+        // Arrange 
+        EditBlogViewModel editViewModel = A.Fake<EditBlogViewModel>();
+        Blog blog = new Blog();
+        User user = new User();
+        blog.Id = "1";
+        editViewModel.Blog = blog;
+        var edittedId = editViewModel.Blog.Id;
+        A.CallTo(() => _blogService.Get(edittedId)).Returns(blog);
+        ClaimsPrincipal claimsPrincipal = A.Fake<ClaimsPrincipal>();
+        IFormFile headerImage = A.Fake<IFormFile>();
+        editViewModel.HeaderImage = headerImage;
+
+        // setting up random values for old blog
+        blog.Title = "Old Blog";
+
+        // setting up random values for editted blog 
+        editViewModel.Blog.Title = "Editted Blog";
+
+        blog.Title = editViewModel.Blog.Title;
+        blog.Category = editViewModel.Blog.Category;
+        blog.Description = editViewModel.Blog.Description;
+        blog.Content = editViewModel.Blog.Content;
+        blog.IsPublished = editViewModel.Blog.IsPublished;
+        blog.UpdatedOn = DateTime.Now;
+
+        if (editViewModel.HeaderImage != null)
+        {
+            string webRootPath = webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Blogs\{blog.Id}\HeaderImage.jpg";
+
+            EnsureFolder(pathToImage);
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await editViewModel.HeaderImage.CopyToAsync(fileStream);
+            }
+        }
+
+        A.CallTo(() => _userManager.GetUserAsync(claimsPrincipal)).Returns(user);
+
+        A.CallTo(() => _blogService.Update(edittedId, blog)).Returns(blog);
+
+        EditBlogViewModel viewModel = new EditBlogViewModel
+        {
+            Blog = blog,
+            AccountUser = user,
+        };
+
+        // Act
+        var result = _blogBusinessManager.EditBlog(viewModel, claimsPrincipal);
+
+        Console.WriteLine("result");
+        // Assert
+        result.Should().BeOfType<Task<ActionResult<EditBlogViewModel>>>();
     }
 }
