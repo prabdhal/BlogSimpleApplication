@@ -1,6 +1,5 @@
 ﻿@using BlogSimple.Model.ViewModels.BlogViewModels;
 @using Microsoft.AspNetCore.Identity;
-@using BlogSimple.Model.ViewModels.HomeViewModels;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 @model BlogDetailsViewModel;
@@ -105,7 +104,7 @@
                         </div>
                         <div>
                             <!-- Comment with nested comments-->
-                            <h3 class="mb-5">@Model.Comments.Count() Comments</h3>
+                            <h3 class="mb-5">@Model.CommentCount Comments</h3>
                             <!-- Comments -->
                             @{
                                 if (Model.Comments.Any())

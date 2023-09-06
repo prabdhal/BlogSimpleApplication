@@ -98,7 +98,8 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = null,
             Comments = comments,
-            AccountUser = user
+            AccountUser = user,
+            CommentCount = 0,
         };
     }
 
@@ -111,6 +112,7 @@ public class BlogBusinessManager : IBlogBusinessManager
         var replies = await _commentReplyService.GetAllByBlog(id);
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
+        int commentCount = comments.Count() + replies.Count();
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -124,7 +126,8 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comments = comments,
             CommentReplies = replies,
-            AccountUser = user
+            AccountUser = user,
+            CommentCount = commentCount
         };
     }
 
@@ -313,10 +316,14 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (comment is null)
             return new NotFoundResult();
 
+        var replies = await _commentReplyService.GetAllByBlog(blog.Id);
+
         comment.Content = blogDetailsViewModel.Comment.Content;
 
         List<string> blogCats = new List<string>();
         var comments = await _commentService.GetAllByBlog(blog.Id);
+
+        int commentCount = comments.Count() + replies.Count();
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -329,7 +336,8 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
-            AccountUser = user
+            AccountUser = user,
+            CommentCount = commentCount
         };
     }
 
@@ -347,6 +355,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (comment is null)
             return new NotFoundResult();
 
+        var replies = await _commentReplyService.GetAllByBlog(blog.Id);
+
         var reply = await _commentReplyService.Get(replyId);
         if (reply is null)
             return new NotFoundResult();
@@ -355,6 +365,8 @@ public class BlogBusinessManager : IBlogBusinessManager
 
         List<string> blogCats = new List<string>();
         var comments = await _commentService.GetAllByBlog(blog.Id);
+
+        int commentCount = comments.Count() + replies.Count();
 
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
@@ -368,7 +380,8 @@ public class BlogBusinessManager : IBlogBusinessManager
             Comment = comment,
             Comments = comments,
             CommentReply = await _commentReplyService.Update(replyId, reply),
-            AccountUser = user
+            AccountUser = user,
+            CommentCount = commentCount
         };
     }
 
@@ -386,6 +399,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         if (comment is null)
             return new NotFoundResult();
 
+        var replies = await _commentReplyService.GetAllByBlog(blog.Id);
+
         var userAlreadyLiked = comment.CommentLikedByUsers.Where(u => u.Id == user.Id).FirstOrDefault();
 
         if (userAlreadyLiked is null)
@@ -400,6 +415,8 @@ public class BlogBusinessManager : IBlogBusinessManager
         List<string> blogCats = new List<string>();
         var comments = await _commentService.GetAllByBlog(blog.Id);
 
+        int commentCount = comments.Count() + replies.Count();
+
         foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
         {
             blogCats.Add(cat.ToString());
@@ -411,7 +428,8 @@ public class BlogBusinessManager : IBlogBusinessManager
             Blog = blog,
             Comment = await _commentService.Update(commentId, comment),
             Comments = comments,
-            AccountUser = user
+            AccountUser = user,
+            CommentCount = commentCount
         };
     }
 

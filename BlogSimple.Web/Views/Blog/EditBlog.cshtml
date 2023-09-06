@@ -58,19 +58,15 @@
             <br />
             <div class="card-footer">
                 <div class="form-group">
-                    <p class="text-muted">Publish now or save for later edits.</p>
+                    <div class="text-muted">Publish now or save for later edits.</div>
                     <label>Publish now?</label>
                     <input asp-for="Blog.IsPublished" type="checkbox" data-toggle="toggle" />
-                    <br />
-                    <input type="submit" value="Update" class="btn btn-primary" />
                 </div>
             </div>
+            <br />
+            <input class="btn btn-primary" type="submit" value="Update" />
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

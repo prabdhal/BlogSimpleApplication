@@ -2,84 +2,88 @@
 
 @{
     ViewData["Title"] = "Register";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
 }
 
 
-
-
-<div id="layoutAuthentication_content">
-    <main>
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-7">
-                    <div class="card bg-dark shadow-lg border-0 rounded-lg mt-5">
-                        <div class="card-header text-white"><h3 class="text-center font-weight-light my-4">Welcome to Blog Simple!</h3></div>
-                        <div class="card-body">
-                            @if (ViewBag.Message != null)
-                            {
-                                <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
-                            }
-                            <form asp-action="Register">
-                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3 mb-md-0">
-                                            <input asp-for="FirstName" class="form-control" type="text" />
-                                            <label asp-for="FirstName">First Name</label>
-                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-7">
+                        <div class="card bg-dark shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header text-white">
+                                <h3 class="text-center font-weight-light my-4">Welcome to Blog Simple!</h3>
+                            </div>
+                            <div class="card-body">
+                                @if (ViewBag.Message != null)
+                                {
+                                    <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+                                }
+                                <form asp-action="Register">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input asp-for="FirstName" class="form-control" type="text" />
+                                                <label asp-for="FirstName">First Name</label>
+                                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating">
+                                                <input asp-for="LastName" class="form-control" type="text" />
+                                                <label asp-for="LastName">Last Name</label>
+                                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input asp-for="LastName" class="form-control" type="text" />
-                                            <label asp-for="LastName">Last Name</label>
-                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="UserName" class="form-control" />
+                                        <label asp-for="UserName">Username</label>
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Email" class="form-control" />
+                                        <label asp-for="Email"></label>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input asp-for="Password" class="form-control" />
+                                                <label asp-for="Password"></label>
+                                                <span asp-validation-for="Password" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input asp-for="ConfirmPassword" class="form-control" />
+                                                <label asp-for="ConfirmPassword">Confirm Password</label>
+                                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input asp-for="UserName" class="form-control" />
-                                    <label asp-for="UserName">Username</label>
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <input asp-for="Email" class="form-control" />
-                                    <label asp-for="Email"></label>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3 mb-md-0">
-                                    <input asp-for="Password" class="form-control" />
-                                    <label asp-for="Password"></label>
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                        </div>
+                                    <div>
+                                        <input type="submit" value="Register" class="btn btn-primary btn-block w-100 p-2" />
+                                        <div class="text-white my-2 font-weight-bold">OR</div>
+                                        <div class="small"><a href="/Account/Login" class="text-white">Have an account? Go to login</a></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-3 mb-md-0">
-                                            <input asp-for="ConfirmPassword" class="form-control" />
-                                            <label asp-for="ConfirmPassword">Confirm Password</label>
-                                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <input type="submit" value="Register" class="btn btn-primary btn-block w-100 p-2" />
-                                    <div class="text-white my-2 font-weight-bold">OR</div>
-                                    <div class="small"><a href="/Account/Login" class="text-white">Have an account? Go to login</a></div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 </div>
 
 
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
