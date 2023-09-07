@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSimple.Web", "BlogSimpl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSimple.Model", "BlogSimple.Model\BlogSimple.Model.csproj", "{32826753-6EA5-4FC8-88CA-61780DE7E257}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSimple.Tests", "BlogSimple.Tests\BlogSimple.Tests.csproj", "{18215306-7AED-4B03-BBCC-18D39107119C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSimple.Tests", "BlogSimple.Tests\BlogSimple.Tests.csproj", "{18215306-7AED-4B03-BBCC-18D39107119C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{EB939A45-EA4D-4A3A-A97D-AA17EDC610CB} = {EB939A45-EA4D-4A3A-A97D-AA17EDC610CB}
 	EndProjectSection

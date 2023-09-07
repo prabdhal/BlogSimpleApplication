@@ -31,10 +31,13 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentReplyService, CommentReplyService>();
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
 builder.Services.AddScoped<IAccountBusinessManager, AccountBusinessManager>();
+
+builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
 
 builder.Services.AddIdentity<User, ApplicationRole>()
     .AddMongoDbStores<User, ApplicationRole, Guid>(

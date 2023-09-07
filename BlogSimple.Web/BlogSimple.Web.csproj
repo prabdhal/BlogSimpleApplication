@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="EmailTemplate\TestEmail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="EmailTemplate\TestEmail.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.2" />
     <PackageReference Include="bootstrap" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="7.0.9" />

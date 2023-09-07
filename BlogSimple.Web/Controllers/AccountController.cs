@@ -1,6 +1,7 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,18 +14,21 @@ namespace BlogSimple.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IEmailService _emailService;
         private readonly IAccountBusinessManager _accountBusinessManager;
 
         public AccountController(
             UserManager<User> userManager,
             RoleManager<ApplicationRole> roleManager,
             SignInManager<User> signInManager,
-            IAccountBusinessManager accountBusinessManager
+            IAccountBusinessManager accountBusinessManager,
+            IEmailService emailService
             )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _emailService = emailService;
             _accountBusinessManager = accountBusinessManager;
         }
 
@@ -58,6 +62,15 @@ namespace BlogSimple.Web.Controllers
         [Authorize]
         public async Task<ActionResult> MyAccount()
         {
+            UserEmailOptions options = new UserEmailOptions
+            {
+                ToEmails = new List<string>()
+                {
+                    "helena56@ethereal.email"
+                }
+            };
+
+            await _emailService.SendTestEmail(options);
             var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
             return View(myAccountViewModel);
         }
