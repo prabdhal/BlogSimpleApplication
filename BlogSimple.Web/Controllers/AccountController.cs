@@ -62,11 +62,18 @@ namespace BlogSimple.Web.Controllers
         [Authorize]
         public async Task<ActionResult> MyAccount()
         {
+            var user = await _userManager.GetUserAsync(User);
+
             UserEmailOptions options = new UserEmailOptions
             {
                 ToEmails = new List<string>()
                 {
-                    "helena56@ethereal.email"
+                    "jennie99@ethereal.email"
+                },
+                PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{FirstName}}", user.UserName),
+                    new KeyValuePair<string, string>("{{LastName}}", user.Email),
                 }
             };
 

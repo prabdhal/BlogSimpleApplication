@@ -19,8 +19,8 @@ public class EmailService : IEmailService
 
     public async Task SendTestEmail(UserEmailOptions userEmailOptions)
     {
-        userEmailOptions.Subject = "BlogSimple Verification";
-        userEmailOptions.Body = GetEmailBody("TestEmail");
+        userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Verification", userEmailOptions.PlaceHolders);
+        userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("TestEmail"), userEmailOptions.PlaceHolders);
 
         await SendEmail(userEmailOptions);
     }
@@ -60,5 +60,21 @@ public class EmailService : IEmailService
     {
         var body = File.ReadAllText(string.Format(templatePath, templateName));
         return body;
+    }
+
+    private string UpdatePlaceHolders(string text, List<KeyValuePair<string, string>> keyValuePairs)
+    {
+        if (!string.IsNullOrEmpty(text) && keyValuePairs != null)
+        {
+            foreach (var placeholder in keyValuePairs)
+            {
+                if (text.Contains(placeholder.Key))
+                {
+                    text = text.Replace(placeholder.Key, placeholder.Value);
+                }
+            }
+        }
+
+        return text;
     }
 }
