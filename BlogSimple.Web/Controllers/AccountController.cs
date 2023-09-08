@@ -64,20 +64,6 @@ namespace BlogSimple.Web.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            UserEmailOptions options = new UserEmailOptions
-            {
-                ToEmails = new List<string>()
-                {
-                    "jennie99@ethereal.email"
-                },
-                PlaceHolders = new List<KeyValuePair<string, string>>()
-                {
-                    new KeyValuePair<string, string>("{{FirstName}}", user.UserName),
-                    new KeyValuePair<string, string>("{{LastName}}", user.Email),
-                }
-            };
-
-            await _emailService.SendTestEmail(options);
             var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
             return View(myAccountViewModel);
         }
@@ -113,6 +99,14 @@ namespace BlogSimple.Web.Controllers
                     {
                         return Redirect(returnurl ?? "/Blog/Index");
                     }
+                    if (result.IsNotAllowed)
+                    {
+                        ModelState.AddModelError("", "Please verify your email address");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Invalid credentials");
+                    }
                 }
                 ModelState.AddModelError(nameof(username), "Login Failed: Invalid Email or Password");
             }
@@ -140,7 +134,14 @@ namespace BlogSimple.Web.Controllers
 
                 IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
                 if (result.Succeeded)
+                {
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        await _accountBusinessManager.SendEmailConfirmationEmail(newUser, token);
+                    }
                     ViewBag.Message = "User created successfully!";
+                }
                 else
                 {
                     foreach (IdentityError error in result.Errors)
@@ -178,6 +179,21 @@ namespace BlogSimple.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uid, string token)
+        {
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            {
+                var result = await _accountBusinessManager.ConfirmEmailAsync(uid, token);
+                if (result.Succeeded)
+                {
+                    ViewBag.IsSuccess = true;
+                }
+            }
+
+            return View();
         }
     }
 }

@@ -17,10 +17,10 @@ public class EmailService : IEmailService
         _smtpConfig = smtpConfig.Value;
     }
 
-    public async Task SendTestEmail(UserEmailOptions userEmailOptions)
+    public async Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions)
     {
         userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Verification", userEmailOptions.PlaceHolders);
-        userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("TestEmail"), userEmailOptions.PlaceHolders);
+        userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("EmailConfirm"), userEmailOptions.PlaceHolders);
 
         await SendEmail(userEmailOptions);
     }

@@ -4,5 +4,5 @@ namespace BlogSimple.Web.Services.Interfaces;
 
 public interface IEmailService
 {
-    Task SendTestEmail(UserEmailOptions userEmailOptions);
+    Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions);
 }

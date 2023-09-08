@@ -4,6 +4,7 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -15,7 +16,9 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly IBlogService _blogService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
+    private readonly IEmailService _emailService;
     private readonly IWebHostEnvironment webHostEnvironment;
+    private readonly IConfiguration _configuration;
 
     public AccountBusinessManager(
         UserManager<User> userManager,
@@ -23,6 +26,8 @@ public class AccountBusinessManager : IAccountBusinessManager
         IBlogService blogService,
         ICommentService commentService,
         ICommentReplyService replyService,
+        IEmailService emailService,
+        IConfiguration configuration,
         IWebHostEnvironment webHostEnvironment
         )
     {
@@ -31,6 +36,8 @@ public class AccountBusinessManager : IAccountBusinessManager
         _blogService = blogService;
         _commentService = commentService;
         _replyService = replyService;
+        _emailService = emailService;
+        _configuration = configuration;
         this.webHostEnvironment = webHostEnvironment;
     }
 
@@ -111,5 +118,33 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             Directory.CreateDirectory(Path.GetDirectoryName(path));
         }
+    }
+
+    public async Task SendEmailConfirmationEmail(User user, string token)
+    {
+        string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+        string configurationLink = _configuration.GetSection("Application:EmailConfirmation").Value;
+
+        UserEmailOptions options = new UserEmailOptions
+        {
+            ToEmails = new List<string>()
+            {
+                user.Email
+            },
+            PlaceHolders = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("{{FirstName}}", user.FirstName),
+                new KeyValuePair<string, string>("{{LastName}}", user.LastName),
+                new KeyValuePair<string, string>("{{Link}}", string.Format(appDomain + configurationLink, user.Id, token)),
+            }
+        };
+
+        await _emailService.SendEmailForEmailConfirmation(options);
+    }
+
+    public async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)
+    {
+        var user = await _userManager.FindByIdAsync(uid);
+        return await _userManager.ConfirmEmailAsync(user, token);
     }
 }

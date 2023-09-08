@@ -1,0 +1,46 @@
+﻿@model BlogSimple.Model.Models.User
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
+}
+
+
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-5">
+                        <div class="card bg-dark shadow-lg border-0 rounded-lg mt-5">
+                            <div class="card-header">
+                                <h3 class="text-center text-white font-weight-light my-4">Welcome to Blog Simple!</h3>
+                            </div>
+                            <div class="card-body">
+                                @if (ViewBag.IsSuccess = true)
+                                {
+                                    {
+                                        <div class="alert alert-success" role="alert">
+                                            <p>You have confirmed your account! Please click <a asp-controller="Account" asp-action="Login">here</a> to login to your account.</p>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Sorry! Seems like something went wrong or your token has been expired...</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="EmailTemplate\EmailConfirm.html" />
     <None Remove="EmailTemplate\TestEmail.html" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="EmailTemplate\EmailConfirm.html" />
     <Content Include="EmailTemplate\TestEmail.html" />
   </ItemGroup>
 
