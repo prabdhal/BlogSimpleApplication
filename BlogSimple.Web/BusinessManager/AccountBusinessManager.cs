@@ -41,6 +41,48 @@ public class AccountBusinessManager : IAccountBusinessManager
         this.webHostEnvironment = webHostEnvironment;
     }
 
+    public async Task<User> GetUserByEmailAsync(string email)
+    {
+        return await _userManager.FindByEmailAsync(email);
+    }
+
+    public async Task<IdentityResult> CreateUserAsync(User user)
+    {
+        User newUser = new User
+        {
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            UserName = user.UserName,
+            Email = user.Email,
+            Content = null,
+            PortfolioLink = null,
+            TwitterLink = null,
+            GitHubLink = null,
+            LinkedInLink = null
+        };
+
+        IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
+        if (result.Succeeded)
+        {
+            await GenerateEmailConfirmationTokenAsync(newUser);
+        }
+        return result;
+    }
+
+    public async Task GenerateEmailConfirmationTokenAsync(User user)
+    {
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        if (!string.IsNullOrEmpty(token))
+        {
+            await SendEmailConfirmationEmail(user, token);
+        }
+    }
+
+    //public async Task<SignInResult> PasswordSignInAsync(User user)
+    //{
+    //    return await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
+    //}
+
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);

@@ -12,9 +12,7 @@ namespace BlogSimple.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly IEmailService _emailService;
         private readonly IAccountBusinessManager _accountBusinessManager;
 
         public AccountController(
@@ -26,9 +24,7 @@ namespace BlogSimple.Web.Controllers
             )
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _signInManager = signInManager;
-            _emailService = emailService;
             _accountBusinessManager = accountBusinessManager;
         }
 
@@ -68,18 +64,34 @@ namespace BlogSimple.Web.Controllers
             return View(myAccountViewModel);
         }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
-
         public IActionResult Register()
         {
             return View();
         }
 
-        [Authorize]
-        public IActionResult RegisterRole()
+        [HttpPost]
+        public async Task<IActionResult> Register(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountBusinessManager.CreateUserAsync(user);
+                if (!result.Succeeded)
+                {
+                    foreach (var errorMessage in result.Errors)
+                    {
+                        ModelState.AddModelError("", errorMessage.Description);
+                    }
+
+                    return View(user);
+                }
+                
+                ModelState.Clear();
+                return RedirectToAction("ConfirmEmail", new { email = user.Email });
+            }
+
+            return View(user);
+        }
+        public IActionResult Login()
         {
             return View();
         }
@@ -108,69 +120,8 @@ namespace BlogSimple.Web.Controllers
                         ModelState.AddModelError("", "Invalid credentials");
                     }
                 }
-                ModelState.AddModelError(nameof(username), "Login Failed: Invalid Email or Password");
             }
 
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                User newUser = new User
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    UserName = user.UserName,
-                    Email = user.Email,
-                    Content = null,
-                    PortfolioLink = null,
-                    TwitterLink = null,
-                    GitHubLink = null,
-                    LinkedInLink = null
-                };
-
-                IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
-                if (result.Succeeded)
-                {
-                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                    if (!string.IsNullOrEmpty(token))
-                    {
-                        await _accountBusinessManager.SendEmailConfirmationEmail(newUser, token);
-                    }
-                    ViewBag.Message = "User created successfully!";
-                }
-                else
-                {
-                    foreach (IdentityError error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
-                }
-            }
-            return View(user);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> RegisterRole(UserRole userRole)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationRole newRole = new ApplicationRole()
-                {
-                    Name = userRole.RoleName,
-                };
-
-                IdentityResult result = await _roleManager.CreateAsync(newRole);
-
-                if (result.Succeeded)
-                    ViewBag.Message = "Role Created Successfully!";
-                else
-                {
-                    foreach (IdentityError error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
-                }
-            }
             return View();
         }
 
@@ -182,18 +133,48 @@ namespace BlogSimple.Web.Controllers
         }
 
         [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(string uid, string token)
+        public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
         {
+            EmailConfirm model = new EmailConfirm
+            {
+                Email = email
+            };
+
             if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
             {
+                token = token.Replace(' ', '+');
                 var result = await _accountBusinessManager.ConfirmEmailAsync(uid, token);
                 if (result.Succeeded)
                 {
-                    ViewBag.IsSuccess = true;
+                    model.EmailVerified = true;
                 }
             }
 
-            return View();
+            return View(model);
+        }
+
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(EmailConfirm model)
+        {
+            User user = await _accountBusinessManager.GetUserByEmailAsync(model.Email);
+            if (user != null)
+            {
+                if (user.EmailConfirmed)
+                {
+                    model.EmailVerified = true;
+                    return View(model);
+                }
+
+                await _accountBusinessManager.GenerateEmailConfirmationTokenAsync(user);
+                model.EmailSent = true;
+                ModelState.Clear();
+            }
+            else
+            {
+                ModelState.AddModelError("", "Something went wrong");
+            }
+            return View(model);
         }
     }
 }
