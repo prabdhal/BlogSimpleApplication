@@ -135,7 +135,7 @@ namespace BlogSimple.Web.Controllers
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
         {
-            EmailConfirm model = new EmailConfirm
+            EmailConfirmViewModel model = new EmailConfirmViewModel
             {
                 Email = email
             };
@@ -155,7 +155,7 @@ namespace BlogSimple.Web.Controllers
 
 
         [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(EmailConfirm model)
+        public async Task<IActionResult> ConfirmEmail(EmailConfirmViewModel model)
         {
             User user = await _accountBusinessManager.GetUserByEmailAsync(model.Email);
             if (user != null)
@@ -173,6 +173,62 @@ namespace BlogSimple.Web.Controllers
             else
             {
                 ModelState.AddModelError("", "Something went wrong");
+            }
+            return View(model);
+        }
+
+        [AllowAnonymous, HttpGet("forgot-password")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [AllowAnonymous, HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _accountBusinessManager.GetUserByEmailAsync(model.Email);
+                if (user != null)
+                {
+                    await _accountBusinessManager.GenerateForgotPasswordConfirmationTokenAsync(user);
+                }
+
+                ModelState.Clear();
+                model.EmailSent = true;
+            }
+            return View(model);
+        }
+
+        [AllowAnonymous, HttpGet("reset-password")]
+        public IActionResult ResetPassword(string uid, string token)
+        {
+            ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel
+            {
+                Token = token,
+                UserId = uid
+            };
+            return View(resetPasswordViewModel);
+        }
+
+        [AllowAnonymous, HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.Token = model.Token.Replace(' ', '+');
+                var result = await _accountBusinessManager.ResetPasswordAsync(model);
+                if (result.Succeeded)
+                {
+                    ModelState.Clear();
+                    model.IsSuccessful = true;
+                    return View(model);
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
             }
             return View(model);
         }

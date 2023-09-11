@@ -25,6 +25,14 @@ public class EmailService : IEmailService
         await SendEmail(userEmailOptions);
     }
 
+    public async Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions)
+    {
+        userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Password Reset", userEmailOptions.PlaceHolders);
+        userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
+
+        await SendEmail(userEmailOptions);
+    }
+
     private async Task SendEmail(UserEmailOptions userEmailOptions)
     {
         MailMessage mail = new MailMessage

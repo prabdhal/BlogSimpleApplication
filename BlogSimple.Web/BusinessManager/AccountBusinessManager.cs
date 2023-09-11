@@ -4,7 +4,6 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -13,6 +12,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 {
     private readonly UserManager<User> _userManager;
     private readonly IUserService _userService;
+    private readonly IRoleService _roleService;
     private readonly IBlogService _blogService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
@@ -23,6 +23,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
+        IRoleService roleService,
         IBlogService blogService,
         ICommentService commentService,
         ICommentReplyService replyService,
@@ -33,6 +34,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         _userManager = userManager;
         _userService = userService;
+        _roleService = roleService;
         _blogService = blogService;
         _commentService = commentService;
         _replyService = replyService;
@@ -44,6 +46,13 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<User> GetUserByEmailAsync(string email)
     {
         return await _userManager.FindByEmailAsync(email);
+    }
+
+    public async Task<IdentityResult> ResetPasswordAsync(ResetPasswordViewModel model)
+    {
+        var user = await _userManager.FindByIdAsync(model.UserId);
+
+        return await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
     }
 
     public async Task<IdentityResult> CreateUserAsync(User user)
@@ -75,6 +84,15 @@ public class AccountBusinessManager : IAccountBusinessManager
         if (!string.IsNullOrEmpty(token))
         {
             await SendEmailConfirmationEmail(user, token);
+        }
+    }
+
+    public async Task GenerateForgotPasswordConfirmationTokenAsync(User user)
+    {
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        if (!string.IsNullOrEmpty(token))
+        {
+            await SendForgotPasswordEmail(user, token);
         }
     }
 
@@ -182,6 +200,28 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
 
         await _emailService.SendEmailForEmailConfirmation(options);
+    }
+
+    public async Task SendForgotPasswordEmail(User user, string token)
+    {
+        string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+        string configurationLink = _configuration.GetSection("Application:ForgotPassword").Value;
+
+        UserEmailOptions options = new UserEmailOptions
+        {
+            ToEmails = new List<string>()
+            {
+                user.Email
+            },
+            PlaceHolders = new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("{{FirstName}}", user.FirstName),
+                new KeyValuePair<string, string>("{{LastName}}", user.LastName),
+                new KeyValuePair<string, string>("{{Link}}", string.Format(appDomain + configurationLink, user.Id, token)),
+            }
+        };
+
+        await _emailService.SendEmailForForgotPassword(options);
     }
 
     public async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)

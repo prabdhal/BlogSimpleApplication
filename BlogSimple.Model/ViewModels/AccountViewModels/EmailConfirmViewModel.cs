@@ -1,6 +1,6 @@
-﻿namespace BlogSimple.Model.Models;
+﻿namespace BlogSimple.Model.ViewModels.AccountViewModels;
 
-public class EmailConfirm
+public class EmailConfirmViewModel
 {
     public string Email { get; set; }
     public bool IsConfirmed { get; set; }

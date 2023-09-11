@@ -4,6 +4,7 @@ public interface IBlogSimpleDatabaseSettings
 {
     public string BlogsCollectionName { get; set; }
     public string UsersCollectionName { get; set; }
+    public string RolesCollectionName { get; set; }
     public string CommentsCollectionName { get; set; }
     public string RepliesCollectionName { get; set; }
     public string ConnectionString { get; set; }
