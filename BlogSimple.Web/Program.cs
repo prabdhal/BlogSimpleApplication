@@ -41,8 +41,8 @@ builder.Services.AddScoped<IAccountBusinessManager, AccountBusinessManager>();
 
 builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
 
-builder.Services.AddIdentity<User, ApplicationRole>()
-    .AddMongoDbStores<User, ApplicationRole, Guid>(
+builder.Services.AddIdentity<User, UserRole>()
+    .AddMongoDbStores<User, UserRole, Guid>(
     builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString"),
     builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:DatabaseName"))
     .AddDefaultTokenProviders();

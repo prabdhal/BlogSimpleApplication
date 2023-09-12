@@ -2,6 +2,7 @@
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services.Interfaces;
 
 namespace BlogSimple.Web.BusinessManager;
 

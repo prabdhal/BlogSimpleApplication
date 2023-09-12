@@ -1,6 +1,6 @@
-﻿namespace BlogSimple.Web.Services.Interfaces
+﻿namespace BlogSimple.Web.Services.Interfaces;
+
+public interface IRoleService
 {
-    public interface IRoleService
-    {
-    }
+    Task InitializeRoles();
 }

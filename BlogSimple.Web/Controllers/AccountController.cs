@@ -1,7 +1,6 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
-using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,22 +11,24 @@ namespace BlogSimple.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<UserRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IAccountBusinessManager _accountBusinessManager;
 
         public AccountController(
             UserManager<User> userManager,
-            RoleManager<ApplicationRole> roleManager,
+            RoleManager<UserRole> roleManager,
             SignInManager<User> signInManager,
-            IAccountBusinessManager accountBusinessManager,
-            IEmailService emailService
+            IAccountBusinessManager accountBusinessManager
             )
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _signInManager = signInManager;
             _accountBusinessManager = accountBusinessManager;
         }
 
+        [Authorize(Roles = "VerifiedUser,Admin")]
         public async Task<IActionResult> Author(string id)
         {
             AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);
@@ -35,7 +36,7 @@ namespace BlogSimple.Web.Controllers
             return View(authorViewModel);
         }
 
-        [Authorize]
+        [Authorize(Roles = "VerifiedUser,Admin")]
         public async Task<ActionResult> UpdateAuthor()
         {
             var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
@@ -46,9 +47,9 @@ namespace BlogSimple.Web.Controllers
             return View(authorViewModel);
         }
 
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "VerifiedUser,Admin")]
         public async Task<IActionResult> UpdateAuthor(AuthorViewModel authorViewModel)
         {
             authorViewModel = await _accountBusinessManager.EditUser(authorViewModel, User);
@@ -84,7 +85,7 @@ namespace BlogSimple.Web.Controllers
 
                     return View(user);
                 }
-                
+
                 ModelState.Clear();
                 return RedirectToAction("ConfirmEmail", new { email = user.Email });
             }
@@ -111,10 +112,10 @@ namespace BlogSimple.Web.Controllers
                     {
                         return Redirect(returnurl ?? "/Blog/Index");
                     }
-                    if (result.IsNotAllowed)
-                    {
-                        ModelState.AddModelError("", "Please verify your email address");
-                    }
+                    //if (result.IsNotAllowed)
+                    //{
+                    //    ModelState.AddModelError("", "Please verify your email address");
+                    //}
                     else
                     {
                         ModelState.AddModelError("", "Invalid credentials");
@@ -231,6 +232,33 @@ namespace BlogSimple.Web.Controllers
                 }
             }
             return View(model);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult CreateRole()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateRole(UserRole role)
+        {
+            if (ModelState.IsValid)
+            {
+                IdentityResult result = await _roleManager.CreateAsync(new UserRole()
+                {
+                    Name = role.RoleName
+                });
+                if (result.Succeeded)
+                    ViewBag.Message = "Role Created Successfully";
+                else
+                {
+                    foreach (IdentityError error in result.Errors)
+                        ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View();
         }
     }
 }

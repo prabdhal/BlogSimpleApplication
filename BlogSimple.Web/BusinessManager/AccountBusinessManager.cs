@@ -12,7 +12,6 @@ public class AccountBusinessManager : IAccountBusinessManager
 {
     private readonly UserManager<User> _userManager;
     private readonly IUserService _userService;
-    private readonly IRoleService _roleService;
     private readonly IBlogService _blogService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
@@ -20,10 +19,13 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly IWebHostEnvironment webHostEnvironment;
     private readonly IConfiguration _configuration;
 
+    private readonly string AdminUserRoleName = "Admin";
+    private readonly string VerifiedUserRoleName = "VerifiedUser";
+    private readonly string UnverifiedUserRoleName = "UnverifiedUser";
+
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
-        IRoleService roleService,
         IBlogService blogService,
         ICommentService commentService,
         ICommentReplyService replyService,
@@ -34,7 +36,6 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         _userManager = userManager;
         _userService = userService;
-        _roleService = roleService;
         _blogService = blogService;
         _commentService = commentService;
         _replyService = replyService;
@@ -45,7 +46,10 @@ public class AccountBusinessManager : IAccountBusinessManager
 
     public async Task<User> GetUserByEmailAsync(string email)
     {
-        return await _userManager.FindByEmailAsync(email);
+        var user = await _userManager.FindByEmailAsync(email);
+        // assigns user to verified user role 
+        await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
+        return user;
     }
 
     public async Task<IdentityResult> ResetPasswordAsync(ResetPasswordViewModel model)
@@ -71,8 +75,11 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
 
         IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
+
         if (result.Succeeded)
         {
+            // assigns user to unverified user role 
+            await _userManager.AddToRoleAsync(newUser, UnverifiedUserRoleName);
             await GenerateEmailConfirmationTokenAsync(newUser);
         }
         return result;

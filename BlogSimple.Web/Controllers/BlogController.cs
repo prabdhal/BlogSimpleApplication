@@ -15,7 +15,7 @@ public class BlogController : Controller
         _blogBusinessManager = blogBusinessManager;
     }
 
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> Index(string searchString)
     {
         DashboardIndexViewModel blogListViewModal = await _blogBusinessManager.GetDashboardIndexViewModel(searchString, User);
@@ -23,7 +23,7 @@ public class BlogController : Controller
         return View(blogListViewModal);
     }
 
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> FavoriteBlogs(string searchString)
     {
         FavoriteBlogsViewModel favoriteBlogsViewModel = await _blogBusinessManager.GetFavoriteBlogsViewModel(searchString, User);
@@ -32,7 +32,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/FavoriteBlog/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> FavoriteBlog(string id)
@@ -49,7 +49,7 @@ public class BlogController : Controller
         return View(dashboardDetailsViewModal);
     }
 
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     // GET: BlogController/Create
     public async Task<IActionResult> CreateBlog()
     {
@@ -59,7 +59,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/Create
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateBlog(CreateBlogViewModel createBlogViewModel)
@@ -71,7 +71,7 @@ public class BlogController : Controller
         return RedirectToAction("Details", new { createBlogViewModel.Blog.Id });
     }
 
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     // GET: BlogController/Edit/5
     public async Task<IActionResult> EditBlog(string id)
     {
@@ -84,7 +84,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/Edit/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditBlog(EditBlogViewModel editBlogViewModel)
@@ -97,7 +97,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/DeleteBlog/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> DeleteBlog(string id)
     {
         await _blogBusinessManager.DeleteBlog(id);
@@ -105,7 +105,7 @@ public class BlogController : Controller
         return RedirectToAction("Index");
     }
 
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateComment(BlogDetailsViewModel blogDetailsViewModel)
@@ -119,7 +119,7 @@ public class BlogController : Controller
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateReply(BlogDetailsViewModel blogDetailsViewModel)
@@ -134,7 +134,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/EditComment/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditComment(string id, BlogDetailsViewModel blogDetailsViewModel)
@@ -144,7 +144,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/EditComment/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditReply(string id, BlogDetailsViewModel blogDetailsViewModel)
@@ -154,7 +154,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/DeleteBlog/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> DeleteComment(string id)
     {
         var viewModel = await _blogBusinessManager.GetEditBlogViewModelViaComment(id);
@@ -164,7 +164,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/DeleteBlog/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> DeleteReply(string id)
     {
         var viewModel = await _blogBusinessManager.GetEditBlogViewModelViaReply(id);
@@ -174,7 +174,7 @@ public class BlogController : Controller
     }
 
     // POST: BlogController/LikeComment/5
-    [Authorize]
+    [Authorize(Roles = "VerifiedUser,Admin")]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> LikeComment(string id, BlogDetailsViewModel blogDetailsViewModel)
