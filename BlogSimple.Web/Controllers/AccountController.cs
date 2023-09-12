@@ -56,11 +56,9 @@ namespace BlogSimple.Web.Controllers
             return RedirectToAction("Author", new { authorViewModel.AccountUser.Id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
         public async Task<ActionResult> MyAccount()
         {
-            var user = await _userManager.GetUserAsync(User);
-
             var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
             return View(myAccountViewModel);
         }
@@ -108,14 +106,14 @@ namespace BlogSimple.Web.Controllers
                 if (user != null)
                 {
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
-                    if (result.Succeeded)
+                    if (result.Succeeded || user.EmailConfirmed == false)
                     {
+                        if (user.EmailConfirmed == false)
+                        {
+                            return RedirectToAction("MyAccount");
+                        }
                         return Redirect(returnurl ?? "/Blog/Index");
                     }
-                    //if (result.IsNotAllowed)
-                    //{
-                    //    ModelState.AddModelError("", "Please verify your email address");
-                    //}
                     else
                     {
                         ModelState.AddModelError("", "Invalid credentials");

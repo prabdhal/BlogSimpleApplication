@@ -48,6 +48,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.FindByEmailAsync(email);
         // assigns user to verified user role 
+        await _userManager.RemoveFromRoleAsync(user, UnverifiedUserRoleName);
         await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
         return user;
     }
@@ -234,6 +235,11 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)
     {
         var user = await _userManager.FindByIdAsync(uid);
-        return await _userManager.ConfirmEmailAsync(user, token);
+        IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
+        }
+        return result;
     }
 }

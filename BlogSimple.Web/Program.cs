@@ -10,6 +10,7 @@ using BlogSimple.Web.Settings.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,8 +57,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
 
-    options.SignIn.RequireConfirmedEmail = true;
+    //options.SignIn.RequireConfirmedEmail = true;
 });
+builder.Services.Configure<IdentityOptions>(options 
+    => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
 builder.Services.AddControllersWithViews().AddJsonOptions(options =>
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false);
