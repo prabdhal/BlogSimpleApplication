@@ -57,9 +57,9 @@ namespace BlogSimple.Web.Controllers
         }
 
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
-        public async Task<ActionResult> MyAccount()
+        public async Task<ActionResult> MyAccount(EmailConfirmViewModel emailConfirmViewModel)
         {
-            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
+            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User, emailConfirmViewModel);
             return View(myAccountViewModel);
         }
 
@@ -110,7 +110,13 @@ namespace BlogSimple.Web.Controllers
                     {
                         if (user.EmailConfirmed == false)
                         {
-                            return RedirectToAction("MyAccount");
+                            EmailConfirmViewModel emailConfirmViewModel = new EmailConfirmViewModel
+                            {
+                                EmailSent = true,
+                                EmailVerified = false
+                            };
+
+                            return RedirectToAction("MyAccount", new { emailConfirmViewModel });
                         }
                         return Redirect(returnurl ?? "/Blog/Index");
                     }
@@ -131,49 +137,47 @@ namespace BlogSimple.Web.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
-        {
-            EmailConfirmViewModel model = new EmailConfirmViewModel
-            {
-                Email = email
-            };
+        //[HttpGet("confirm-email")]
+        //public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
+        //{
+        //    MyAccountViewModel model = await _accountBusinessManager.GetMyAccountViewModel(User);
+        //    model.EmailConfirmViewModel = new EmailConfirmViewModel();
 
-            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
-            {
-                token = token.Replace(' ', '+');
-                var result = await _accountBusinessManager.ConfirmEmailAsync(uid, token);
-                if (result.Succeeded)
-                {
-                    model.EmailVerified = true;
-                }
-            }
+        //    if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+        //    {
+        //        token = token.Replace(' ', '+');
+        //        var result = await _accountBusinessManager.ConfirmEmailAsync(uid, token);
+        //        if (result.Succeeded)
+        //        {
+        //            model.EmailConfirmViewModel.EmailVerified = true;
+        //        }
+        //    }
 
-            return View(model);
-        }
-
+        //    return View(model);
+        //}
 
         [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(EmailConfirmViewModel model)
+        public async Task<IActionResult> ConfirmEmail(MyAccountViewModel model)
         {
-            User user = await _accountBusinessManager.GetUserByEmailAsync(model.Email);
+            User user = await _accountBusinessManager.GetUserByEmailAsync(model.AccountUser.Email);
+            model.EmailConfirmViewModel = new EmailConfirmViewModel();
             if (user != null)
             {
                 if (user.EmailConfirmed)
                 {
-                    model.EmailVerified = true;
-                    return View(model);
+                    model.EmailConfirmViewModel.EmailVerified = true;
+                    return RedirectToAction("MyAccount", new { model.EmailConfirmViewModel });
                 }
 
                 await _accountBusinessManager.GenerateEmailConfirmationTokenAsync(user);
-                model.EmailSent = true;
+                model.EmailConfirmViewModel.EmailSent = true;
                 ModelState.Clear();
             }
             else
             {
                 ModelState.AddModelError("", "Something went wrong");
             }
-            return View(model);
+            return RedirectToAction("MyAccount", new { model.EmailConfirmViewModel });
         }
 
         [AllowAnonymous, HttpGet("forgot-password")]

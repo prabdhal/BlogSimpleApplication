@@ -8,4 +8,5 @@ public class MyAccountViewModel
     public int PublishedBlogsCount { get; set; }
     public int TotalCommentsAndRepliesCount { get; set; }
     public int FavoriteBlogsCount { get; set; }
+    public EmailConfirmViewModel EmailConfirmViewModel { get; set; }
 }

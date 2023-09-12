@@ -10,58 +10,103 @@
     <h1>My Account</h1>
 
     <div>
-        <h4>@Model.AccountUser.UserName</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                First Name:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.AccountUser.FirstName
-            </dd>
-            <dt class="col-sm-2">
-                Last Name:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.AccountUser.LastName
-            </dd>
-            <dt class="col-sm-2">
-                UserName:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.AccountUser.UserName
-            </dd>
-            <dt class="col-sm-2">
-                Email Address:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.AccountUser.Email
-            </dd>
-            <dt class="col-sm-2">
-                Joined On:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.AccountUser.CreatedOn
-            </dd>
-            <dt class="col-sm-2">
-                Published Blogs:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.PublishedBlogsCount
-            </dd>
-            <dt class="col-sm-2">
-                Total Comments:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.TotalCommentsAndRepliesCount
-            </dd>
-            <dt class="col-sm-2">
-                Blogs Favorited:
-            </dt>
-            <dd class="col-sm-10">
-                @Model.FavoriteBlogsCount
-            </dd>
-        </dl>
+        @if (Model.AccountUser.EmailConfirmed == false)
+        {
+            <div class="text-left">
+                <h4>Email Confirmation</h4>
+                <hr />
+                <div>
+                    @if (Model.EmailConfirmViewModel.EmailSent)
+                    {
+                        <p>Email sent to your registered email id.</p>
+                    }
+                    <form asp-action="ConfirmEmail">
+                        <div asp-asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <p>Please verify your email address sent to your mail in order to fully access your account. <br>
+                            Click on the button below to resend an email confirmation link.</p>
+                        <input type="hidden" asp-for="@Model.AccountUser.Email" />
+
+                        <div class="form-group">
+                            <input type="submit" value="Resend Email Confirmation" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+                <br />
+                <br />
+            </div>
+        }
+        <div class="text-left">
+            <h4>Account Details - @Model.AccountUser.UserName</h4>
+            <hr />
+            <div class="row">
+                <div class="col-sm-4">
+                    First Name:
+                </div>
+                <div class="col-sm-4">
+                    @Model.AccountUser.FirstName
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Last Name:
+                </div>
+                <div class="col-sm-4">
+                    @Model.AccountUser.LastName
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    UserName:
+                </div>
+                <div class="col-sm-4">
+                    @Model.AccountUser.UserName
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Email Address:
+                </div>
+                <div class="col-sm-4">
+                    @Model.AccountUser.Email
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Joined On:
+                </div>
+                <div class="col-sm-4">
+                    @Model.AccountUser.CreatedOn
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Published Blogs:
+                </div>
+                <div class="col-sm-4">
+                    @Model.PublishedBlogsCount
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Total Comments:
+                </div>
+                <div class="col-sm-4">
+                    @Model.TotalCommentsAndRepliesCount
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Blogs Favorited:
+                </div>
+                <div class="col-sm-4">
+                    @Model.FavoriteBlogsCount
+                </div>
+                <div class="col-sm-4">
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
     </div>
 
 </div>

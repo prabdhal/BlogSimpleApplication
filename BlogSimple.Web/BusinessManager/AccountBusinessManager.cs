@@ -109,7 +109,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     //    return await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
     //}
 
-    public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
+    public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel emailConfirmViewModel)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         var publishedBlog = await _blogService.GetAll(user);
@@ -125,7 +125,8 @@ public class AccountBusinessManager : IAccountBusinessManager
             AccountUser = user,
             PublishedBlogsCount = publishedBlogCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoriteBlogsCount = favoritedBlogsCount
+            FavoriteBlogsCount = favoritedBlogsCount,
+            EmailConfirmViewModel = emailConfirmViewModel
         };
     }
 

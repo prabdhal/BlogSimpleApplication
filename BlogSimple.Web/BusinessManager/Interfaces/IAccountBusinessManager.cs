@@ -10,7 +10,7 @@ public interface IAccountBusinessManager
     Task<User> GetUserByEmailAsync(string email);
     Task<IdentityResult> ResetPasswordAsync(ResetPasswordViewModel model);
     Task<IdentityResult> CreateUserAsync(User user);
-    Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal);
+    Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel model);
     Task<AuthorViewModel> GetAuthorViewModel(string userId);
     Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal);
     Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal);
