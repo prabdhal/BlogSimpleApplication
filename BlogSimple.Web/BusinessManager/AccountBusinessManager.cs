@@ -47,9 +47,6 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<User> GetUserByEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        // assigns user to verified user role 
-        await _userManager.RemoveFromRoleAsync(user, UnverifiedUserRoleName);
-        await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
         return user;
     }
 
@@ -80,7 +77,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         if (result.Succeeded)
         {
             // assigns user to unverified user role 
-            await _userManager.AddToRoleAsync(newUser, UnverifiedUserRoleName);
+            await ApplyUnverifiedUserRole(newUser);
             await GenerateEmailConfirmationTokenAsync(newUser);
         }
         return result;
@@ -112,6 +109,33 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel emailConfirmViewModel)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
+        var publishedBlog = await _blogService.GetAll(user);
+        var publishedBlogCount = publishedBlog.Count();
+
+        var comments = await _commentService.GetAll(user);
+        var replies = await _replyService.GetAll(user);
+        var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
+        var favoritedBlogsCount = user.FavoritedBlogs.Count();
+
+        if (user.EmailConfirmed)
+        {
+            // assigns user to verified user role 
+            await ApplyVerifyUserRole(user);
+        }
+
+        return new MyAccountViewModel
+        {
+            AccountUser = user,
+            PublishedBlogsCount = publishedBlogCount,
+            TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
+            FavoriteBlogsCount = favoritedBlogsCount,
+            EmailConfirmViewModel = emailConfirmViewModel
+        };
+    }
+
+    public async Task<MyAccountViewModel> GetMyAccountViewModel(string email, EmailConfirmViewModel emailConfirmViewModel)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
         var publishedBlog = await _blogService.GetAll(user);
         var publishedBlogCount = publishedBlog.Count();
 
@@ -239,8 +263,20 @@ public class AccountBusinessManager : IAccountBusinessManager
         IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
+            // assigns user to verified user role 
+            await ApplyVerifyUserRole(user);
         }
         return result;
+    }
+
+    private async Task ApplyUnverifiedUserRole(User user)
+    {
+        await _userManager.AddToRoleAsync(user, UnverifiedUserRoleName);
+    }
+
+    private async Task ApplyVerifyUserRole(User user)
+    {
+        await _userManager.RemoveFromRoleAsync(user, UnverifiedUserRoleName);
+        await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
     }
 }

@@ -28,41 +28,6 @@ namespace BlogSimple.Web.Controllers
             _accountBusinessManager = accountBusinessManager;
         }
 
-        [Authorize(Roles = "VerifiedUser,Admin")]
-        public async Task<IActionResult> Author(string id)
-        {
-            AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);
-
-            return View(authorViewModel);
-        }
-
-        [Authorize(Roles = "VerifiedUser,Admin")]
-        public async Task<ActionResult> UpdateAuthor()
-        {
-            var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
-
-            if (authorViewModel is null)
-                return new NotFoundResult();
-
-            return View(authorViewModel);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "VerifiedUser,Admin")]
-        public async Task<IActionResult> UpdateAuthor(AuthorViewModel authorViewModel)
-        {
-            authorViewModel = await _accountBusinessManager.EditUser(authorViewModel, User);
-            return RedirectToAction("Author", new { authorViewModel.AccountUser.Id });
-        }
-
-        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
-        public async Task<ActionResult> MyAccount(EmailConfirmViewModel emailConfirmViewModel)
-        {
-            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User, emailConfirmViewModel);
-            return View(myAccountViewModel);
-        }
-
         public IActionResult Register()
         {
             return View();
@@ -85,7 +50,8 @@ namespace BlogSimple.Web.Controllers
                 }
 
                 ModelState.Clear();
-                return RedirectToAction("ConfirmEmail", new { email = user.Email });
+
+                return RedirectToAction("Login");
             }
 
             return View(user);
@@ -110,13 +76,7 @@ namespace BlogSimple.Web.Controllers
                     {
                         if (user.EmailConfirmed == false)
                         {
-                            EmailConfirmViewModel emailConfirmViewModel = new EmailConfirmViewModel
-                            {
-                                EmailSent = true,
-                                EmailVerified = false
-                            };
-
-                            return RedirectToAction("MyAccount", emailConfirmViewModel);
+                            return RedirectToAction("MyAccount");
                         }
                         return Redirect(returnurl ?? "/Blog/Index");
                     }
@@ -130,31 +90,33 @@ namespace BlogSimple.Web.Controllers
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> Logout()
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public async Task<ActionResult> MyAccount(EmailConfirmViewModel emailConfirmViewModel)
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User, emailConfirmViewModel);
+            return View(myAccountViewModel);
         }
 
-        //[HttpGet("confirm-email")]
-        //public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
-        //{
-        //    MyAccountViewModel model = await _accountBusinessManager.GetMyAccountViewModel(User);
-        //    model.EmailConfirmViewModel = new EmailConfirmViewModel();
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uid, string token, string email)
+        {
+            EmailConfirmViewModel emailConfirmViewModel = new EmailConfirmViewModel
+            {
+                Email = email
+            };
 
-        //    if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
-        //    {
-        //        token = token.Replace(' ', '+');
-        //        var result = await _accountBusinessManager.ConfirmEmailAsync(uid, token);
-        //        if (result.Succeeded)
-        //        {
-        //            model.EmailConfirmViewModel.EmailVerified = true;
-        //        }
-        //    }
-
-        //    return View(model);
-        //}
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
+            {
+                token = token.Replace(' ', '+');
+                var result = await _accountBusinessManager.ConfirmEmailAsync(uid, token);
+                if (result.Succeeded)
+                {
+                    emailConfirmViewModel.EmailVerified = true;
+                }
+            }
+            
+            return View(emailConfirmViewModel);
+        }
 
         [HttpPost("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(MyAccountViewModel model)
@@ -261,6 +223,41 @@ namespace BlogSimple.Web.Controllers
                 }
             }
             return View();
+        }
+
+        [Authorize(Roles = "VerifiedUser,Admin")]
+        public async Task<IActionResult> Author(string id)
+        {
+            AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);
+
+            return View(authorViewModel);
+        }
+
+        [Authorize(Roles = "VerifiedUser,Admin")]
+        public async Task<ActionResult> UpdateAuthor()
+        {
+            var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
+
+            if (authorViewModel is null)
+                return new NotFoundResult();
+
+            return View(authorViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "VerifiedUser,Admin")]
+        public async Task<IActionResult> UpdateAuthor(AuthorViewModel authorViewModel)
+        {
+            authorViewModel = await _accountBusinessManager.EditUser(authorViewModel, User);
+            return RedirectToAction("Author", new { authorViewModel.AccountUser.Id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

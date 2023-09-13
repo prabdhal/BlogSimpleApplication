@@ -1,4 +1,4 @@
-﻿@model BlogSimple.Model.ViewModels.AccountViewModels.MyAccountViewModel;
+﻿@model BlogSimple.Model.ViewModels.AccountViewModels.EmailConfirmViewModel;
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Account/_AccountLayout.cshtml";
@@ -16,33 +16,13 @@
                                 <h3 class="text-center text-white font-weight-light my-4">Welcome to Blog Simple!</h3>
                             </div>
                             <div class="card-body text-white">
-                                @if (Model.EmailConfirmViewModel.EmailVerified == true)
+                                @if (Model.EmailVerified == true)
                                 {
                                     {
                                         <div class="alert alert-success" role="alert">
                                             <p>You have confirmed your account! Please click <a asp-controller="Account" asp-action="Login">here</a> to login to your account.</p>
                                         </div>
                                     }
-                                }
-                                else
-                                {
-                                    @if (Model.EmailConfirmViewModel.EmailSent)
-                                    {
-                                        <p>Email sent to your registered email id.</p>
-                                    }
-                                    else
-                                    {
-                                        <p>We have sent an email on your email id. Click on the link to login.</p>
-                                    }
-
-                                    <form asp-action="ConfirmEmail">
-                                        <div asp-asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                        <input type="hidden" asp-for="@Model.AccountUser.Email" />
-
-                                        <div class="form-group">
-                                            <input type="submit" value="Resend confirmation email" class="btn btn-primary" />
-                                        </div>
-                                    </form>
                                 }
                             </div>
                         </div>
