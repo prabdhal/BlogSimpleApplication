@@ -18,7 +18,7 @@
                 <div>
                     @if (Model.EmailConfirmViewModel.EmailSent)
                     {
-                        <p>Email sent to your registered email id.</p>
+                        <p class="alert alert-success">Email sent to your registered email id: @Model.AccountUser.Email</p>
                     }
                     <form asp-action="ConfirmEmail">
                         <div asp-asp-validation-summary="ModelOnly" class="text-danger"></div>

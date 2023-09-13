@@ -116,7 +116,7 @@ namespace BlogSimple.Web.Controllers
                                 EmailVerified = false
                             };
 
-                            return RedirectToAction("MyAccount", new { emailConfirmViewModel });
+                            return RedirectToAction("MyAccount", emailConfirmViewModel);
                         }
                         return Redirect(returnurl ?? "/Blog/Index");
                     }
@@ -166,7 +166,7 @@ namespace BlogSimple.Web.Controllers
                 if (user.EmailConfirmed)
                 {
                     model.EmailConfirmViewModel.EmailVerified = true;
-                    return RedirectToAction("MyAccount", new { model.EmailConfirmViewModel });
+                    return RedirectToAction("MyAccount", model.EmailConfirmViewModel);
                 }
 
                 await _accountBusinessManager.GenerateEmailConfirmationTokenAsync(user);
@@ -177,7 +177,7 @@ namespace BlogSimple.Web.Controllers
             {
                 ModelState.AddModelError("", "Something went wrong");
             }
-            return RedirectToAction("MyAccount", new { model.EmailConfirmViewModel });
+            return RedirectToAction("MyAccount", model.EmailConfirmViewModel);
         }
 
         [AllowAnonymous, HttpGet("forgot-password")]
