@@ -9,54 +9,119 @@
 
     <h1>My Admin Account</h1>
 
+    <br />
+    <br />
+
     <div>
         <div class="text-left">
-            <h4>Admin Details - @Model.AccountUser.UserName</h4>
+            <h4>Create A New Role</h4>
             <hr />
+            <br />
             <div class="row">
+                @if (ViewBag.Message != null)
+                {
+                    <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+                }
+                <form asp-controller="Admin" asp-action="CreateRole">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="@Model.UserRole.RoleName" class="form-control" type="text" />
+                        <label asp-for="@Model.UserRole.RoleName">Role Name</label>
+                        <span asp-validation-for="@Model.UserRole.RoleName" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <input type="submit" value="Create Role" class="btn btn-primary btn-block w-100 p-2" />
+                    </div>
+                </form>
             </div>
-            <br />
-            <br />
         </div>
+
+        <br />
+        <br />
+
         <div class="text-left">
             <h4>Manage Roles</h4>
             <hr />
+            <br />
             <div class="row">
-                <div class="mb-5">
-                    @foreach (var role in Model.UserRoles)
-                    {
-                    <div class="form-floating mb-3">
-                        <input disabled class="form-control" type="text" value="@role.Id"/>
-                        <label asp-for="@Model.UserRole.RoleName">Role Id</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="@Model.UserRole.RoleName" class="form-control" value="@role.RoleName" type="text" />
-                            <label asp-for="@Model.UserRole.RoleName">Role Name</label>
-                            <form asp-action="DeleteRole" asp-route-id="@role.Id">
-                                <input class="btn btn-danger" type="submit" value="Delete Role">
-                            </form>
-                    </div>
-                    }
-                </div>
-                <hr />
-                <h5>Create A New Role</h5>
-                <div class="card-body">
-                    @if (ViewBag.Message != null)
-                    {
-                        <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
-                    }
-                    <form asp-controller="Admin" asp-action="CreateRole">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-floating mb-3">
-                            <input asp-for="@Model.UserRole.RoleName" class="form-control" type="text" />
-                            <label asp-for="@Model.UserRole.RoleName">Role Name</label>
-                            <span asp-validation-for="@Model.UserRole.RoleName" class="text-danger"></span>
-                        </div>
-                        <div>
-                            <input type="submit" value="Create Role" class="btn btn-primary btn-block w-100 p-2" />
-                        </div>
-                    </form>
-                </div>
+                <table class="table table-hovered table-bordered">
+                    <caption>List of roles</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Role Id</th>
+                            <th scope="col">Role Name</th>
+                            <th scope="col">Delete Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var roleIdx = 0;
+                            @foreach (var role in Model.UserRoles)
+                            {
+                                roleIdx++;
+                                <tr>
+                                    <th scope="row">@roleIdx</th>
+                                    <td>@role.Id</td>
+                                    <td>@role.RoleName</td>
+                                    <td>
+                                        <form asp-action="DeleteRole" asp-route-id="@role.Id">
+                                            <input class="btn btn-danger" type="submit" value="Delete Role">
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br />
+        <br />
+
+        <div class="text-left">
+            <h4>Registered Users</h4>
+            <hr />
+            <br />
+            <div class="row">
+                <table class="table table-hover table-bordered">
+                    <caption>List of users</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Assign Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            var roleName = "N/A";
+                            var idx = 0;
+                            foreach (var user in Model.RegisteredUsers)
+                            {
+                                <tr>
+                                    @{
+                                        idx++;
+                                        if (Model.RoleNameMapping.ContainsKey(@user.Roles[0]))
+                                        {
+                                            roleName = Model.RoleNameMapping[user.Roles[0]];
+                                        }
+                                    }
+                                    <th scope="row">@idx</th>
+                                    <td>@user.UserName</td>
+                                    <td>@user.Email</td>
+                                    <td>@roleName</td>
+                                    <td>
+                                        <button class="btn btn-primary" type="submit">Assign Role</button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
             </div>
             <br />
             <br />
