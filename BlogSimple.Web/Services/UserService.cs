@@ -49,14 +49,14 @@ public class UserService : IUserService
         return await _users.Find(_ => true).ToListAsync();
     }
 
-    public async void Remove(string userName)
-    {
-        await _users.DeleteOneAsync(u => u.UserName == userName);
-    }
-
     public async Task<User> Update(string userName, User user)
     {        
         await _users.ReplaceOneAsync(u => u.UserName == userName, user);
         return user;
+    }
+
+    public async void Remove(string userName)
+    {
+        await _users.DeleteOneAsync(u => u.UserName == userName);
     }
 }

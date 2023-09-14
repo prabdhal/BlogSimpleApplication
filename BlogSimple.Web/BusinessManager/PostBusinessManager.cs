@@ -5,7 +5,6 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -448,6 +447,17 @@ public class PostBusinessManager : IPostBusinessManager
         if (post.CreatedBy.Id != user.Id)
             return new NotFoundResult();
 
+        List<User> users = await _userService.GetAll();
+        if (users == null)
+            return new NotFoundResult();
+
+        // Remove post from all users favorite posts
+        foreach (var u in users)
+        {
+            u.FavoritedPosts.RemoveAll(p => p.Id == post.Id);
+            await _userService.Update(u.UserName, u);
+        }
+
         _commentService.RemoveAllByPost(postId);
         _commentReplyService.RemoveAllByPost(postId);
 
@@ -478,7 +488,7 @@ public class PostBusinessManager : IPostBusinessManager
             throw new Exception("comment could not be found");
 
         // Validate User
-        if (comment.CreatedBy.Id != user.Id) 
+        if (comment.CreatedBy.Id != user.Id)
             throw new Exception("Cannot delete because comment creator and user creater are not the same");
 
 
