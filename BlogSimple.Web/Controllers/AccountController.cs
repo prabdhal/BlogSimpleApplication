@@ -28,11 +28,18 @@ namespace BlogSimple.Web.Controllers
             _accountBusinessManager = accountBusinessManager;
         }
 
-        public IActionResult Register()
+        [AllowAnonymous]
+        public async Task<IActionResult> Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
+                return RedirectToAction("MyAccount", myAccountViewModel);
+            }
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(User user)
         {
@@ -56,8 +63,15 @@ namespace BlogSimple.Web.Controllers
 
             return View(user);
         }
-        public IActionResult Login()
+
+        [AllowAnonymous]
+        public async Task<IActionResult> Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
+                return RedirectToAction("MyAccount", myAccountViewModel);
+            }
             return View();
         }
 
@@ -196,33 +210,6 @@ namespace BlogSimple.Web.Controllers
                 }
             }
             return View(model);
-        }
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult CreateRole()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> CreateRole(UserRole role)
-        {
-            if (ModelState.IsValid)
-            {
-                IdentityResult result = await _roleManager.CreateAsync(new UserRole()
-                {
-                    Name = role.RoleName
-                });
-                if (result.Succeeded)
-                    ViewBag.Message = "Role Created Successfully";
-                else
-                {
-                    foreach (IdentityError error in result.Errors)
-                        ModelState.AddModelError("", error.Description);
-                }
-            }
-            return View();
         }
 
         [Authorize(Roles = "VerifiedUser,Admin")]

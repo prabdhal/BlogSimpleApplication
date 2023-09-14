@@ -39,6 +39,7 @@ builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IBlogBusinessManager, BlogBusinessManager>();
 builder.Services.AddScoped<IAccountBusinessManager, AccountBusinessManager>();
+builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
 
 builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
 

@@ -47,11 +47,18 @@ public class RoleService : IRoleService
 
     public async Task<UserRole> Get(string id)
     {
-        return await _roles.Find(u => u.Id == Guid.Parse(id)).FirstOrDefaultAsync();
+        Guid guid = Guid.Parse(id);
+        return await _roles.Find(u => u.Id == guid).FirstOrDefaultAsync();
     }
 
     public async Task<List<UserRole>> GetAll()
     {
         return await _roles.Find(_ => true).ToListAsync();
+    }
+
+    public async void Remove(string id)
+    {
+        Guid guid = Guid.Parse(id);
+        await _roles.DeleteOneAsync(r => r.Id == guid);
     }
 }

@@ -60,9 +60,6 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateBlog(CreateBlogViewModel createBlogViewModel)
     {
-        //if (!ModelState.IsValid)
-        //    return View("CreateBlog");
-
         await _blogBusinessManager.CreateBlog(createBlogViewModel, User);
         return RedirectToAction("Details", new { createBlogViewModel.Blog.Id });
     }
@@ -83,9 +80,6 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> EditBlog(EditBlogViewModel editBlogViewModel)
     {
-        //if (!ModelState.IsValid)
-            //return View("EditBlog");
-
         await _blogBusinessManager.EditBlog(editBlogViewModel, User);
         return RedirectToAction("Details", new { editBlogViewModel.Blog.Id });
     }
@@ -94,7 +88,6 @@ public class BlogController : Controller
     public async Task<IActionResult> DeleteBlog(string id)
     {
         await _blogBusinessManager.DeleteBlog(id);
-
         return RedirectToAction("Index");
     }
 
@@ -103,12 +96,7 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateComment(BlogDetailsViewModel blogDetailsViewModel)
     {
-        // allow client side validation
-        //if (!ModelState.IsValid)
-        //    return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
-
         await _blogBusinessManager.CreateComment(blogDetailsViewModel, User);
-
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 
@@ -117,12 +105,7 @@ public class BlogController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateReply(BlogDetailsViewModel blogDetailsViewModel)
     {
-        // allow client side validation
-        //if (!ModelState.IsValid)
-        //    return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
-
-        CommentReply reply = await _blogBusinessManager.CreateReply(blogDetailsViewModel, User);
-
+        await _blogBusinessManager.CreateReply(blogDetailsViewModel, User);
         return RedirectToAction("Details", new { blogDetailsViewModel.Blog.Id });
     }
 

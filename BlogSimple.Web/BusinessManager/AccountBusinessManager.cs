@@ -133,6 +133,32 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
     }
 
+    public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+        var publishedBlog = await _blogService.GetAll(user);
+        var publishedBlogCount = publishedBlog.Count();
+
+        var comments = await _commentService.GetAll(user);
+        var replies = await _replyService.GetAll(user);
+        var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
+        var favoritedBlogsCount = user.FavoritedBlogs.Count();
+
+        if (user.EmailConfirmed)
+        {
+            await ApplyVerifyUserRole(user);
+        }
+
+        return new MyAccountViewModel
+        {
+            AccountUser = user,
+            PublishedBlogsCount = publishedBlogCount,
+            TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
+            FavoriteBlogsCount = favoritedBlogsCount,
+            EmailConfirmViewModel = new EmailConfirmViewModel()
+        };
+    }
+
     public async Task<MyAccountViewModel> GetMyAccountViewModel(string email, EmailConfirmViewModel emailConfirmViewModel)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -263,17 +289,26 @@ public class AccountBusinessManager : IAccountBusinessManager
         IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
         if (result.Succeeded)
         {
-            // assigns user to verified user role 
             await ApplyVerifyUserRole(user);
         }
         return result;
     }
 
+    /// <summary>
+    /// Applies "UnverifiedUser" role to the user. 
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     private async Task ApplyUnverifiedUserRole(User user)
     {
         await _userManager.AddToRoleAsync(user, UnverifiedUserRoleName);
     }
 
+    /// <summary>
+    /// Applies "VerifiedUser" role to the user.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     private async Task ApplyVerifyUserRole(User user)
     {
         await _userManager.RemoveFromRoleAsync(user, UnverifiedUserRoleName);

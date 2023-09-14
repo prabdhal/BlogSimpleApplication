@@ -1,0 +1,66 @@
+﻿@model BlogSimple.Model.ViewModels.AdminViewModels.MyAdminViewModel;
+
+@{
+    ViewData["Title"] = "My Admin Account";
+    Layout = "~/Views/Blog/_DashboardLayoutIndex.cshtml";
+}
+
+<div class="container">
+
+    <h1>My Admin Account</h1>
+
+    <div>
+        <div class="text-left">
+            <h4>Admin Details - @Model.AccountUser.UserName</h4>
+            <hr />
+            <div class="row">
+            </div>
+            <br />
+            <br />
+        </div>
+        <div class="text-left">
+            <h4>Manage Roles</h4>
+            <hr />
+            <div class="row">
+                <div class="mb-5">
+                    @foreach (var role in Model.UserRoles)
+                    {
+                    <div class="form-floating mb-3">
+                        <input disabled class="form-control" type="text" value="@role.Id"/>
+                        <label asp-for="@Model.UserRole.RoleName">Role Id</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="@Model.UserRole.RoleName" class="form-control" value="@role.RoleName" type="text" />
+                            <label asp-for="@Model.UserRole.RoleName">Role Name</label>
+                            <form asp-action="DeleteRole" asp-route-id="@role.Id">
+                                <input class="btn btn-danger" type="submit" value="Delete Role">
+                            </form>
+                    </div>
+                    }
+                </div>
+                <hr />
+                <h5>Create A New Role</h5>
+                <div class="card-body">
+                    @if (ViewBag.Message != null)
+                    {
+                        <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
+                    }
+                    <form asp-controller="Admin" asp-action="CreateRole">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-floating mb-3">
+                            <input asp-for="@Model.UserRole.RoleName" class="form-control" type="text" />
+                            <label asp-for="@Model.UserRole.RoleName">Role Name</label>
+                            <span asp-validation-for="@Model.UserRole.RoleName" class="text-danger"></span>
+                        </div>
+                        <div>
+                            <input type="submit" value="Create Role" class="btn btn-primary btn-block w-100 p-2" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
+    </div>
+
+</div>
