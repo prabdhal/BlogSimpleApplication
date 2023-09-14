@@ -1,11 +1,11 @@
 ﻿using BlogSimple.Model.Models;
 using Microsoft.AspNetCore.Http;
 
-namespace BlogSimple.Model.ViewModels.BlogViewModels;
+namespace BlogSimple.Model.ViewModels.PostViewModels;
 
-public class CreateBlogViewModel
+public class CreatePostViewModel
 {
-    public Blog Blog { get; set; }
+    public Post Post { get; set; }
     public IFormFile HeaderImage { get; set; }
     public User AccountUser { get; set; }
 }

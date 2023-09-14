@@ -13,7 +13,7 @@ public class RoleService : IRoleService
 
     public RoleService(
         IServiceProvider serviceProvider,
-        IBlogSimpleDatabaseSettings blogSettings,
+        IPostSimpleDatabaseSettings blogSettings,
         IMongoClient mongoClient
         )
     {

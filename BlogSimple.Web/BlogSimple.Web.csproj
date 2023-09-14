@@ -48,4 +48,6 @@
     <None Include="Views\Account\ResetPassword.cshtml" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

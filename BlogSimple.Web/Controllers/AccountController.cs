@@ -92,7 +92,7 @@ namespace BlogSimple.Web.Controllers
                         {
                             return RedirectToAction("MyAccount");
                         }
-                        return Redirect(returnurl ?? "/Blog/Index");
+                        return Redirect(returnurl ?? "/Post/Index");
                     }
                     else
                     {

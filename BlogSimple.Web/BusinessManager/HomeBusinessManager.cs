@@ -8,17 +8,17 @@ namespace BlogSimple.Web.BusinessManager;
 
 public class HomeBusinessManager : IHomeBusinessManager
 {
-    private readonly IBlogService _blogService;
+    private readonly IPostService _blogService;
 
-    public HomeBusinessManager(IBlogService blogService)
+    public HomeBusinessManager(IPostService blogService)
     {
         _blogService = blogService;
     }
 
     public async Task<HomeIndexViewModel> GetHomeIndexViewModel(string searchString)
     {
-        IEnumerable<Blog> publishedBlogs = await _blogService.GetPublishedOnly(searchString ?? string.Empty);
-        Blog featuredBlog = new Blog();
+        IEnumerable<Post> publishedBlogs = await _blogService.GetPublishedOnly(searchString ?? string.Empty);
+        Post featuredBlog = new Post();
         List<string> blogCats = new List<string>();
 
         if (publishedBlogs.Any())
@@ -26,16 +26,16 @@ public class HomeBusinessManager : IHomeBusinessManager
             featuredBlog = await DetermineFeaturedBlog(publishedBlogs);
         }
 
-        foreach (var cat in Enum.GetValues(typeof(BlogCategory)))
+        foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
             blogCats.Add(cat.ToString());
         }
 
         return new HomeIndexViewModel
         {
-            FeaturedBlog = featuredBlog,
-            BlogCategories = blogCats,
-            PublishedBlogs = publishedBlogs,
+            FeaturedPost = featuredBlog,
+            PostCategories = blogCats,
+            PublishedPosts = publishedBlogs,
         };
     }
 
@@ -44,12 +44,12 @@ public class HomeBusinessManager : IHomeBusinessManager
     /// </summary>
     /// <param name="blogs"></param>
     /// <returns></returns>
-    private async Task<Blog> DetermineFeaturedBlog(IEnumerable<Blog> blogs)
+    private async Task<Post> DetermineFeaturedBlog(IEnumerable<Post> blogs)
     {
         var blog = blogs.OrderByDescending(b => b.UpdatedOn)
                         .First();
 
-        foreach (Blog b in blogs)
+        foreach (Post b in blogs)
         {
             if (b == blog)
             {

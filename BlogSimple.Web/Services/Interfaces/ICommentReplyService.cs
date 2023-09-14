@@ -8,11 +8,11 @@ public interface ICommentReplyService
     Task<List<CommentReply>> GetAll();
     Task<List<CommentReply>> GetAll(User user);
     Task<List<CommentReply>> GetAllByComment(string commentId);
-    Task<List<CommentReply>> GetAllByBlog(string blogId);
+    Task<List<CommentReply>> GetAllByPost(string blogId);
     Task<CommentReply> Create(CommentReply reply);
     Task<CommentReply> Update(string replyId, CommentReply reply);
     void Remove(string replyId);
     void Remove(CommentReply reply);
     void RemoveAllByComment(string commentId);
-    void RemoveAllByBlog(string blogId);
+    void RemoveAllByPost(string blogId);
 }

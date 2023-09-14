@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "My Account";
-    Layout = "~/Views/Blog/_DashboardLayoutIndex.cshtml";
+    Layout = "~/Views/Post/_DashboardLayoutIndex.cshtml";
 }
 
 <div class="container">
@@ -83,18 +83,18 @@
                 <div class="col-sm-4">
                 </div>
                 <div class="col-sm-4">
-                    Blogs Published:
+                    Posts Published:
                 </div>
                 <div class="col-sm-4">
-                    @Model.PublishedBlogsCount
+                    @Model.PublishedPostsCount
                 </div>
                 <div class="col-sm-4">
                 </div>
                 <div class="col-sm-4">
-                    Blogs Favorited:
+                    Posts Favorited:
                 </div>
                 <div class="col-sm-4">
-                    @Model.FavoriteBlogsCount
+                    @Model.FavoritePostsCount
                 </div>
                 <div class="col-sm-4">
                 </div>

@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace BlogSimple.Model.Models;
 
-public enum BlogCategory
+public enum PostCategory
 {
     [Display(Name = "HTML")]
     HTML = 0,

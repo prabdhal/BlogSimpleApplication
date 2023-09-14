@@ -158,11 +158,9 @@ const displayPosts = () => {
         if (postSearchString == "") {
             divElement.innerHTML =
                 `<div class="col-lg-6">
-                    <p>Click <a href="${createPostPath}">here</a> to create your first post!</p>
+                    <p>Find any interesting blog posts? Favorite them to view them on this dashboard!</p>
                 </div>`;
-        } else {
-            searchHeading.innerHTML = `Search Results: ${postSearchString}`;
-        }
+        } 
         postsDisplayContainer.append(searchHeading);
 
         postsDisplayContainer.append(divElement);
@@ -202,16 +200,6 @@ const displayPosts = () => {
                         <h2 class="card-title h4"><a href="${postDetailsPath}/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
                         <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by ${blogsToShow[i].createdBy.userName}</div>
                         <p class="card-text text-truncate">${blogsToShow[i].description}</p>
-                    </div>
-                    <div class="card-footer">
-                        ${eyeSVG}
-                        <div class="dropdown">
-                            <svg class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-                            <div class="dropdown-content">
-                                <a href="${editPostPath}/${blogsToShow[i].id}">Edit</a>
-                                <a href="${deletePostPath}/${blogsToShow[i].id}">Delete</a>
-                            </div>
-                        </div>
                     </div>
                 </div>`;
 

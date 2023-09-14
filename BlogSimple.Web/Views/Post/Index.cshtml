@@ -1,27 +1,27 @@
-﻿@using BlogSimple.Model.ViewModels.BlogViewModels;
+﻿@using BlogSimple.Model.ViewModels.PostViewModels;
 @model DashboardIndexViewModel;
 
 @{
     ViewData["Title"] = "Dashboard";
-    Layout = "~/Views/Blog/_DashboardLayoutIndex.cshtml";
+    Layout = "~/Views/Post/_DashboardLayoutIndex.cshtml";
 }
 
 
 <main>
-    @foreach (var blog in Model.UserBlogs)
+    @foreach (var post in Model.UserPosts)
     {
-        <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
+        <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(post))'></div>
     }
-    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
+    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
 
 
     <div class="container-fluid px-4">
         <h1 class="mt-4">Dashboard</h1>
         <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">My Blogs</li>
+            <li class="breadcrumb-item active">My Posts</li>
         </ol>
         <div class="row">
-            <!-- Blog entries-->
+            <!-- Post entries-->
             <div class="row" id="blogsDisplayContainer">
 
             </div>

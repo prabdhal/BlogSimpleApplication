@@ -1,4 +1,4 @@
-﻿let blogData = document.querySelector('div.blogData');
+﻿let postData = document.querySelector('div.blogData');
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
 
 
@@ -120,7 +120,7 @@ const displayAllReplies = () => {
 // displays delete comment modal 
 const displayDeleteCommentModal = (commentId) => {
     deleteCommentModal.style.display = 'block';
-    deleteCommentModalForm.action = `/Blog/DeleteComment/${commentId}`;
+    deleteCommentModalForm.action = `/Post/DeleteComment/${commentId}`;
 }
 
 // displays delete reply modal
@@ -129,7 +129,7 @@ const displayDeleteReplyModal = (replyId) => {
     console.log(deleteReplyModal);
     console.log(deleteReplyModal.style.display);
     deleteReplyModal.style.display = 'block';
-    deleteReplyModalForm.action = `/Blog/DeleteReply/${replyId}`;
+    deleteReplyModalForm.action = `/Post/DeleteReply/${replyId}`;
 }
 
 // hides deletes comment modal 
@@ -174,10 +174,10 @@ const commentButtonValidationCheck = (e) => {
 
 // create category badge on detail view dashboard
 const createCategoryBadge = () => {
-    let blog = JSON.parse(blogData.getAttribute("value"));
+    let post = JSON.parse(postData.getAttribute("value"));
 
     const badgeElement = document.createElement('a');
-    badgeElement.innerHTML = `<a class="badge text-decoration-none link-light ${getBlogCategoryClass(blog.category)}">${getBlogCategoryName(blog.category)}</a>`;
+    badgeElement.innerHTML = `<a class="badge text-decoration-none link-light ${getPostCategoryClass(post.category)}">${getPostCategoryName(post.category)}</a>`;
 
     categoryBadgeContainer.append(badgeElement);
 }
@@ -203,7 +203,7 @@ window.addEventListener('click', (e) => {
 
 // HELPER FUNCTIONS 
 // maps enum int to its name
-const getBlogCategoryName = (value) => {
+const getPostCategoryName = (value) => {
     switch (value) {
         case 0:
             return 'HTML';
@@ -229,7 +229,7 @@ const getBlogCategoryName = (value) => {
 }
 
 // maps enum name into ints
-const getBlogCategoryIdx = (value) => {
+const getPostCategoryIdx = (value) => {
     switch (value) {
         case 'HTML':
             return 0;
@@ -255,7 +255,7 @@ const getBlogCategoryIdx = (value) => {
 }
 
 // maps enum int to color
-const getBlogCategoryClass = (value) => {
+const getPostCategoryClass = (value) => {
     switch (value) {
         case 0:
             return 'html';

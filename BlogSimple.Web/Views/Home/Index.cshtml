@@ -9,12 +9,12 @@
 
 <!-- Page content-->
 <div class="container">
-    <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedBlog))'></div>
-    @foreach (var blog in Model.PublishedBlogs)
+    <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedPost))'></div>
+    @foreach (var blog in Model.PublishedPosts)
     {
         <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
     }
-    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
+    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
     <div class="row">
         <!-- Blog entries-->
         <div class="col-lg-8">

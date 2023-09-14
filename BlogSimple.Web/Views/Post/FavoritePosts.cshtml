@@ -1,0 +1,35 @@
+﻿@using BlogSimple.Model.ViewModels.PostViewModels;
+@model FavoritePostsViewModel;
+
+@{
+    ViewData["Title"] = "Favorite Posts";
+    Layout = "~/Views/Post/_DashboardLayoutFavorite.cshtml";
+}
+
+
+<main>
+    @foreach (var post in Model.UsersFavoritePosts)
+    {
+        <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(post))'></div>
+    }
+    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
+
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Favorite Posts</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Your Favorite Posts!</li>
+        </ol>
+        <div class="row">
+            <!-- Post entries-->
+            <div class="row" id="blogsDisplayContainer">
+
+            </div>
+            <!-- Pagination-->
+            <nav aria-label="Pagination" id="paginationNavContainer">
+
+            </nav>
+        </div>
+    </div>
+</main>
+

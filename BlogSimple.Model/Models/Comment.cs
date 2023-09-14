@@ -16,5 +16,5 @@ public class Comment
     [StringLength(300, ErrorMessage = "Can only have a maximum of 300 characters", MinimumLength = 1)]
     public string Content { get; set; }
     public List<User> CommentLikedByUsers { get; set; } = new List<User>();
-    public Blog CommentedBlog { get; set; }
+    public Post CommentedPost { get; set; }
 }

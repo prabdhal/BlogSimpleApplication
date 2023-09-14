@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
-namespace BlogSimple.Model.ViewModels.BlogViewModels;
+namespace BlogSimple.Model.ViewModels.PostViewModels;
 
-public class EditBlogViewModel
+public class EditPostViewModel
 {
-    public Blog Blog { get; set; }
+    public Post Post { get; set; }
     [Display(Name = "Header Image")]
     public IFormFile HeaderImage { get; set; }
     public User AccountUser { get; set; }

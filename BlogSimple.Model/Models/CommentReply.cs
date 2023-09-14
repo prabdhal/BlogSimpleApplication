@@ -16,5 +16,5 @@ public class CommentReply
     [StringLength(300, ErrorMessage = "Can only have a maximum of 300 characters", MinimumLength = 1)]
     public string Content { get; set; }
     public Comment RepliedComment { get; set; }
-    public Blog RepliedBlog { get; set; }
+    public Post RepliedPost { get; set; }
 }

@@ -10,7 +10,7 @@ public class CommentService : ICommentService
     private readonly IMongoCollection<Comment> _comments;
 
     public CommentService(
-        IBlogSimpleDatabaseSettings blogSettings,
+        IPostSimpleDatabaseSettings blogSettings,
         IMongoClient mongoClient
         )
     {
@@ -36,9 +36,9 @@ public class CommentService : ICommentService
         return await _comments.Find(filterSearch).ToListAsync();
     }
 
-    public async Task<List<Comment>> GetAllByBlog(string blogId)
+    public async Task<List<Comment>> GetAllByPost(string blogId)
     {
-        return await _comments.Find(c => c.CommentedBlog.Id == blogId).ToListAsync();
+        return await _comments.Find(c => c.CommentedPost.Id == blogId).ToListAsync();
     }
 
     public async Task<Comment> Create(Comment comment)
@@ -63,8 +63,8 @@ public class CommentService : ICommentService
         await _comments.DeleteOneAsync(c => c == comment);
     }
 
-    public async void RemoveAllByBlog(string blogId)
+    public async void RemoveAllByPost(string blogId)
     {
-        await _comments.DeleteManyAsync(c => c.CommentedBlog.Id == blogId);
+        await _comments.DeleteManyAsync(c => c.CommentedPost.Id == blogId);
     }
 }

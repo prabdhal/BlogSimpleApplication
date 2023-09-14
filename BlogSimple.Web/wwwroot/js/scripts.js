@@ -2,128 +2,128 @@
 const searchBarInput = document.querySelector('#searchBarInput');
 const searchBarBtn = document.querySelector('#searchBarBtn');
 
-// blog and category containers refs
-const featuredBlogContainer = document.querySelector('#featuredBlogContainer');
-const blogCategoryListContainer = document.querySelector('#blogCategoryListContainer');
-const blogsDisplayContainer = document.querySelector('#blogsDisplayContainer');
+// post and category containers refs
+const featuredPostContainer = document.querySelector('#featuredBlogContainer');
+const postCategoryListContainer = document.querySelector('#blogCategoryListContainer');
+const postsDisplayContainer = document.querySelector('#blogsDisplayContainer');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
 
-var featuredBlog = JSON.parse(document.querySelector('#featuredBlog').getAttribute("value"));
-var blogsData = document.querySelectorAll('div.blogsData');
-var blogCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
+let featuredPost = JSON.parse(document.querySelector('#featuredBlog').getAttribute("value"));
+let postsData = document.querySelectorAll('div.blogsData');
+let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
-// access to all the blogs in provided in view model
-let blogsToShow = [];
+// access to all the posts in provided in view model
+let postsToShow = [];
 
 // pagination values 
-const maxBlogsPerPage = 6;
+const maxPostsPerPage = 6;
 let currentPageNumber = 1;
 
 // search string and category
-let blogSearchString = "";
-let blogCategoryIdx = 100;
+let postSearchString = "";
+let postCategoryIdx = 100;
 
-let hideFeaturedBlog = false;
+let hideFeaturedPost = false;
 let clickedCat = false;
 
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 // controller paths
-let blogDetailsPath = '/Blog/Details';
-let blogImagePath = '../UserFiles/Blogs';
+let postDetailsPath = '/Post/PostDetails';
+let postImagePath = '../UserFiles/Posts';
 
-// sets blogCategoryIdx
-const setBlogCategory = (selectedCategory) => {
-    // toggle blog category on/off upon clicking same category
-    if (selectedCategory == getBlogCategoryName(blogCategoryIdx)) {
-        blogCategoryIdx = 100;
+// sets postCategoryIdx
+const setPostCategory = (selectedCategory) => {
+    // toggle post category on/off upon clicking same category
+    if (selectedCategory == getPostCategoryName(postCategoryIdx)) {
+        postCategoryIdx = 100;
         clickedCat = false;
     } else {
-        blogCategoryIdx = getBlogCategoryIdx(selectedCategory);
-        console.log('hide featured Blog!');
-        hideFeaturedBlog = true;
+        postCategoryIdx = getPostCategoryIdx(selectedCategory);
+        console.log('hide featured Post!');
+        hideFeaturedPost = true;
         clickedCat = true;
     }
     
-    setBlogSearchString("");
+    setPostSearchString("");
     searchBarInput.value = "";
-    setBlogsToDisplay();
-    displayBlogs();
+    setPostsToDisplay();
+    displayPosts();
     console.log('clicked ' + selectedCategory);
 }
 
-// lists all blog cateogries on side widget
-const setUpBlogCategoryList = () => {
-    blogCategoryData.forEach(cat => {
-        var catName = getBlogCategoryName(cat);
+// lists all post cateogries on side widget
+const setUpPostCategoryList = () => {
+    postCategoryData.forEach(cat => {
+        var catName = getPostCategoryName(cat);
 
         const listItemElement = document.createElement('li');
         listItemElement.innerHTML = `<a href="#" onclick="return false;">${catName}</a>`;
         listItemElement.classList = 'list-select';
-        listItemElement.addEventListener('click', () => setBlogCategory(catName));
+        listItemElement.addEventListener('click', () => setPostCategory(catName));
 
-        blogCategoryListContainer.append(listItemElement);
+        postCategoryListContainer.append(listItemElement);
     });
 }
 
-// sets blogSearchString 
-const setBlogSearchString = (searchString) => {
-    blogSearchString = searchString.toLowerCase();
-    hideFeaturedBlog = false;
-    console.log(blogSearchString);
+// sets postSearchString 
+const setPostSearchString = (searchString) => {
+    postSearchString = searchString.toLowerCase();
+    hideFeaturedPost = false;
+    console.log(postSearchString);
 
-    if (blogSearchString == '' && clickedCat == false) {
-        console.log('hide featured Blog!');
-        hideFeaturedBlog = true;
+    if (postSearchString == '' && clickedCat == false) {
+        console.log('hide featured Post!');
+        hideFeaturedPost = true;
     }
 
     currentPageNumber = 1;
 }
 
-// sets blogsToShow 
-const setBlogsToDisplay = () => {
-    blogsToShow = [];
+// sets postsToShow 
+const setPostsToDisplay = () => {
+    postsToShow = [];
 
-    let blogCategory = blogCategoryIdx;
+    let postCategory = postCategoryIdx;
 
-    displayFeaturedBlog();
+    displayFeaturedPost();
 
-    blogsData.forEach(b => {
-        let blog = JSON.parse(b.getAttribute("value"));
+    postsData.forEach(p => {
+        let post = JSON.parse(p.getAttribute("value"));
 
-        // exclude featured blogs
-        if (blog.isFeatured && hideFeaturedBlog) return;
+        // exclude featured posts
+        if (post.isFeatured && hideFeaturedPost) return;
 
-        console.log('title includes: ' + blog.title.toString().toLowerCase().includes(blogSearchString));
-        console.log('description includes: ' + blog.description.toString().toLowerCase().includes(blogSearchString));
-        console.log('content includes: ' + blog.content.toString().toLowerCase().includes(blogSearchString));
+        console.log('title includes: ' + post.title.toString().toLowerCase().includes(postSearchString));
+        console.log('description includes: ' + post.description.toString().toLowerCase().includes(postSearchString));
+        console.log('content includes: ' + post.content.toString().toLowerCase().includes(postSearchString));
 
-        if (blog.title.toString().toLowerCase().includes(blogSearchString) ||
-            blog.description.toString().toLowerCase().includes(blogSearchString) ||
-            blog.content.toString().toLowerCase().includes(blogSearchString) ||
-            blogSearchString.toString() === "") {
-            if (blog.category == blogCategory || blogCategory === 100) {
-                blogsToShow.push(blog);
+        if (post.title.toString().toLowerCase().includes(postSearchString) ||
+            post.description.toString().toLowerCase().includes(postSearchString) ||
+            post.content.toString().toLowerCase().includes(postSearchString) ||
+            postSearchString.toString() === "") {
+            if (post.category == postCategory || postCategory === 100) {
+                postsToShow.push(post);
             }
         }
     });
 
-    sortBlogs();
+    sortPosts();
 
-    console.log('blog search string ' + blogSearchString);
-    console.log('blogs to show ' + blogsToShow);
-    console.log('blogs to show length ' + blogsToShow.length);
-    updatePaginationVariables(blogsToShow.length);
+    console.log('post search string ' + postSearchString);
+    console.log('posts to show ' + postsToShow);
+    console.log('posts to show length ' + postsToShow.length);
+    updatePaginationVariables(postsToShow.length);
 }
 
-// sort blogs by updated date
-const sortBlogs = () => {
-    blogsToShow = blogsToShow.sort(
+// sort posts by updated date
+const sortPosts = () => {
+    postsToShow = postsToShow.sort(
         (b1, b2) => (b1.updatedOn < b2.updatedOn) ? 1 : (b1.updatedOn > b2.updatedOn) ? -1 : 0);
 }
 
-const updatePaginationVariables = (blogCount) => {
-    totalPageCount = Math.ceil(blogCount / maxBlogsPerPage);
+const updatePaginationVariables = (postCount) => {
+    totalPageCount = Math.ceil(postCount / maxPostsPerPage);
 }
 
 const setPageNumber = (num) => {
@@ -139,60 +139,59 @@ const setPageNumber = (num) => {
     }
 
     currentPageNumber = num;
-    setBlogsToDisplay();
-    displayBlogs();
+    setPostsToDisplay();
+    displayPosts();
 }
 
-// displays the featured blog 
-const displayFeaturedBlog = () => {
+// displays the featured post 
+const displayFeaturedPost = () => {
 
-    featuredBlogContainer.innerHTML = '';
+    featuredPostContainer.innerHTML = '';
 
-    if (featuredBlog.id == null || hideFeaturedBlog == false) return;
-    console.log('display featured blog: ' + featuredBlog);
+    if (featuredPost.id == null || hideFeaturedPost == false) return;
+    console.log('display featured post: ' + featuredPost);
 
-    var createdOnDate = new Date(featuredBlog.createdOn);
+    var createdOnDate = new Date(featuredPost.createdOn);
     var year = createdOnDate.getFullYear();
     var month = months[createdOnDate.getMonth()].substring(0, 3);
-    var date = createdOnDate.getDate();
-    var date = createdOnDate.getDate();
+    var day = createdOnDate.getDate();
 
     const divElement = document.createElement('div');
     divElement.innerHTML =
         `<div class="card mb-4">
-                <a href="${blogDetailsPath}/${featuredBlog.id}">
-                        <div class="banner-tag ${getBlogCategoryClass(featuredBlog.category)}">
-                            <div>${getBlogCategoryName(featuredBlog.category)}</div >
+                <a href="${postDetailsPath}/${featuredPost.id}">
+                        <div class="banner-tag ${getPostCategoryClass(featuredPost.category)}">
+                            <div>${getPostCategoryName(featuredPost.category)}</div >
                         </div>
-                        <img class="card-img-top featured-img" src="${blogImagePath}/${featuredBlog.id}/HeaderImage.jpg" alt="${featuredBlog.title}" />
+                        <img class="card-img-top featured-img" src="${postImagePath}/${featuredPost.id}/HeaderImage.jpg" alt="${featuredPost.title}" />
                     </a>
                 <div class="card-body text-left">
-                    <div class="small text-muted">Last updated on ${month} ${date}, ${year}</div>
-                    <h2 class="card-title h4"><a href="${blogDetailsPath}/${featuredBlog.id}">${featuredBlog.title}</a></h2>
-                    <p class="card-text text-truncate">${featuredBlog.description}</p>
+                    <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by ${featuredPost.createdBy.userName}</div>
+                    <h2 class="card-title h4"><a href="${postDetailsPath}/${featuredPost.id}">${featuredPost.title}</a></h2>
+                    <p class="card-text text-truncate">${featuredPost.description}</p>
                 </div>
             </div>`;
 
-    featuredBlogContainer.appendChild(divElement);
+    featuredPostContainer.appendChild(divElement);
 }
 
-// displays all blogs 
-const displayBlogs = () => {
+// displays all posts
+const displayPosts = () => {
     createPagination();
 
-    blogsDisplayContainer.innerHTML = '';
+    postsDisplayContainer.innerHTML = '';
 
     let searchHeading = document.createElement('h3');
-    if (blogSearchString == "" && clickedCat == false) {
+    if (postSearchString == "" && clickedCat == false) {
         searchHeading.innerHTML = ``;
-    } else if (blogSearchString == "" && clickedCat) {
-        searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)}`;
+    } else if (postSearchString == "" && clickedCat) {
+        searchHeading.innerHTML = `Search Results: ${getPostCategoryName(postCategoryIdx)}`;
     } else {
-        searchHeading.innerHTML = `Search Results: ${getBlogCategoryName(blogCategoryIdx)} - ${blogSearchString}`;
+        searchHeading.innerHTML = `Search Results: ${getPostCategoryName(postCategoryIdx)} - ${postSearchString}`;
     }
-    blogsDisplayContainer.append(searchHeading);
+    postsDisplayContainer.append(searchHeading);
 
-    if (blogsToShow.length <= 0) {
+    if (postsToShow.length <= 0) {
         // no results
         const divElement = document.createElement('div');
         divElement.innerHTML =
@@ -200,19 +199,19 @@ const displayBlogs = () => {
                 <p>Sorry... There are no related results for the above query :( </p>
             </div>`;
 
-        blogsDisplayContainer.append(divElement);
+        postsDisplayContainer.append(divElement);
         return;
     }
 
-    let curBlogIdx = (currentPageNumber - 1) * maxBlogsPerPage;
-    let blogIdxOnCurrentPage = currentPageNumber * maxBlogsPerPage;
+    let curPostIdx = (currentPageNumber - 1) * maxPostsPerPage;
+    let postIdxOnCurrentPage = currentPageNumber * maxPostsPerPage;
 
-    for (var i = curBlogIdx; i < blogIdxOnCurrentPage; i++) {
+    for (var i = curPostIdx; i < postIdxOnCurrentPage; i++) {
 
-        if (blogsToShow[i] == null) return;
-        if (blogsToShow[i].isFeatured && hideFeaturedBlog) return;
+        if (postsToShow[i] == null) return;
+        if (postsToShow[i].isFeatured && hideFeaturedPost) return;
 
-        var createdOnDate = new Date(blogsToShow[i].createdOn);
+        var createdOnDate = new Date(postsToShow[i].createdOn);
         var year = createdOnDate.getFullYear();
         var month = months[createdOnDate.getMonth()].substring(0, 3);
         var day = createdOnDate.getDate();
@@ -221,31 +220,31 @@ const displayBlogs = () => {
         divElement.classList = "col-lg-6";
         divElement.innerHTML =
            `<div class="card mb-4">
-                    <a href="${blogDetailsPath}/${blogsToShow[i].id}">
-                        <div class="banner-tag ${getBlogCategoryClass(blogsToShow[i].category)}">
-                            <div>${getBlogCategoryName(blogsToShow[i].category)}</div >
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
+                            <div>${getPostCategoryName(postsToShow[i].category)}</div >
                         </div>
-                        <img class="card-img-top" src="${blogImagePath}/${blogsToShow[i].id}/HeaderImage.jpg" alt="${blogsToShow[i].title}" />
+                        <img class="card-img-top" src="${postImagePath}/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
                     </a>
                     <div class="card-body text-left">
-                        <div class="small text-muted">Last updated on ${month} ${day}, ${year}</div>
-                        <h2 class="card-title h4"><a href="${blogDetailsPath}/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
-                        <p class="card-text text-truncate">${blogsToShow[i].description}</p>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by ${postsToShow[i].createdBy.userName}</div>
+                        <h2 class="card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">${postsToShow[i].title}</a></h2>
+                        <p class="card-text text-truncate">${postsToShow[i].description}</p>
                     </div>
                 </div>`;
 
-        blogsDisplayContainer.append(divElement);
+        postsDisplayContainer.append(divElement);
     }
 }
 
 // handles pagination and creates/designs the pagination nav accordingly
 const createPagination = () => {
     paginationNavContainer.innerHTML = '';
-    // do pagination only if greater than 10 blogs
-    if (blogsToShow.length > maxBlogsPerPage) {
+    // do pagination only if greater than 10 posts
+    if (postsToShow.length > maxPostsPerPage) {
 
-        console.log('blogs length: ' + blogsToShow.length);
-        console.log('max blogs: ' + maxBlogsPerPage);
+        console.log('posts length: ' + postsToShow.length);
+        console.log('max posts: ' + maxPostsPerPage);
         console.log('total page count: ' + totalPageCount);
 
         const hrElement = document.createElement('hr');
@@ -296,16 +295,16 @@ const createPagination = () => {
 
 // search bar event listener 
 searchBarInput.addEventListener('input', (e) => {
-    setBlogSearchString(e.target.value);
-    setBlogsToDisplay();
-    displayBlogs();
+    setPostSearchString(e.target.value);
+    setPostsToDisplay();
+    displayPosts();
 });
 
 
 
 // HELPER FUNCTIONS 
 // maps enum int to its name
-const getBlogCategoryName = (value) => {
+const getPostCategoryName = (value) => {
     switch (value) {
         case 0:
             return 'HTML';
@@ -331,7 +330,7 @@ const getBlogCategoryName = (value) => {
 }
 
 // maps enum name into ints
-const getBlogCategoryIdx = (value) => {
+const getPostCategoryIdx = (value) => {
     switch (value) {
         case 'HTML':
             return 0;
@@ -357,7 +356,7 @@ const getBlogCategoryIdx = (value) => {
 }
 
 // maps enum int to color
-const getBlogCategoryClass = (value) => {
+const getPostCategoryClass = (value) => {
     switch (value) {
         case 0:
             return 'html';
@@ -382,11 +381,11 @@ const getBlogCategoryClass = (value) => {
     }
 }
 
-setBlogCategory("All");
-setBlogSearchString("")
-setUpBlogCategoryList();
-setBlogsToDisplay();
-displayBlogs();
+setPostCategory("All");
+setPostSearchString("")
+setUpPostCategoryList();
+setPostsToDisplay();
+displayPosts();
 
 
 

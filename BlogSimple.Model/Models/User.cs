@@ -32,5 +32,5 @@ public class User : ApplicationUser
     [Display(Name = "LinkedIn Link")]
     public string LinkedInLink { get; set; }
 
-    public List<Blog> FavoritedBlogs { get; set; } = new List<Blog>();  
+    public List<Post> FavoritedPosts { get; set; } = new List<Post>();  
 }

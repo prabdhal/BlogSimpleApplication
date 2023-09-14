@@ -1,18 +1,18 @@
-﻿@using BlogSimple.Model.ViewModels.BlogViewModels;
+﻿@using BlogSimple.Model.ViewModels.PostViewModels;
 @using Microsoft.AspNetCore.Identity;
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
-@model BlogDetailsViewModel;
+@model PostDetailsViewModel;
 @{
-    ViewData["Title"] = "View " + Model.Blog.Title;
+    ViewData["Title"] = "View " + Model.Post.Title;
     Layout = "~/Views/Home/_HomeLayoutDetails.cshtml";
 }
 
 
 <!-- Page content-->
 <div class="container mt-5">
-    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(BlogCategory))))'></div>
-    <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Blog))'></div>
+    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
+    <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Post))'></div>
 
     <div class="row">
         <div class="col-lg-8 text-left">
@@ -22,22 +22,22 @@
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->
-                    <h1 class="fw-bolder mb-1">@Model.Blog.Title</h1>
+                    <h1 class="fw-bolder mb-1">@Model.Post.Title</h1>
                     <!-- Post meta content-->
                     <div class="text-muted fst-italic mb-2">
-                        Posted on @Model.Blog.CreatedOn.ToString("MMM d, yyyy") by <a href="/Account/Author/@Model.Blog.CreatedBy.Id">@Model.Blog.CreatedBy</a>
+                        Posted on @Model.Post.CreatedOn.ToString("MMM d, yyyy") by <a href="/Account/Author/@Model.Post.CreatedBy.Id">@Model.Post.CreatedBy</a>
                     </div>
-                    <div class="text-muted fst-italic mb-2">Last Updated on @Model.Blog.UpdatedOn.ToString("MMM d, yyyy")</div>
+                    <div class="text-muted fst-italic mb-2">Last Updated on @Model.Post.UpdatedOn.ToString("MMM d, yyyy")</div>
                     <!-- Post categories-->
                     <div style="display: flex;justify-content:space-between;">
                         <div id="categoryBadgeContainer"></div>
-                        <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="FavoriteBlog" asp-route-id="@Model.Blog.Id">
-                            <input asp-for="Blog.Id" readonly hidden />
+                        <form class="reply-comment-btns-container" asp-controller="Post" asp-action="FavoritePost" asp-route-id="@Model.Post.Id">
+                            <input asp-for="Post.Id" readonly hidden />
                             @{
                                 if (Model.AccountUser != null)
                                 {
-                                    var blog = Model.AccountUser.FavoritedBlogs.Where(b => b.Id == Model.Blog.Id).FirstOrDefault();
-                                    if (blog != null)
+                                    var post = Model.AccountUser.FavoritedPosts.Where(b => b.Id == Model.Post.Id).FirstOrDefault();
+                                    if (post != null)
                                     {
                                         <button type="submit" class="svgButton">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 24 24" fill="none">
@@ -70,11 +70,11 @@
                 </header>
                 <!-- Preview image figure-->
                 <figure class="mb-4">
-                    <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Blogs/@Model.Blog.Id/HeaderImage.jpg" alt="@Model.Blog.Title" />
+                    <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Posts/@Model.Post.Id/HeaderImage.jpg" alt="@Model.Post.Title" />
                 </figure>
                 <!-- Post content-->
                 <section class="mb-5 text-left">
-                    @Html.Raw(Model.Blog.Content)
+                    @Html.Raw(Model.Post.Content)
                 </section>
             </article>
             <!-- Comments section-->
@@ -84,8 +84,8 @@
                         <!-- Comment form-->
                         <div class="write-comment-container mb-4">
                             <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <form class="create-comment-form mb-4" asp-controller="Blog" asp-action="CreateComment">
-                                <input asp-for="Blog.Id" readonly hidden />
+                            <form class="create-comment-form mb-4" asp-controller="Post" asp-action="CreateComment">
+                                <input asp-for="Post.Id" readonly hidden />
                                 <textarea asp-for="Comment.Content" class="comment-textarea" onclick="displayCommentButtons(this)" rows="1" placeholder="Join the discussion and leave a comment!"></textarea>
                                 <div class="form-group create-comment-buttons">
                                     @{
@@ -123,8 +123,8 @@
                                                                 <div class="comment-date">@comment.CreatedOn</div>
                                                             </div>
                                                             <div class="text-break">@comment.Content</div>
-                                                            <form class="reply-comment-btns-container" asp-controller="Blog" asp-action="LikeComment" asp-route-id="@comment.Id">
-                                                                <input asp-for="Blog.Id" readonly hidden />
+                                                            <form class="reply-comment-btns-container" asp-controller="Post" asp-action="LikeComment" asp-route-id="@comment.Id">
+                                                                <input asp-for="Post.Id" readonly hidden />
                                                                 <input asp-for="Comment.Id" readonly hidden />
                                                                 <button type="submit" class="svgButton">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
@@ -160,7 +160,7 @@
                                                 <div class="comment-edit-display-section">
                                                     <form class="create-comment-form" asp-action="EditComment" asp-route-id="@comment.Id">
                                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                        <input asp-for="Blog.Id" readonly hidden />
+                                                        <input asp-for="Post.Id" readonly hidden />
                                                         <input asp-for="Comment.Id" readonly hidden />
                                                         <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
                                                         <span asp-validation-for="Comment.Content" class="text-danger"></span>
@@ -172,8 +172,8 @@
                                                 </div>
                                                 <div class="write-reply-container mb-4">
                                                     <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                                                    <form class="create-comment-form" asp-controller="Blog" asp-action="CreateReply">
-                                                        <input asp-for="Blog.Id" readonly hidden />
+                                                    <form class="create-comment-form" asp-controller="Post" asp-action="CreateReply">
+                                                        <input asp-for="Post.Id" readonly hidden />
                                                         <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
                                                         <input asp-for="CommentReply.Id" readonly hidden />
                                                         <textarea asp-for="CommentReply.Content" class="comment-textarea" rows="1" placeholder="Add a reply..."></textarea>
@@ -234,7 +234,7 @@
                                                                         <div class="reply-edit-display-section">
                                                                             <form class="create-comment-form" asp-action="EditReply" asp-route-id="@reply.Id">
                                                                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                                                <input asp-for="Blog.Id" readonly hidden />
+                                                                                <input asp-for="Post.Id" readonly hidden />
                                                                                 <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
                                                                                 <input asp-for="CommentReply.Id" name="CommentReply.Id" value="@reply.Id" readonly hidden />
                                                                                 <textarea asp-for="@reply.Content" class="comment-textarea" rows="1" name="CommentReply.Content" value="@reply.Content">@reply.Content</textarea>
@@ -268,7 +268,7 @@
                 <div class="card-header">Search</div>
                 <div class="card-body">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search for blogs..." aria-label="Search for blogs..." aria-describedby="button-search" />
+                        <input class="form-control" type="text" placeholder="Search for posts..." aria-label="Search for posts..." aria-describedby="button-search" />
                         <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
                     </div>
                 </div>
@@ -280,7 +280,7 @@
                     <div class="row">
                         <ul class="list-unstyled mb-0">
                             @{
-                                foreach (var cat in Model.BlogCategories)
+                                foreach (var cat in Model.PostCategories)
                                 {
                                     <li>
                                         <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>

@@ -6,7 +6,7 @@
 
 @{
     ViewData["Title"] = "Update Bio";
-    Layout = "~/Views/Blog/_DashboardLayoutEditor.cshtml";
+    Layout = "~/Views/Post/_DashboardLayoutEditor.cshtml";
 }
 
 
@@ -107,7 +107,7 @@
                 <div class="row">
                     <ul class="list-unstyled mb-0">
                         {
-                        foreach (var cat in Model.BlogCategories)
+                        foreach (var cat in Model.PostCategories)
                         {
                         <li>
                         <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>

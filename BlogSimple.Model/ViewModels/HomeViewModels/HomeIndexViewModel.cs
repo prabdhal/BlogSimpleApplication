@@ -4,7 +4,7 @@ namespace BlogSimple.Model.ViewModels.HomeViewModels;
 
 public class HomeIndexViewModel
 {
-    public List<string> BlogCategories { get; set; }
-    public Blog FeaturedBlog { get; set; } = new Blog();
-    public IEnumerable<Blog> PublishedBlogs { get; set; } = Enumerable.Empty<Blog>();
+    public List<string> PostCategories { get; set; }
+    public Post FeaturedPost { get; set; } = new Post();
+    public IEnumerable<Post> PublishedPosts { get; set; } = Enumerable.Empty<Post>();
 }

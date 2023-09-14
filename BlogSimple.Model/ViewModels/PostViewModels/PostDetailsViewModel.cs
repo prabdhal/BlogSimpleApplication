@@ -1,12 +1,12 @@
 ﻿using BlogSimple.Model.Models;
 
-namespace BlogSimple.Model.ViewModels.BlogViewModels;
+namespace BlogSimple.Model.ViewModels.PostViewModels;
 
-public class BlogDetailsViewModel
+public class PostDetailsViewModel
 {
-    public List<string> BlogCategories { get; set; }
-    public Blog Blog { get; set; }
-    public IEnumerable<Blog> AllBlogs { get; set; } = Enumerable.Empty<Blog>();
+    public List<string> PostCategories { get; set; }
+    public Post Post { get; set; }
+    public IEnumerable<Post> AllPosts { get; set; } = Enumerable.Empty<Post>();
     public IEnumerable<Comment> Comments { get; set; }
     public Comment Comment { get; set; }
     public CommentReply CommentReply { get; set; }

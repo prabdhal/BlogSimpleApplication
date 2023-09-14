@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogSimple.Model.Models;
 
-public class Blog
+public class Post
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
@@ -17,7 +17,7 @@ public class Blog
     [StringLength(200, ErrorMessage = "Can only have a maximum of 200 characters", MinimumLength = 1)]
     public string Description { get; set; } = String.Empty;
     [Required(ErrorMessage = "Please select the appropriate category for the blog.")]
-    public BlogCategory Category { get; set; }
+    public PostCategory Category { get; set; }
     [Required(ErrorMessage = "Please enter the blog content.")]
     public string Content { get; set; } = String.Empty;
     public bool IsPublished { get; set; } = false;

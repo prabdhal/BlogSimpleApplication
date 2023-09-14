@@ -10,7 +10,7 @@ public class UserService : IUserService
     private readonly IMongoCollection<User> _users;
 
     public UserService(
-        IBlogSimpleDatabaseSettings blogSettings,
+        IPostSimpleDatabaseSettings blogSettings,
         IMongoClient mongoClient
         )
     {

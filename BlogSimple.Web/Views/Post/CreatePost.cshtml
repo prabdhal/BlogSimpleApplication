@@ -1,0 +1,73 @@
+﻿@using BlogSimple.Model.ViewModels.PostViewModels;
+@model CreatePostViewModel;
+
+@{
+    ViewData["Title"] = "Create Post";
+    Layout = "~/Views/Post/_DashboardLayoutEditor.cshtml";
+}
+
+<h1 class="text-left">Create Post</h1>
+
+<h4 class="text-left">Write a Post!</h4>
+<hr />
+<div class="row">
+    <div class="text-left">
+        <form asp-action="CreatePost" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Post.Title" class="control-label text-left"></label>
+                <input asp-for="Post.Title" class="form-control" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            
+            <br />
+            <div class="form-group">
+                <label asp-for="HeaderImage">Header Image</label>
+                <div class="custom-file">
+                    <input asp-for="HeaderImage" class="form-control" accept="image/*" />
+                </div>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <label asp-for="Post.Category" class="control-label"></label>
+                <select asp-for="Post.Category"
+                        class="form-control"
+                        asp-items="Html.GetEnumSelectList<PostCategory>()">
+                    <option>-- Select Category --</option>
+                </select>
+                <span asp-validation-for="Post.Category" class="text-danger"></span>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <label asp-for="Post.Description" class="control-label"></label>
+                <input asp-for="Post.Description" class="form-control" />
+                <span asp-validation-for="Post.Description" class="text-danger"></span>
+            </div>
+
+            <br />
+            <div class="form-group">
+                <label asp-for="Post.Content" class="control-label"></label>
+                <textarea asp-for="Post.Content" id="myEditor" class="form-control"></textarea>
+                <span asp-validation-for="Post.Content" class="text-danger"></span>
+            </div>
+
+            <br />
+            <div class="card-footer">
+                <div class="form-group">
+                    <div class="text-muted">Publish now or save for later edits.</div>
+                    <label>Publish now?</label>
+                    <input asp-for="Post.IsPublished" type="checkbox" data-toggle="toggle" />
+                </div>
+            </div>
+            <br />
+            <input class="btn btn-primary" type="submit" value="Save" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -12,7 +12,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 {
     private readonly UserManager<User> _userManager;
     private readonly IUserService _userService;
-    private readonly IBlogService _blogService;
+    private readonly IPostService _postService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
     private readonly IEmailService _emailService;
@@ -26,7 +26,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
-        IBlogService blogService,
+        IPostService postService,
         ICommentService commentService,
         ICommentReplyService replyService,
         IEmailService emailService,
@@ -36,7 +36,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         _userManager = userManager;
         _userService = userService;
-        _blogService = blogService;
+        _postService = postService;
         _commentService = commentService;
         _replyService = replyService;
         _emailService = emailService;
@@ -109,13 +109,13 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel emailConfirmViewModel)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        var publishedBlog = await _blogService.GetAll(user);
-        var publishedBlogCount = publishedBlog.Count();
+        var publishedPost = await _postService.GetAll(user);
+        var publishedPostCount = publishedPost.Count();
 
         var comments = await _commentService.GetAll(user);
         var replies = await _replyService.GetAll(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
-        var favoritedBlogsCount = user.FavoritedBlogs.Count();
+        var favoritedPostsCount = user.FavoritedPosts.Count();
 
         if (user.EmailConfirmed)
         {
@@ -126,9 +126,9 @@ public class AccountBusinessManager : IAccountBusinessManager
         return new MyAccountViewModel
         {
             AccountUser = user,
-            PublishedBlogsCount = publishedBlogCount,
+            PublishedPostsCount = publishedPostCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoriteBlogsCount = favoritedBlogsCount,
+            FavoritePostsCount = favoritedPostsCount,
             EmailConfirmViewModel = emailConfirmViewModel
         };
     }
@@ -136,13 +136,13 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        var publishedBlog = await _blogService.GetAll(user);
-        var publishedBlogCount = publishedBlog.Count();
+        var publishedPost = await _postService.GetAll(user);
+        var publishedPostCount = publishedPost.Count();
 
         var comments = await _commentService.GetAll(user);
         var replies = await _replyService.GetAll(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
-        var favoritedBlogsCount = user.FavoritedBlogs.Count();
+        var favoritedPostsCount = user.FavoritedPosts.Count();
 
         if (user.EmailConfirmed)
         {
@@ -152,9 +152,9 @@ public class AccountBusinessManager : IAccountBusinessManager
         return new MyAccountViewModel
         {
             AccountUser = user,
-            PublishedBlogsCount = publishedBlogCount,
+            PublishedPostsCount = publishedPostCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoriteBlogsCount = favoritedBlogsCount,
+            FavoritePostsCount = favoritedPostsCount,
             EmailConfirmViewModel = new EmailConfirmViewModel()
         };
     }
@@ -162,20 +162,20 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAccountViewModel> GetMyAccountViewModel(string email, EmailConfirmViewModel emailConfirmViewModel)
     {
         var user = await _userManager.FindByEmailAsync(email);
-        var publishedBlog = await _blogService.GetAll(user);
-        var publishedBlogCount = publishedBlog.Count();
+        var publishedPost = await _postService.GetAll(user);
+        var publishedPostCount = publishedPost.Count();
 
         var comments = await _commentService.GetAll(user);
         var replies = await _replyService.GetAll(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
-        var favoritedBlogsCount = user.FavoritedBlogs.Count();
+        var favoritedPostsCount = user.FavoritedPosts.Count();
 
         return new MyAccountViewModel
         {
             AccountUser = user,
-            PublishedBlogsCount = publishedBlogCount,
+            PublishedPostsCount = publishedPostCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoriteBlogsCount = favoritedBlogsCount,
+            FavoritePostsCount = favoritedPostsCount,
             EmailConfirmViewModel = emailConfirmViewModel
         };
     }
