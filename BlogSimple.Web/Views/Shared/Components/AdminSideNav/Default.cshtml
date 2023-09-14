@@ -7,11 +7,11 @@
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
         <div class="nav">
-            <a class="nav-link" asp-controller="Blog" asp-action="Index">
+            <a class="nav-link" asp-controller="Blog" asp-action="Index" title="Dashboard">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 Dashboard
             </a>
-            <a class="nav-link" asp-controller="Blog" asp-action="FavoriteBlogs">
+            <a class="nav-link" asp-controller="Blog" asp-action="FavoriteBlogs" title="Favorite Posts">
                 <div class="sb-nav-link-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="16px" height="16px" style="opacity: 0.25;" viewBox="0 0 1000 1000" stroke="#ffffff">
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -23,7 +23,7 @@
                 </div>
                 Favorite Blogs
             </a>
-            <a class="nav-link" asp-controller="Blog" asp-action="CreateBlog">
+            <a class="nav-link" asp-controller="Blog" asp-action="CreateBlog" title="Create Post">
                 <div class="sb-nav-link-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" style="opacity: 0.25;" viewBox="0 0 24 24" fill="none">
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -37,7 +37,7 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 View Bio
             </a>*@
-            <a class="nav-link" asp-controller="Account" asp-action="UpdateAuthor">
+            <a class="nav-link" asp-controller="Account" asp-action="UpdateAuthor" title="Update Bio">
                 <div class="sb-nav-link-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" style="opacity: 0.25;" viewBox="0 0 24 24" fill="none">
                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -47,7 +47,7 @@
                 </div>
                 Update Bio
             </a>
-            <a class="nav-link" asp-controller="Home" asp-action="Index">
+            <a class="nav-link" asp-controller="Home" asp-action="Index" title="Home">
                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                 Return To Home
             </a>

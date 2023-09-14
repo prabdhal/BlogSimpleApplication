@@ -602,6 +602,11 @@ progress {
   height: auto;
 }
 
+.blog-details-img {
+    height: fit-content;
+    max-height: 500px;
+}
+
 .img-thumbnail {
   padding: 0.25rem;
   background-color: #fff;
@@ -4291,6 +4296,13 @@ textarea.form-control-lg {
 .card-img-top,
 .card-img-bottom {
   width: 100%;
+  max-height: 300px;
+  height: fit-content;
+  overflow-y: hidden;
+}
+
+.featured-img {
+    max-height: 500px!important;
 }
 
 .card-img,

@@ -21,8 +21,6 @@
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-2">About @Model.AccountUser.UserName</h1>
                     <div class="text-muted fst-italic mb-1">Member since @Model.AccountUser.CreatedOn.ToShortDateString()</div>
-                    <br />
-                    <figure class="mb-4"><img class="img-fluid rounded" src="~/UserFiles/Users/@Model.AccountUser.Id/HeaderImage.jpg" alt="@Model.AccountUser.UserName Bio Image"></figure>
                     <div class="m-auto">
                         @if (Model.AccountUser.PortfolioLink != null)
                         {
@@ -78,6 +76,10 @@
                             </div>
                         }
                     </div>
+                    <br />
+                    <figure class="mb-4">
+                        <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Users/@Model.AccountUser.Id/HeaderImage.jpg" alt="@Model.AccountUser.UserName Bio Image">
+                    </figure>
                 </header>
                 <!-- Preview image figure-->
                 <!-- Post content-->
@@ -107,12 +109,12 @@
                     <div class="row">
                         <ul class="list-unstyled mb-0">
                             @*{
-                                foreach (var cat in Model.BlogCategories)
-                                {
-                                    <li>
-                                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
-                                    </li>
-                                }
+                            foreach (var cat in Model.BlogCategories)
+                            {
+                            <li>
+                            <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
+                            </li>
+                            }
                             }*@
                         </ul>
                     </div>

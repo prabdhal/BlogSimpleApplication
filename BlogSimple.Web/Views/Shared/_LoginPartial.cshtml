@@ -3,15 +3,15 @@
 @inject UserManager<User> UserManager
 
 <li class="nav-item">
-    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" title="Home">Home</a>
 </li>
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a class="nav-link" asp-controller="Account" asp-action="MyAccount" title="Manage">Hello @User.Identity.Name!</a>
+        <a class="nav-link" asp-controller="Account" asp-action="MyAccount" title="My Account">Hello @User.Identity.Name!</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" onclick="$('#LogoutForm').submit();" style="cursor:pointer;">Logout</a>
+        <a class="nav-link" onclick="$('#LogoutForm').submit();" style="cursor:pointer;" title="Logout">Logout</a>
         <form id="LogoutForm" class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
         </form>
     </li>
@@ -19,9 +19,9 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register" title="Register">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login" title="Login">Login</a>
     </li>
 }

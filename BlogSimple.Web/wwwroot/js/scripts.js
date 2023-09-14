@@ -164,9 +164,9 @@ const displayFeaturedBlog = () => {
                         <div class="banner-tag ${getBlogCategoryClass(featuredBlog.category)}">
                             <div>${getBlogCategoryName(featuredBlog.category)}</div >
                         </div>
-                        <img class="card-img-top" src="${blogImagePath}/${featuredBlog.id}/HeaderImage.jpg" alt="${featuredBlog.title}" />
+                        <img class="card-img-top featured-img" src="${blogImagePath}/${featuredBlog.id}/HeaderImage.jpg" alt="${featuredBlog.title}" />
                     </a>
-                <div class="card-body">
+                <div class="card-body text-left">
                     <div class="small text-muted">Last updated on ${month} ${date}, ${year}</div>
                     <h2 class="card-title h4"><a href="${blogDetailsPath}/${featuredBlog.id}">${featuredBlog.title}</a></h2>
                     <p class="card-text text-truncate">${featuredBlog.description}</p>
@@ -227,7 +227,7 @@ const displayBlogs = () => {
                         </div>
                         <img class="card-img-top" src="${blogImagePath}/${blogsToShow[i].id}/HeaderImage.jpg" alt="${blogsToShow[i].title}" />
                     </a>
-                    <div class="card-body">
+                    <div class="card-body text-left">
                         <div class="small text-muted">Last updated on ${month} ${day}, ${year}</div>
                         <h2 class="card-title h4"><a href="${blogDetailsPath}/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
                         <p class="card-text text-truncate">${blogsToShow[i].description}</p>

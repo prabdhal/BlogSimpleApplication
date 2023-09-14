@@ -9,6 +9,9 @@
 
     <h1>My Account</h1>
 
+    <br />
+    <br />
+
     <div>
         @if (Model.AccountUser.EmailConfirmed == false)
         {
@@ -80,18 +83,10 @@
                 <div class="col-sm-4">
                 </div>
                 <div class="col-sm-4">
-                    Published Blogs:
+                    Blogs Published:
                 </div>
                 <div class="col-sm-4">
                     @Model.PublishedBlogsCount
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Total Comments:
-                </div>
-                <div class="col-sm-4">
-                    @Model.TotalCommentsAndRepliesCount
                 </div>
                 <div class="col-sm-4">
                 </div>
@@ -100,6 +95,14 @@
                 </div>
                 <div class="col-sm-4">
                     @Model.FavoriteBlogsCount
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                    Total Comments:
+                </div>
+                <div class="col-sm-4">
+                    @Model.TotalCommentsAndRepliesCount
                 </div>
                 <div class="col-sm-4">
                 </div>
