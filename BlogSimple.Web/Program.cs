@@ -58,7 +58,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
 
-    //options.SignIn.RequireConfirmedEmail = true;
+    options.User.RequireUniqueEmail = false;
 });
 builder.Services.Configure<IdentityOptions>(options 
     => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
