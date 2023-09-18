@@ -11,21 +11,21 @@ namespace BlogSimple.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<UserRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IAccountBusinessManager _accountBusinessManager;
+        private readonly IPostBusinessManager _postBusinessManager;
 
         public AccountController(
             UserManager<User> userManager,
-            RoleManager<UserRole> roleManager,
             SignInManager<User> signInManager,
-            IAccountBusinessManager accountBusinessManager
+            IAccountBusinessManager accountBusinessManager,
+            IPostBusinessManager postBusinessManager
             )
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _signInManager = signInManager;
             _accountBusinessManager = accountBusinessManager;
+            _postBusinessManager = postBusinessManager;
         }
 
         [AllowAnonymous]
@@ -128,7 +128,7 @@ namespace BlogSimple.Web.Controllers
                     emailConfirmViewModel.EmailVerified = true;
                 }
             }
-            
+
             return View(emailConfirmViewModel);
         }
 
@@ -245,6 +245,14 @@ namespace BlogSimple.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        [Authorize(Roles = "VerifiedUser, Admin")]
+        public async Task<IActionResult> DeleteUser()
+        {
+            _postBusinessManager.DeleteUser(User);
+
+            return RedirectToAction("Logout");
         }
     }
 }

@@ -24,5 +24,6 @@ public interface IPostBusinessManager
     Task<CommentReply> CreateReply(PostDetailsViewModel postDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     Task<ActionResult<PostDetailsViewModel>> EditReply(string commentId, PostDetailsViewModel postDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     void DeleteReply(string replyId, ClaimsPrincipal claimsPrincipal);
-    Task<EditPostViewModel> GetEditPostViewModelViaReply(string replyId);
+    Task<EditPostViewModel> GetEditPostViewModelViaReply(string replyId); 
+    void DeleteUser(ClaimsPrincipal claimsPrincipal);
 }

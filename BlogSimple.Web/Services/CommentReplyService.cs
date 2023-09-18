@@ -28,10 +28,10 @@ public class CommentReplyService : ICommentReplyService
         return await _replies.Find(_ => true).ToListAsync();
     }
 
-    public async Task<List<CommentReply>> GetAll(User user)
+    public async Task<List<CommentReply>> GetAllByUser(User user)
     {
         // Need to filter by user comments
-        var filterSearch = Builders<CommentReply>.Filter.Where(c => c.CreatedBy.UserName == user.UserName);
+        var filterSearch = Builders<CommentReply>.Filter.Where(c => c.CreatedBy.Id == user.Id);
 
         return await _replies.Find(filterSearch).ToListAsync();
     }
@@ -53,6 +53,12 @@ public class CommentReplyService : ICommentReplyService
     }
 
     public async Task<CommentReply> Update(string replyId, CommentReply reply)
+    {
+        await _replies.ReplaceOneAsync(r => r.Id == replyId, reply);
+        return reply;
+    }
+
+    public async Task<CommentReply> UpdateForRemoval(string replyId, CommentReply reply)
     {
         await _replies.ReplaceOneAsync(r => r.Id == replyId, reply);
         return reply;

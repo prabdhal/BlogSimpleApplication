@@ -113,7 +113,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var publishedPostCount = publishedPost.Count();
 
         var comments = await _commentService.GetAll(user);
-        var replies = await _replyService.GetAll(user);
+        var replies = await _replyService.GetAllByUser(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
         var favoritedPostsCount = user.FavoritedPosts.Count();
 
@@ -140,7 +140,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var publishedPostCount = publishedPost.Count();
 
         var comments = await _commentService.GetAll(user);
-        var replies = await _replyService.GetAll(user);
+        var replies = await _replyService.GetAllByUser(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
         var favoritedPostsCount = user.FavoritedPosts.Count();
 
@@ -166,7 +166,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var publishedPostCount = publishedPost.Count();
 
         var comments = await _commentService.GetAll(user);
-        var replies = await _replyService.GetAll(user);
+        var replies = await _replyService.GetAllByUser(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
         var favoritedPostsCount = user.FavoritedPosts.Count();
 

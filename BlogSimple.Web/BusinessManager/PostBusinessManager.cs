@@ -17,6 +17,7 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
     private readonly IWebHostEnvironment webHostEnvironment;
+    private readonly string deletedUserCommentText = "<The comment can no longer be viewed since the user account has been deleted.>";
 
     public PostBusinessManager(
         UserManager<User> userManager,
@@ -451,12 +452,7 @@ public class PostBusinessManager : IPostBusinessManager
         if (users == null)
             return new NotFoundResult();
 
-        // Remove post from all users favorite posts
-        foreach (var u in users)
-        {
-            u.FavoritedPosts.RemoveAll(p => p.Id == post.Id);
-            await _userService.Update(u.UserName, u);
-        }
+        DeletePostFromUserFavorites(users, post);
 
         _commentService.RemoveAllByPost(postId);
         _commentReplyService.RemoveAllByPost(postId);
@@ -474,6 +470,16 @@ public class PostBusinessManager : IPostBusinessManager
 
         _postService.Remove(post);
         return post;
+    }
+
+    private async void DeletePostFromUserFavorites(List<User> users, Post post)
+    {
+        // Remove post from all users favorite posts
+        foreach (var u in users)
+        {
+            u.FavoritedPosts.RemoveAll(p => p.Id == post.Id);
+            await _userService.Update(u.UserName, u);
+        }
     }
 
     public async void DeleteComment(string commentId, ClaimsPrincipal claimsPrincipal)
@@ -515,5 +521,62 @@ public class PostBusinessManager : IPostBusinessManager
             throw new Exception("Cannot delete because reply creator and user creater are not the same");
 
         _commentReplyService.Remove(replyId);
+    }
+
+    public async void DeleteUser(ClaimsPrincipal claimsPrincipal)
+    {
+        var u = await _userManager.GetUserAsync(claimsPrincipal);
+        if (u == null)
+            throw new Exception("User could not be found");
+
+        var user = await _userService.Get(u.Id);
+        if (user == null)
+            throw new Exception("User could not be found");
+
+        var users = await _userService.GetAll();
+
+        List<Post> posts = await _postService.GetAllByUser(user);
+        List<Comment> comments = await _commentService.GetAllByUser(user);
+        List<CommentReply> replies = await _commentReplyService.GetAllByUser(user);
+
+        // Update values for comments
+        foreach (var comment in comments)
+        {
+            if (comment.CommentedPost.CreatedBy.Id == user.Id)
+            {
+                _commentService.Remove(comment);
+            }
+            else
+            {
+                Comment removalCommentTemplate = await _commentService.Get(comment.Id);
+                removalCommentTemplate.Content = deletedUserCommentText;
+                await _commentService.UpdateForRemoval(comment.Id, removalCommentTemplate);
+            }
+        }
+
+        // Update values for comment replies
+        foreach (var reply in replies)
+        {
+            if (reply.RepliedComment.CreatedBy.Id == user.Id)
+            {
+                _commentReplyService.Remove(reply);
+            }
+            else
+            {
+                CommentReply removalReplyTemplate = await _commentReplyService.Get(reply.Id);
+                removalReplyTemplate.Content = deletedUserCommentText;
+                await _commentReplyService.UpdateForRemoval(reply.Id, removalReplyTemplate);
+            }
+        }
+
+        // delete all posts and posts from other users favorites
+        foreach (var post in posts)
+        {
+            DeletePostFromUserFavorites(users, post);
+            _postService.Remove(post.Id);
+        }
+
+        // delete user 
+        _userService.Remove(user.Id);
     }
 }

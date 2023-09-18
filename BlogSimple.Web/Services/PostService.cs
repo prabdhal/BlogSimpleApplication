@@ -23,6 +23,11 @@ public class PostService : IPostService
         return await _posts.Find(_ => true).ToListAsync();
     }
 
+    public async Task<List<Post>> GetAllByUser(User user)
+    {
+        return await _posts.Find(p => p.CreatedBy.Id == user.Id).ToListAsync();
+    }
+
     public async Task<List<Post>> GetAll(string searchString)
     {
         var search = searchString.ToLower();

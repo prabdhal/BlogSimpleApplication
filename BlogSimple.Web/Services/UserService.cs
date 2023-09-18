@@ -55,8 +55,8 @@ public class UserService : IUserService
         return user;
     }
 
-    public async void Remove(string userName)
+    public async void Remove(Guid id)
     {
-        await _users.DeleteOneAsync(u => u.UserName == userName);
+        await _users.DeleteOneAsync(u => u.Id == id);
     }
 }

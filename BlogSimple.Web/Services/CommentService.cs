@@ -28,6 +28,11 @@ public class CommentService : ICommentService
         return await _comments.Find(_ => true).ToListAsync();
     }
 
+    public async Task<List<Comment>> GetAllByUser(User user)
+    {
+        return await _comments.Find(c => c.CreatedBy.Id == user.Id).ToListAsync();
+    }
+
     public async Task<List<Comment>> GetAll(User user)
     {
         // Need to filter by user comments
@@ -48,6 +53,12 @@ public class CommentService : ICommentService
     }
 
     public async Task<Comment> Update(string commentId, Comment comment)
+    {
+        await _comments.ReplaceOneAsync(comment => comment.Id == commentId, comment);
+        return comment;
+    }
+
+    public async Task<Comment> UpdateForRemoval(string commentId, Comment comment)
     {
         await _comments.ReplaceOneAsync(comment => comment.Id == commentId, comment);
         return comment;

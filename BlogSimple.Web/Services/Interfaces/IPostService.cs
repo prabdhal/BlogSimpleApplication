@@ -6,6 +6,7 @@ public interface IPostService
 {
     Task<List<Post>> GetAll();
     Task<List<Post>> GetAll(string searchString);
+    Task<List<Post>> GetAllByUser(User user);
     Task<List<Post>> GetPublishedOnly(string searchString);
     Task<List<Post>> GetAll(User user);
     Task<Post> Get(string id);

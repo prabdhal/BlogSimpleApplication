@@ -110,6 +110,56 @@
             <br />
             <br />
         </div>
+
+
+        <div class="text-left">
+            <h4>Change Password</h4>
+            <hr />
+            <div class="row">
+
+                <p>Forgot your password? No worries, you can reset it now.</p>
+                <form asp-action="ForgotPassword">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="AccountUser.Password" class="form-control" />
+                        <label asp-for="AccountUser.Password" class="text-black"></label>
+                        <span asp-validation-for="AccountUser.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="AccountUser.Password" class="form-control" />
+                        <label asp-for="AccountUser.Password" class="text-black"></label>
+                        <span asp-validation-for="AccountUser.Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="AccountUser.ConfirmPassword" class="form-control" />
+                        <label asp-for="AccountUser.ConfirmPassword" class="text-black"></label>
+                        <span asp-validation-for="AccountUser.ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Update Password" class="btn btn-primary">
+                    </div>
+                </form>
+            </div>
+            <br />
+            <br />
+        </div>
+
+
+        <div class="text-left">
+            <h4>Delete Account</h4>
+            <hr />
+            <div class="row">
+                <p>Are you sure you would like to delete your account? This will delete all your blog posts and comments posted within BlogSimple.</p>
+                <div class="col-sm-4">
+                    <form asp-controller="Account" asp-action="DeleteUser">
+                        <input type="submit" class="btn btn-danger" value="Delete Account" />
+                    </form>
+                </div>
+            </div>
+            <br />
+            <br />
+        </div>
     </div>
 
 </div>
