@@ -17,7 +17,7 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
     private readonly IWebHostEnvironment webHostEnvironment;
-    private readonly string deletedUserCommentText = "<The comment can no longer be viewed since the user account has been deleted.>";
+    private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
 
     public PostBusinessManager(
         UserManager<User> userManager,
@@ -197,8 +197,9 @@ public class PostBusinessManager : IPostBusinessManager
         Comment comment = postDetailsViewModel.Comment;
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
+        var post = await _postService.Get(postDetailsViewModel.Post.Id);
 
-        comment.CommentedPost = postDetailsViewModel.Post;
+        comment.CommentedPost = post;
         comment.CreatedBy = user;
         comment.CreatedOn = DateTime.Now;
         comment.UpdatedOn = DateTime.Now;
@@ -536,8 +537,8 @@ public class PostBusinessManager : IPostBusinessManager
         var users = await _userService.GetAll();
 
         List<Post> posts = await _postService.GetAllByUser(user);
-        List<Comment> comments = await _commentService.GetAllByUser(user);
-        List<CommentReply> replies = await _commentReplyService.GetAllByUser(user);
+        List<Comment> comments = await _commentService.GetAll();
+        List<CommentReply> replies = await _commentReplyService.GetAll();
 
         // Update values for comments
         foreach (var comment in comments)
@@ -546,7 +547,7 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 _commentService.Remove(comment);
             }
-            else
+            else if (comment.CreatedBy.Id == user.Id)
             {
                 Comment removalCommentTemplate = await _commentService.Get(comment.Id);
                 removalCommentTemplate.Content = deletedUserCommentText;
@@ -557,11 +558,11 @@ public class PostBusinessManager : IPostBusinessManager
         // Update values for comment replies
         foreach (var reply in replies)
         {
-            if (reply.RepliedComment.CreatedBy.Id == user.Id)
+            if (reply.RepliedPost.CreatedBy.Id == user.Id)
             {
                 _commentReplyService.Remove(reply);
             }
-            else
+            else if (reply.CreatedBy.Id == user.Id)
             {
                 CommentReply removalReplyTemplate = await _commentReplyService.Get(reply.Id);
                 removalReplyTemplate.Content = deletedUserCommentText;
