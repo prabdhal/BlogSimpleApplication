@@ -18,6 +18,8 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly ICommentReplyService _commentReplyService;
     private readonly IWebHostEnvironment webHostEnvironment;
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
+    private readonly string deletedUserUserNameText = "<<Anonymous>>";
+    private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
 
     public PostBusinessManager(
         UserManager<User> userManager,
@@ -161,26 +163,19 @@ public class PostBusinessManager : IPostBusinessManager
         string webRootPath = webHostEnvironment.WebRootPath;
         string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}\HeaderImage.jpg";
 
-        EnsureFolder(pathToImage);
-
-        IFormFile headerImg = createViewModel.HeaderImage;
-
-        using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+        if (createViewModel.HeaderImage != null)
         {
-            await headerImg.CopyToAsync(fileStream);
+            EnsureFolder(pathToImage);
+
+            IFormFile headerImg = createViewModel.HeaderImage;
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await headerImg.CopyToAsync(fileStream);
+            }
         }
 
         return post;
-    }
-
-    private IFormFile GetDefaultImage()
-    {
-        string webRootPath = webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\images\default-image.jpg";
-        using (var stream = File.OpenRead(pathToImage))
-        {
-            return new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
-        }
     }
 
     private void EnsureFolder(string path)
@@ -540,6 +535,14 @@ public class PostBusinessManager : IPostBusinessManager
         List<Comment> comments = await _commentService.GetAll();
         List<CommentReply> replies = await _commentReplyService.GetAll();
 
+        User deletedUser = new User
+        {
+            Id = deletedUserIdText,
+            FirstName = deletedUserUserNameText,
+            LastName = deletedUserUserNameText,
+            UserName = deletedUserUserNameText,
+        };
+
         // Update values for comments
         foreach (var comment in comments)
         {
@@ -551,6 +554,7 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 Comment removalCommentTemplate = await _commentService.Get(comment.Id);
                 removalCommentTemplate.Content = deletedUserCommentText;
+                removalCommentTemplate.CreatedBy = deletedUser;
                 await _commentService.UpdateForRemoval(comment.Id, removalCommentTemplate);
             }
         }
@@ -566,6 +570,7 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 CommentReply removalReplyTemplate = await _commentReplyService.Get(reply.Id);
                 removalReplyTemplate.Content = deletedUserCommentText;
+                removalReplyTemplate.CreatedBy = deletedUser;
                 await _commentReplyService.UpdateForRemoval(reply.Id, removalReplyTemplate);
             }
         }

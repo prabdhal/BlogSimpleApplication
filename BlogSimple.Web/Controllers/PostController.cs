@@ -1,10 +1,8 @@
-﻿using BlogSimple.Model.ViewModels.AccountViewModels;
-using BlogSimple.Model.ViewModels.PostViewModels;
-using BlogSimple.Web.BusinessManager;
+﻿using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BlogSimple.Web.Controllers;
 
@@ -46,8 +44,23 @@ public class PostController : Controller
     [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> CreatePost(CreatePostViewModel createPostViewModel)
     {
-        await _postBusinessManager.CreatePost(createPostViewModel, User);
-        return RedirectToAction("PostDetails", new { createPostViewModel.Post.Id });
+        var title = ModelState["Post.Title"];
+        var description = ModelState["Post.Description"];
+        var content = ModelState["Post.Content"];
+        var category = ModelState["Post.Category"];
+
+        if (title.ValidationState.Equals(ModelValidationState.Invalid) ||
+            description.ValidationState.Equals(ModelValidationState.Invalid) ||
+            content.ValidationState.Equals(ModelValidationState.Invalid) ||
+            category.ValidationState.Equals(ModelValidationState.Invalid))
+        {
+            return RedirectToAction("CreatePost");
+        }
+        else
+        {
+            await _postBusinessManager.CreatePost(createPostViewModel, User);
+            return RedirectToAction("PostDetails", new { createPostViewModel.Post.Id });
+        }
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
@@ -66,8 +79,23 @@ public class PostController : Controller
     [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> EditPost(EditPostViewModel editPostViewModel)
     {
-        await _postBusinessManager.EditPost(editPostViewModel, User);
-        return RedirectToAction("PostDetails", new { editPostViewModel.Post.Id });
+        var title = ModelState["Post.Title"];
+        var description = ModelState["Post.Description"];
+        var content = ModelState["Post.Content"];
+        var category = ModelState["Post.Category"];
+
+        if (title.ValidationState.Equals(ModelValidationState.Invalid) ||
+            description.ValidationState.Equals(ModelValidationState.Invalid) ||
+            content.ValidationState.Equals(ModelValidationState.Invalid) ||
+            category.ValidationState.Equals(ModelValidationState.Invalid))
+        {
+            return RedirectToAction("CreatePost");
+        }
+        else
+        {
+            await _postBusinessManager.EditPost(editPostViewModel, User);
+            return RedirectToAction("PostDetails", new { editPostViewModel.Post.Id });
+        }
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
