@@ -30,7 +30,11 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 // controller paths
 let postDetailsPath = '/Post/PostDetails';
-let postImagePath = '../UserFiles/Posts';
+
+
+const getPostImagePath = (userId) => {
+    return `../UserFiles/Users/${userId}/ProfilePicture`;
+}
 
 // sets postCategoryIdx
 const setPostCategory = (selectedCategory) => {
@@ -163,7 +167,7 @@ const displayFeaturedPost = () => {
                         <div class="banner-tag ${getPostCategoryClass(featuredPost.category)}">
                             <div>${getPostCategoryName(featuredPost.category)}</div >
                         </div>
-                        <img class="card-img-top featured-img" src="${postImagePath}/${featuredPost.id}/HeaderImage.jpg" alt="${featuredPost.title}" />
+                        <img class="card-img-top featured-img" src="${getPostImagePath(featuredPost.createdBy.id)}/${featuredPost.id}/HeaderImage.jpg" alt="${featuredPost.title}" />
                     </a>
                 <div class="card-body text-left">
                     <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by ${featuredPost.createdBy.userName}</div>
@@ -224,7 +228,7 @@ const displayPosts = () => {
                         <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
                             <div>${getPostCategoryName(postsToShow[i].category)}</div >
                         </div>
-                        <img class="card-img-top" src="${postImagePath}/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                        <img class="card-img-top" src="${getPostImagePath(featuredPost.createdBy.id) }/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
                     </a>
                     <div class="card-body text-left">
                         <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by ${postsToShow[i].createdBy.userName}</div>

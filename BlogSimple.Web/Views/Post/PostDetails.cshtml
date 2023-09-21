@@ -70,7 +70,7 @@
                 </header>
                 <!-- Preview image figure-->
                 <figure class="mb-4">
-                    <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Posts/@Model.Post.Id/HeaderImage.jpg" alt="@Model.Post.Title" />
+                    <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Users/@Model.Post.CreatedBy.Id/Posts/@Model.Post.Id/HeaderImage.jpg" alt="@Model.Post.Title" />
                 </figure>
                 <!-- Post content-->
                 <section class="mb-5 text-left">
@@ -83,7 +83,7 @@
                     <div class="card-body">
                         <!-- Comment form-->
                         <div class="write-comment-container mb-4">
-                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                            <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
                             <form class="create-comment-form mb-4" asp-controller="Post" asp-action="CreateComment">
                                 <input asp-for="Post.Id" readonly hidden />
                                 <textarea asp-for="Comment.Content" class="comment-textarea" onclick="displayCommentButtons(this)" rows="1" placeholder="Join the discussion and leave a comment!"></textarea>
@@ -112,7 +112,7 @@
                                     foreach (Comment comment in Model.Comments)
                                     {
                                         <div class="comment-container">
-                                            <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                            <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@comment.CreatedBy.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
                                             <div class="comment-content-container">
                                                 <!-- Parent comment-->
                                                 <div class="comment-display-section">
@@ -171,7 +171,7 @@
                                                     </form>
                                                 </div>
                                                 <div class="write-reply-container mb-4">
-                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                    <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
                                                     <form class="create-comment-form" asp-controller="Post" asp-action="CreateReply">
                                                         <input asp-for="Post.Id" readonly hidden />
                                                         <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
@@ -201,7 +201,7 @@
                                                             if (reply.RepliedComment.Id == comment.Id)
                                                             {
                                                                 <div class="comment-container">
-                                                                    <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
+                                                                    <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@reply.CreatedBy.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
                                                                     <div class="comment-content-container">
                                                                         <div class="comment-display-section">
                                                                             <div class="comment-display-editform-dropdown-container">

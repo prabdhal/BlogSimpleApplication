@@ -21,8 +21,8 @@
                                 {
                                     <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
                                 }
-                                <form asp-action="Register">
-                                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <form asp-action="Register" method="post" enctype="multipart/form-data">
+                                    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
@@ -65,6 +65,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="text-white text-left" asp-for="ProfilePicture">Profile Picture</label>
+                                        <div class="form-floating mb-3">
+                                            <div class="custom-file">
+                                                <input asp-for="ProfilePicture" class="form-control" accept="image/*" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
                                     <div>
                                         <input type="submit" value="Register" class="btn btn-primary btn-block w-100 p-2" />
                                         <div class="text-white my-2 font-weight-bold">OR</div>

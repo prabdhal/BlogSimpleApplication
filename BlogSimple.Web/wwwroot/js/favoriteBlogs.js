@@ -27,14 +27,16 @@ let postCategoryIdx = 100;
 
 // controller paths
 let postDetailsPath = '/Post/PostDetails';
-let postImagePath = '../UserFiles/Posts';
 let createPostPath = '/Post/CreatePost';
 let editPostPath = '/Post/EditPost';
 let deletePostPath = '/Post/DeletePost';
 
-
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+
+const getPostImagePath = (userId) => {
+    return `../UserFiles/Users/${userId}/ProfilePicture`;
+}
 
 // create category badge on detail view dashboard
 const createCategoryBadge = () => {
@@ -194,7 +196,7 @@ const displayPosts = () => {
                         <div class="banner-tag ${getPostCategoryClass(blogsToShow[i].category)}">
                             <div>${getPostCategoryName(blogsToShow[i].category)}</div >
                         </div>
-                        <img class="card-img-top" src="${postImagePath}/${blogsToShow[i].id}/HeaderImage.jpg" alt="${blogsToShow[i].title}" />
+                        <img class="card-img-top" src="${getPostImagePath(blogsToShow[i].createdBy.id)}/${blogsToShow[i].id}/HeaderImage.jpg" alt="${blogsToShow[i].title}" />
                     </a>
                     <div class="card-body">
                         <h2 class="card-title h4"><a href="${postDetailsPath}/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>

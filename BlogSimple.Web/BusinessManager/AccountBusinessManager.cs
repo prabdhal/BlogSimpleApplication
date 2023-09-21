@@ -4,6 +4,7 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -76,9 +77,26 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         if (result.Succeeded)
         {
+            if (user.ProfilePicture != null)
+            {
+                // stores image file name 
+                string webRootPath = webHostEnvironment.WebRootPath;
+                string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
+
+                EnsureFolder(pathToImage);
+
+                IFormFile headerImg = user.ProfilePicture;
+
+                using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+                {
+                    await headerImg.CopyToAsync(fileStream);
+                }
+            }
+
             // assigns user to unverified user role 
             await ApplyUnverifiedUserRole(newUser);
             await GenerateEmailConfirmationTokenAsync(newUser);
+
         }
         return result;
     }
@@ -214,7 +232,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         if (aboutViewModel.HeaderImage != null)
         {
             string webRootPath = webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\HeaderImage.jpg";
+            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\CoverImage\UserCoverImage.jpg";
 
             EnsureFolder(pathToImage);
 

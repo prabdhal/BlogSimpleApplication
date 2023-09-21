@@ -26,6 +26,22 @@ a {
     text-align: left;
 }
 
+.validation-summary ul li {
+    list-style: none;
+}
+
+.myaccount-user-profile-img {
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+}
+
+.user-profile-img {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
 .comment-content-container {
     margin: 0 0 15px 15px;
 }

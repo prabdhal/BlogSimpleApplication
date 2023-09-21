@@ -5,6 +5,7 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -159,12 +160,12 @@ public class PostBusinessManager : IPostBusinessManager
 
         post = await _postService.Create(post);
 
-        // stores image file name 
-        string webRootPath = webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}\HeaderImage.jpg";
-
         if (createViewModel.HeaderImage != null)
         {
+            // stores image file name 
+            string webRootPath = webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
+            
             EnsureFolder(pathToImage);
 
             IFormFile headerImg = createViewModel.HeaderImage;
@@ -283,7 +284,7 @@ public class PostBusinessManager : IPostBusinessManager
         if (editPostViewModel.HeaderImage != null)
         {
             string webRootPath = webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}\HeaderImage.jpg";
+            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
 
             EnsureFolder(pathToImage);
 
@@ -454,7 +455,7 @@ public class PostBusinessManager : IPostBusinessManager
         _commentReplyService.RemoveAllByPost(postId);
 
         string webRootPath = webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}";
+        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}";
 
         string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
         foreach (string file in files)
