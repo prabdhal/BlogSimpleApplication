@@ -33,7 +33,7 @@ let postDetailsPath = '/Post/PostDetails';
 
 
 const getPostImagePath = (userId) => {
-    return `../UserFiles/Users/${userId}/ProfilePicture`;
+    return `../UserFiles/Users/${userId}/Posts`;
 }
 
 // sets postCategoryIdx
@@ -228,7 +228,7 @@ const displayPosts = () => {
                         <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
                             <div>${getPostCategoryName(postsToShow[i].category)}</div >
                         </div>
-                        <img class="card-img-top" src="${getPostImagePath(featuredPost.createdBy.id) }/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                        <img class="card-img-top" src="${getPostImagePath(postsToShow[i].createdBy.id) }/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
                     </a>
                     <div class="card-body text-left">
                         <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by ${postsToShow[i].createdBy.userName}</div>

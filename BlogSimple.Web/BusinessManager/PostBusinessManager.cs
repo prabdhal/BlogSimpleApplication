@@ -175,6 +175,29 @@ public class PostBusinessManager : IPostBusinessManager
                 await headerImg.CopyToAsync(fileStream);
             }
         }
+        else
+        {
+            FormFile profileImg;
+            // stores image file name 
+            string webRootPath = webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
+            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
+
+            EnsureFolder(pathToImage);
+
+            var stream = File.OpenRead(pathToDefaultImage);
+            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "image/jpg"
+            };
+
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await profileImg.CopyToAsync(fileStream);
+            }
+        }
 
         return post;
     }
@@ -291,6 +314,29 @@ public class PostBusinessManager : IPostBusinessManager
             using (var fileStream = new FileStream(pathToImage, FileMode.Create))
             {
                 await editPostViewModel.HeaderImage.CopyToAsync(fileStream);
+            }
+        }
+        else
+        {
+            FormFile profileImg;
+            // stores image file name 
+            string webRootPath = webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
+            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
+
+            EnsureFolder(pathToImage);
+
+            var stream = File.OpenRead(pathToDefaultImage);
+            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "image/jpg"
+            };
+
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await profileImg.CopyToAsync(fileStream);
             }
         }
 

@@ -35,7 +35,7 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 
 const getPostImagePath = (userId) => {
-    return `../UserFiles/Users/${userId}/ProfilePicture`;
+    return `../UserFiles/Users/${userId}/Posts`;
 }
 
 // create category badge on detail view dashboard

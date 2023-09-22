@@ -13,6 +13,29 @@
     <br />
 
     <div>
+
+        <img class="myaccount-user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="@Model.AccountUser.UserName Bio Image">
+        <form asp-controller="Account" asp-action="UpdateUserProfilePicture" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+                        <input asp-for="AccountUser.Id" readonly hidden />
+
+            <div class="form-group">
+                <label asp-for="AccountUser.ProfilePicture">Profile Picture</label>
+                <div class="form-floating mb-3">
+                    <div class="custom-file">
+                        <input asp-for="AccountUser.ProfilePicture" class="form-control" accept="image/*" />
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 mb-0">
+                <div class="d-grid">
+                    <input type="submit" value="Update" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+            <br />
+        </form>
+        <br />
+
         @if (Model.AccountUser.EmailConfirmed == false)
         {
             <div class="text-left">
@@ -38,7 +61,6 @@
                 <br />
             </div>
         }
-        <img class="myaccount-user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="@Model.AccountUser.UserName Bio Image">
         <br />
         <br />
         <div class="text-left">

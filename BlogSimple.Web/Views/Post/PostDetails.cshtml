@@ -18,7 +18,7 @@
         <div class="col-lg-8 text-left">
             <!-- Post content-->
             <article>
-                
+
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->
@@ -83,7 +83,16 @@
                     <div class="card-body">
                         <!-- Comment form-->
                         <div class="write-comment-container mb-4">
-                            <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
+                            @{
+                                if (SignInManager.IsSignedIn(User))
+                                {
+                                    <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
+                                }
+                                else
+                                {
+                                    <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/DefaultImages/DefaultProfilePictureImage.jpg" alt="..." /></div>
+                                }
+                            }
                             <form class="create-comment-form mb-4" asp-controller="Post" asp-action="CreateComment">
                                 <input asp-for="Post.Id" readonly hidden />
                                 <textarea asp-for="Comment.Content" class="comment-textarea" onclick="displayCommentButtons(this)" rows="1" placeholder="Join the discussion and leave a comment!"></textarea>
@@ -132,7 +141,8 @@
                                                                     </svg>
                                                                     @if (comment.CommentLikedByUsers.Any())
                                                                     {
-                                                                        @comment.CommentLikedByUsers.Count();
+                                                                        @comment.CommentLikedByUsers.Count()
+                                                                        ;
                                                                     }
                                                                 </button>
                                                                 <button type="button" class="svgButton replyBtn" onclick="displayCreateReplyForm(this)">Reply</button>
@@ -171,7 +181,16 @@
                                                     </form>
                                                 </div>
                                                 <div class="write-reply-container mb-4">
-                                                    <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
+                                                    @{
+                                                        if (SignInManager.IsSignedIn(User))
+                                                        {
+                                                            <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="..." /></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="flex-shrink-0"><img class="user-profile-img" src="~/UserFiles/DefaultImages/DefaultProfilePictureImage.jpg" alt="..." /></div>
+                                                        }
+                                                    }
                                                     <form class="create-comment-form" asp-controller="Post" asp-action="CreateReply">
                                                         <input asp-for="Post.Id" readonly hidden />
                                                         <input asp-for="Comment.Id" name="Comment.Id" value="@comment.Id" readonly hidden />
@@ -293,8 +312,8 @@
             </div>
             <!-- Side widget-->
             @*<div class="card mb-4">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+            <div class="card-header">Side Widget</div>
+            <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
             </div>*@
         </div>
     </div>

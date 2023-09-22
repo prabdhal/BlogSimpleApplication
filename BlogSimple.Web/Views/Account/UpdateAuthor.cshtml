@@ -38,6 +38,7 @@
                     }
                     <form asp-controller="Account" asp-action="UpdateAuthor" method="post" enctype="multipart/form-data">
                         <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+                        <input asp-for="AccountUser.Id" readonly hidden />
 
                         <div class="form-group">
                             <label asp-for="HeaderImage">Header Image</label>

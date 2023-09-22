@@ -15,6 +15,7 @@ public interface IAccountBusinessManager
     Task<AuthorViewModel> GetAuthorViewModel(string userId);
     Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal);
     Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal);
+    Task<MyAccountViewModel> UpdateUserProfile(MyAccountViewModel myAccountViewModel, ClaimsPrincipal claimsPrincipal);
     Task SendEmailConfirmationEmail(User user, string token);
     Task SendForgotPasswordEmail(User user, string token);
     Task<IdentityResult> ConfirmEmailAsync(string uid, string token);

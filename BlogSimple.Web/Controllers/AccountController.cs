@@ -254,5 +254,15 @@ namespace BlogSimple.Web.Controllers
 
             return RedirectToAction("Logout");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "UnverifiedUser, VerifiedUser, Admin")]
+        public async Task<IActionResult> UpdateUserProfilePicture(MyAccountViewModel model)
+        {
+            await _accountBusinessManager.UpdateUserProfile(model, User);
+
+            return RedirectToAction("MyAccount");
+        }
     }
 }

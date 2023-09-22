@@ -4,7 +4,6 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -92,6 +91,30 @@ public class AccountBusinessManager : IAccountBusinessManager
                     await headerImg.CopyToAsync(fileStream);
                 }
             }
+            else
+            {
+
+                FormFile profileImg;
+                // stores image file name 
+                string webRootPath = webHostEnvironment.WebRootPath;
+                string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
+                string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
+
+                EnsureFolder(pathToImage);
+
+                var stream = File.OpenRead(pathToDefaultImage);
+                profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentType = "image/jpg"
+                };
+
+
+                using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+                {
+                    await profileImg.CopyToAsync(fileStream);
+                }
+            }
 
             // assigns user to unverified user role 
             await ApplyUnverifiedUserRole(newUser);
@@ -166,6 +189,39 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             await ApplyVerifyUserRole(user);
         }
+        // stores image file name 
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
+
+        EnsureFolder(pathToImage);
+
+        if (user.ProfilePicture != null)
+        {
+            IFormFile headerImg = user.ProfilePicture;
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await headerImg.CopyToAsync(fileStream);
+            }
+        }
+        else
+        {
+            FormFile profileImg;
+            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
+
+            var stream = File.OpenRead(pathToDefaultImage);
+            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "image/jpg"
+            };
+
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await profileImg.CopyToAsync(fileStream);
+            }
+        }
 
         return new MyAccountViewModel
         {
@@ -177,24 +233,45 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
     }
 
-    public async Task<MyAccountViewModel> GetMyAccountViewModel(string email, EmailConfirmViewModel emailConfirmViewModel)
+    public async Task<MyAccountViewModel> UpdateUserProfile(MyAccountViewModel myAccountViewModel, ClaimsPrincipal claimsPrincipal)
     {
-        var user = await _userManager.FindByEmailAsync(email);
-        var publishedPost = await _postService.GetAll(user);
-        var publishedPostCount = publishedPost.Count();
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        var comments = await _commentService.GetAll(user);
-        var replies = await _replyService.GetAllByUser(user);
-        var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
-        var favoritedPostsCount = user.FavoritedPosts.Count();
+        user.ProfilePicture = myAccountViewModel.AccountUser.ProfilePicture;
+        
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
+        EnsureFolder(pathToImage);
+
+        if (myAccountViewModel.AccountUser.ProfilePicture != null)
+        {
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await myAccountViewModel.AccountUser.ProfilePicture.CopyToAsync(fileStream);
+            }
+        }
+        else
+        {
+            FormFile profileImg;
+            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
+
+            var stream = File.OpenRead(pathToDefaultImage);
+            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            {
+                Headers = new HeaderDictionary(),
+                ContentType = "image/jpg"
+            };
+
+            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+            {
+                await profileImg.CopyToAsync(fileStream);
+            }
+        }
 
         return new MyAccountViewModel
         {
             AccountUser = user,
-            PublishedPostsCount = publishedPostCount,
-            TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoritePostsCount = favoritedPostsCount,
-            EmailConfirmViewModel = emailConfirmViewModel
+            EmailConfirmViewModel = new EmailConfirmViewModel()
         };
     }
 
