@@ -16,7 +16,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
     private readonly IEmailService _emailService;
-    private readonly IWebHostEnvironment webHostEnvironment;
+    private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IConfiguration _configuration;
 
     private readonly string AdminUserRoleName = "Admin";
@@ -41,7 +41,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         _replyService = replyService;
         _emailService = emailService;
         _configuration = configuration;
-        this.webHostEnvironment = webHostEnvironment;
+        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -79,7 +79,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             if (user.ProfilePicture != null)
             {
                 // stores image file name 
-                string webRootPath = webHostEnvironment.WebRootPath;
+                string webRootPath = _webHostEnvironment.WebRootPath;
                 string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
 
                 EnsureFolder(pathToImage);
@@ -96,7 +96,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
                 FormFile profileImg;
                 // stores image file name 
-                string webRootPath = webHostEnvironment.WebRootPath;
+                string webRootPath = _webHostEnvironment.WebRootPath;
                 string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
                 string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
 
@@ -142,11 +142,6 @@ public class AccountBusinessManager : IAccountBusinessManager
         }
     }
 
-    //public async Task<SignInResult> PasswordSignInAsync(User user)
-    //{
-    //    return await _signInManager.PasswordSignInAsync(user.UserName, user.Password, false, false);
-    //}
-
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel emailConfirmViewModel)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
@@ -190,7 +185,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             await ApplyVerifyUserRole(user);
         }
         // stores image file name 
-        string webRootPath = webHostEnvironment.WebRootPath;
+        string webRootPath = _webHostEnvironment.WebRootPath;
         string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
 
         EnsureFolder(pathToImage);
@@ -239,7 +234,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         user.ProfilePicture = myAccountViewModel.AccountUser.ProfilePicture;
         
-        string webRootPath = webHostEnvironment.WebRootPath;
+        string webRootPath = _webHostEnvironment.WebRootPath;
         string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
         EnsureFolder(pathToImage);
 
@@ -285,7 +280,6 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
     }
 
-
     public async Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
@@ -308,7 +302,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         if (aboutViewModel.HeaderImage != null)
         {
-            string webRootPath = webHostEnvironment.WebRootPath;
+            string webRootPath = _webHostEnvironment.WebRootPath;
             string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\CoverImage\UserCoverImage.jpg";
 
             EnsureFolder(pathToImage);
@@ -386,6 +380,14 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             await ApplyVerifyUserRole(user);
         }
+        return result;
+    }
+
+    public async Task<IdentityResult> ChangePasswordAsync(ChangePassword model, ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+        IdentityResult result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        
         return result;
     }
 

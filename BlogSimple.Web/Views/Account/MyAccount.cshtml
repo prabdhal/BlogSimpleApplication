@@ -141,28 +141,26 @@
             <h4>Change Password</h4>
             <hr />
             <div class="row">
-
-                <p>Forgot your password? No worries, you can reset it now.</p>
-                <form asp-action="ForgotPassword">
+                <form asp-action="ChangePassword">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating mb-3">
-                        <input asp-for="AccountUser.Password" class="form-control" />
-                        <label asp-for="AccountUser.Password" class="text-black"></label>
-                        <span asp-validation-for="AccountUser.Password" class="text-danger"></span>
+                        <input asp-for="ChangePassword.CurrentPassword" class="form-control" />
+                        <label asp-for="ChangePassword.CurrentPassword" class="text-black"></label>
+                        <span asp-validation-for="ChangePassword.CurrentPassword" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="AccountUser.Password" class="form-control" />
-                        <label asp-for="AccountUser.Password" class="text-black"></label>
-                        <span asp-validation-for="AccountUser.Password" class="text-danger"></span>
+                        <input asp-for="ChangePassword.NewPassword" class="form-control" />
+                        <label asp-for="ChangePassword.NewPassword" class="text-black"></label>
+                        <span asp-validation-for="ChangePassword.NewPassword" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="AccountUser.ConfirmPassword" class="form-control" />
-                        <label asp-for="AccountUser.ConfirmPassword" class="text-black"></label>
+                        <input asp-for="ChangePassword.ConfirmNewPassword" class="form-control" />
+                        <label asp-for="ChangePassword.ConfirmNewPassword" class="text-black"></label>
                         <span asp-validation-for="AccountUser.ConfirmPassword" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Update Password" class="btn btn-primary">
+                        <input type="submit" value="Change Password" class="btn btn-primary">
                     </div>
                 </form>
             </div>

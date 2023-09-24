@@ -19,6 +19,7 @@ public interface IAccountBusinessManager
     Task SendEmailConfirmationEmail(User user, string token);
     Task SendForgotPasswordEmail(User user, string token);
     Task<IdentityResult> ConfirmEmailAsync(string uid, string token);
+    Task<IdentityResult> ChangePasswordAsync(ChangePassword model, ClaimsPrincipal claimsPrincipal);
     Task GenerateEmailConfirmationTokenAsync(User user);
     Task GenerateForgotPasswordConfirmationTokenAsync(User user);
 }

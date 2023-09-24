@@ -247,6 +247,29 @@ namespace BlogSimple.Web.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [HttpPost("change-password")]
+        [Authorize(Roles = "Unverified, VerifiedUser, Admin")]
+        public async Task<IActionResult> ChangePassword(MyAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountBusinessManager.ChangePasswordAsync(model.ChangePassword, User);
+                if (result.Succeeded)
+                {
+
+                    ModelState.Clear();
+                    return RedirectToAction("MyAccount", model);
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+            }
+            return RedirectToAction("MyAccount");
+        }
+
         [Authorize(Roles = "VerifiedUser, Admin")]
         public async Task<IActionResult> DeleteUser()
         {
