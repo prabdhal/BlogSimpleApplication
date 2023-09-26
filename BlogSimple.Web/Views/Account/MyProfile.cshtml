@@ -1,8 +1,8 @@
-﻿@model BlogSimple.Model.ViewModels.AccountViewModels.MyAccountViewModel;
+﻿@model BlogSimple.Model.ViewModels.AccountViewModels.MyProfileViewModel;
 
 @{
     ViewData["Title"] = "My Account";
-    Layout = "~/Views/Post/_DashboardLayoutIndex.cshtml";
+    Layout = "~/Views/Account/_DashboardAccountLayout.cshtml";
 }
 
 <div class="container">
@@ -34,33 +34,6 @@
             </div>
             <br />
         </form>
-        <br />
-
-        @if (Model.AccountUser.EmailConfirmed == false)
-        {
-            <div class="text-left">
-                <h4>Email Confirmation</h4>
-                <hr />
-                <div>
-                    @if (Model.EmailConfirmViewModel.EmailSent)
-                    {
-                        <p class="alert alert-success">Email sent to your registered email id: @Model.AccountUser.Email</p>
-                    }
-                    <form asp-action="ConfirmEmail">
-                        <div asp-asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <p>Please verify your email address sent to your mail in order to fully access your account. <br>
-                            Click on the button below to resend an email confirmation link.</p>
-                        <input type="hidden" asp-for="@Model.AccountUser.Email" />
-
-                        <div class="form-group">
-                            <input type="submit" value="Resend Email Confirmation" class="btn btn-primary" />
-                        </div>
-                    </form>
-                </div>
-                <br />
-                <br />
-            </div>
-        }
         <br />
         <br />
         <div class="text-left">
@@ -135,54 +108,5 @@
             <br />
             <br />
         </div>
-
-
-        <div class="text-left">
-            <h4>Change Password</h4>
-            <hr />
-            <div class="row">
-                <form asp-action="ChangePassword">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="ChangePassword.CurrentPassword" class="form-control" />
-                        <label asp-for="ChangePassword.CurrentPassword" class="text-black"></label>
-                        <span asp-validation-for="ChangePassword.CurrentPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="ChangePassword.NewPassword" class="form-control" />
-                        <label asp-for="ChangePassword.NewPassword" class="text-black"></label>
-                        <span asp-validation-for="ChangePassword.NewPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input asp-for="ChangePassword.ConfirmNewPassword" class="form-control" />
-                        <label asp-for="ChangePassword.ConfirmNewPassword" class="text-black"></label>
-                        <span asp-validation-for="AccountUser.ConfirmPassword" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <input type="submit" value="Change Password" class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-            <br />
-            <br />
-        </div>
-
-
-        <div class="text-left">
-            <h4>Delete Account</h4>
-            <hr />
-            <div class="row">
-                <p>Are you sure you would like to delete your account? This will delete all your blog posts and comments posted within BlogSimple.</p>
-                <div class="col-sm-4">
-                    <form asp-controller="Account" asp-action="DeleteUser">
-                        <input type="submit" class="btn btn-danger" value="Delete Account" />
-                    </form>
-                </div>
-            </div>
-            <br />
-            <br />
-        </div>
     </div>
-
 </div>

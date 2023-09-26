@@ -1,59 +1,6 @@
 ﻿﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<User> UserManager
 @*@using BlogSimple.Model.ViewModels.AccountViewModels;
 @model MyAccountViewModel;*@
 
 
-<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-    <div class="sb-sidenav-menu">
-        <div class="nav">
-            <a class="nav-link" asp-controller="Post" asp-action="Index" title="Dashboard">
-                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                Dashboard
-            </a>
-            <a class="nav-link" asp-controller="Post" asp-action="FavoritePosts" title="Favorite Posts">
-                <div class="sb-nav-link-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#ffffff" width="16px" height="16px" style="opacity: 0.25;" viewBox="0 0 1000 1000" stroke="#ffffff">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                        <g id="SVGRepo_iconCarrier">
-                            <path d="M47 43h553q10 0 16.5 7t6.5 16v29q0 9-6.5 16t-16.5 7H47q-10 0-17-7t-7-16V66q0-9 7-16t17-7zm0 139h553q10 0 16.5 7t6.5 17v28q0 10-6.5 16.5T600 257H47q-10 0-17-6.5T23 234v-28q0-10 7-17t17-7zm0 140h359q10 0 17 6.5t7 16.5v28q0 10-7 17t-17 7H47q-10 0-17-7t-7-17v-28q0-10 7-16.5t17-6.5zm0 139h153q10 0 16.5 7t6.5 16v29q0 9-6.5 16t-16.5 7H47q-10 0-17-7t-7-16v-29q0-9 7-16t17-7zm578 386l-151 79q-9 5-19.5 4t-19-7-12.5-16-3-20l29-168q4-19-10-32L317 568q-8-7-10.5-17.5t1-20.5 11.5-17 18-8l169-25q19-2 27-20l76-152q4-10 13-15.5t19.5-5.5 19.5 5.5 14 15.5l75 152q9 18 28 20l168 25q11 1 19 8t11 17 .5 20.5T967 568L845 687q-14 13-10 32l28 168q2 10-2 20t-12.5 16-19 7-20.5-4l-150-79q-17-9-34 0z" />
-                        </g>
-                    </svg>
-                </div>
-                Favorite Blogs
-            </a>
-            <a class="nav-link" asp-controller="Post" asp-action="CreatePost" title="Create Post">
-                <div class="sb-nav-link-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" style="opacity: 0.25;" viewBox="0 0 24 24" fill="none">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                        <g id="SVGRepo_iconCarrier"> <path d="M7.2 21C6.07989 21 5.51984 21 5.09202 20.782C4.71569 20.5903 4.40973 20.2843 4.21799 19.908C4 19.4802 4 18.9201 4 17.8V6.2C4 5.07989 4 4.51984 4.21799 4.09202C4.40973 3.71569 4.71569 3.40973 5.09202 3.21799C5.51984 3 6.0799 3 7.2 3H16.8C17.9201 3 18.4802 3 18.908 3.21799C19.2843 3.40973 19.5903 3.71569 19.782 4.09202C20 4.51984 20 5.0799 20 6.2V7M8 7H14M8 15H9M8 11H12M11.1954 20.8945L12.5102 20.6347C13.2197 20.4945 13.5744 20.4244 13.9052 20.2952C14.1988 20.1806 14.4778 20.0317 14.7365 19.8516C15.0279 19.6486 15.2836 19.393 15.7949 18.8816L20.9434 13.7332C21.6306 13.0459 21.6306 11.9316 20.9434 11.2444C20.2561 10.5571 19.1418 10.5571 18.4546 11.2444L13.2182 16.4808C12.739 16.96 12.4994 17.1996 12.3059 17.4712C12.1341 17.7123 11.9896 17.9717 11.8751 18.2447C11.7461 18.5522 11.6686 18.882 11.5135 19.5417L11.1954 20.8945Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> </g>
-                    </svg>
-                </div>
-                Create Post
-            </a>@*
-            <a class="nav-link" asp-controller="Account" asp-action="Author" asp-route-id="@Model.AccountUser.Id">
-                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                View Bio
-            </a>*@
-            <a class="nav-link" asp-controller="Account" asp-action="UpdateAuthor" title="Update Bio">
-                <div class="sb-nav-link-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" style="opacity: 0.25;" viewBox="0 0 24 24" fill="none">
-                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                        <g id="SVGRepo_iconCarrier"> <path d="M11 15H8C6.13623 15 5.20435 15 4.46927 15.3045C3.48915 15.7105 2.71046 16.4892 2.30448 17.4693C2 18.2044 2 19.1362 2 21M15.5 3.29076C16.9659 3.88415 18 5.32131 18 7M11.9999 21.5L14.025 21.095C14.2015 21.0597 14.2898 21.042 14.3721 21.0097C14.4452 20.9811 14.5147 20.9439 14.579 20.899C14.6516 20.8484 14.7152 20.7848 14.8426 20.6574L21.5 14C22.0524 13.4477 22.0523 12.5523 21.5 12C20.9477 11.4477 20.0523 11.4477 19.5 12L12.8425 18.6575C12.7152 18.7848 12.6516 18.8484 12.601 18.921C12.5561 18.9853 12.5189 19.0548 12.4902 19.1278C12.458 19.2102 12.4403 19.2984 12.405 19.475L11.9999 21.5ZM13.5 7C13.5 9.20914 11.7091 11 9.5 11C7.29086 11 5.5 9.20914 5.5 7C5.5 4.79086 7.29086 3 9.5 3C11.7091 3 13.5 4.79086 13.5 7Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /> </g>
-                    </svg>
-                </div>
-                Update Bio
-            </a>
-            <a class="nav-link" asp-controller="Home" asp-action="Index" title="Home">
-                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                Return To Home
-            </a>
-        </div>
-    </div>
-    <div class="sb-sidenav-footer">
-        <div class="small">Logged in as: @($"{(await UserManager.GetUserAsync(User)).UserName}")</div>
-    </div>
-</nav>
+

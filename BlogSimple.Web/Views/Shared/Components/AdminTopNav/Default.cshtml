@@ -19,8 +19,7 @@
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Profile Dropdown"><i class="fas fa-user fa-fw"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#!" title="Settings">Settings</a></li>
-                <li><a class="dropdown-item" asp-controller="Account" asp-action="MyAccount" title="My Account">My Account</a></li>
-                <li><a class="dropdown-item" asp-controller="Account" asp-action="Author" asp-route-id="@Model.AccountUser.Id" title="View Bio">View Bio</a></li>
+                <li><a class="dropdown-item" asp-controller="Account" asp-action="MyProfile" title="My Account">My Account</a></li>
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout" title="Logout">Logout</a></li>
             </ul>

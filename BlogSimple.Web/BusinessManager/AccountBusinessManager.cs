@@ -76,14 +76,14 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         if (result.Succeeded)
         {
+            // stores image file name 
+            string webRootPath = _webHostEnvironment.WebRootPath;
+            string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
+
+            EnsureFolder(pathToImage);
+
             if (user.ProfilePicture != null)
             {
-                // stores image file name 
-                string webRootPath = _webHostEnvironment.WebRootPath;
-                string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
-
-                EnsureFolder(pathToImage);
-
                 IFormFile headerImg = user.ProfilePicture;
 
                 using (var fileStream = new FileStream(pathToImage, FileMode.Create))
@@ -93,14 +93,8 @@ public class AccountBusinessManager : IAccountBusinessManager
             }
             else
             {
-
                 FormFile profileImg;
-                // stores image file name 
-                string webRootPath = _webHostEnvironment.WebRootPath;
-                string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
                 string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
-
-                EnsureFolder(pathToImage);
 
                 var stream = File.OpenRead(pathToDefaultImage);
                 profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
@@ -108,7 +102,6 @@ public class AccountBusinessManager : IAccountBusinessManager
                     Headers = new HeaderDictionary(),
                     ContentType = "image/jpg"
                 };
-
 
                 using (var fileStream = new FileStream(pathToImage, FileMode.Create))
                 {
@@ -142,36 +135,24 @@ public class AccountBusinessManager : IAccountBusinessManager
         }
     }
 
-    public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel emailConfirmViewModel)
-    {
-        var user = await _userManager.GetUserAsync(claimsPrincipal);
-        var publishedPost = await _postService.GetAll(user);
-        var publishedPostCount = publishedPost.Count();
-
-        var comments = await _commentService.GetAll(user);
-        var replies = await _replyService.GetAllByUser(user);
-        var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
-        var favoritedPostsCount = user.FavoritedPosts.Count();
-
-        if (user.EmailConfirmed)
-        {
-            // assigns user to verified user role 
-            await ApplyVerifyUserRole(user);
-        }
-
-        return new MyAccountViewModel
-        {
-            AccountUser = user,
-            PublishedPostsCount = publishedPostCount,
-            TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoritePostsCount = favoritedPostsCount,
-            EmailConfirmViewModel = emailConfirmViewModel
-        };
-    }
-
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        if (user.EmailConfirmed)
+        {
+            await ApplyVerifyUserRole(user);
+        }
+
+        return new MyAccountViewModel
+        {
+            AccountUser = user
+        };
+    }
+
+    public async Task<MyProfileViewModel> GetMyProfileViewModel(ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
         var publishedPost = await _postService.GetAll(user);
         var publishedPostCount = publishedPost.Count();
 
@@ -180,51 +161,31 @@ public class AccountBusinessManager : IAccountBusinessManager
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
         var favoritedPostsCount = user.FavoritedPosts.Count();
 
-        if (user.EmailConfirmed)
-        {
-            await ApplyVerifyUserRole(user);
-        }
-        // stores image file name 
-        string webRootPath = _webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
-
-        EnsureFolder(pathToImage);
-
-        if (user.ProfilePicture != null)
-        {
-            IFormFile headerImg = user.ProfilePicture;
-
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await headerImg.CopyToAsync(fileStream);
-            }
-        }
-        else
-        {
-            FormFile profileImg;
-            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
-
-            var stream = File.OpenRead(pathToDefaultImage);
-            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "image/jpg"
-            };
-
-
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await profileImg.CopyToAsync(fileStream);
-            }
-        }
-
-        return new MyAccountViewModel
+        return new MyProfileViewModel
         {
             AccountUser = user,
             PublishedPostsCount = publishedPostCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoritePostsCount = favoritedPostsCount,
-            EmailConfirmViewModel = new EmailConfirmViewModel()
+            FavoritePostsCount = favoritedPostsCount
+        };
+    }
+
+    public ChangePasswordViewModel GetChangePasswordViewModel()
+    {
+        ChangePasswordViewModel model = new ChangePasswordViewModel();
+
+        return model;
+    }
+
+    public async Task<EmailConfirmViewModel> GetEmailConfirmViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel model)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        return new EmailConfirmViewModel
+        {
+            Email = user.Email,
+            EmailSent = model.EmailSent,
+            EmailVerified = user.EmailConfirmed,
         };
     }
 
@@ -233,16 +194,17 @@ public class AccountBusinessManager : IAccountBusinessManager
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
         user.ProfilePicture = myAccountViewModel.AccountUser.ProfilePicture;
-        
+
         string webRootPath = _webHostEnvironment.WebRootPath;
         string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
+
         EnsureFolder(pathToImage);
 
-        if (myAccountViewModel.AccountUser.ProfilePicture != null)
+        if (user.ProfilePicture != null)
         {
             using (var fileStream = new FileStream(pathToImage, FileMode.Create))
             {
-                await myAccountViewModel.AccountUser.ProfilePicture.CopyToAsync(fileStream);
+                await (user.ProfilePicture as FormFile).CopyToAsync(fileStream);
             }
         }
         else
@@ -265,8 +227,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         return new MyAccountViewModel
         {
-            AccountUser = user,
-            EmailConfirmViewModel = new EmailConfirmViewModel()
+            AccountUser = user
         };
     }
 
@@ -383,11 +344,11 @@ public class AccountBusinessManager : IAccountBusinessManager
         return result;
     }
 
-    public async Task<IdentityResult> ChangePasswordAsync(ChangePassword model, ClaimsPrincipal claimsPrincipal)
+    public async Task<IdentityResult> ChangePasswordAsync(ChangePasswordViewModel model, ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         IdentityResult result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-        
+
         return result;
     }
 

@@ -33,8 +33,13 @@ namespace BlogSimple.Web.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
-                return RedirectToAction("MyAccount", myAccountViewModel);
+                EmailConfirmViewModel model = new EmailConfirmViewModel
+                {
+                    EmailSent = true,
+                    EmailVerified = false,
+                };
+                var emailConfirmModel = await _accountBusinessManager.GetEmailConfirmViewModel(User, model);
+                return RedirectToAction("MyAccount", emailConfirmModel);
             }
             return View();
         }
@@ -70,7 +75,7 @@ namespace BlogSimple.Web.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
-                return RedirectToAction("MyAccount", myAccountViewModel);
+                return RedirectToAction("MyProfile");
             }
             return View();
         }
@@ -90,7 +95,13 @@ namespace BlogSimple.Web.Controllers
                     {
                         if (user.EmailConfirmed == false)
                         {
-                            return RedirectToAction("MyAccount");
+                            EmailConfirmViewModel model = new EmailConfirmViewModel
+                            {
+                                Email = user.Email,
+                                EmailSent = true,
+                                EmailVerified = user.EmailConfirmed
+                            };
+                            return RedirectToAction("EmailVerification", model);
                         }
                         return Redirect(returnurl ?? "/Post/Index");
                     }
@@ -105,10 +116,17 @@ namespace BlogSimple.Web.Controllers
         }
 
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
-        public async Task<ActionResult> MyAccount(EmailConfirmViewModel emailConfirmViewModel)
+        public async Task<ActionResult> MyProfile()
         {
-            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User, emailConfirmViewModel);
-            return View(myAccountViewModel);
+            var myProfileViewModel = await _accountBusinessManager.GetMyProfileViewModel(User);
+            return View(myProfileViewModel);
+        }
+
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public async Task<ActionResult> EmailVerification(EmailConfirmViewModel model)
+        {
+            var emailConfirmModel = await _accountBusinessManager.GetEmailConfirmViewModel(User, model);
+            return View(emailConfirmModel);
         }
 
         [HttpGet("confirm-email")]
@@ -133,27 +151,26 @@ namespace BlogSimple.Web.Controllers
         }
 
         [HttpPost("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(MyAccountViewModel model)
+        public async Task<IActionResult> ConfirmEmail(EmailConfirmViewModel model)
         {
-            User user = await _accountBusinessManager.GetUserByEmailAsync(model.AccountUser.Email);
-            model.EmailConfirmViewModel = new EmailConfirmViewModel();
+            User user = await _accountBusinessManager.GetUserByEmailAsync(model.Email);
             if (user != null)
             {
                 if (user.EmailConfirmed)
                 {
-                    model.EmailConfirmViewModel.EmailVerified = true;
-                    return RedirectToAction("MyAccount", model.EmailConfirmViewModel);
+                    model.EmailVerified = true;
+                    return View(model);
                 }
 
                 await _accountBusinessManager.GenerateEmailConfirmationTokenAsync(user);
-                model.EmailConfirmViewModel.EmailSent = true;
+                model.EmailSent = true;
                 ModelState.Clear();
             }
             else
             {
                 ModelState.AddModelError("", "Something went wrong");
             }
-            return RedirectToAction("MyAccount", model.EmailConfirmViewModel);
+            return View("EmailVerification", model);
         }
 
         [AllowAnonymous, HttpGet("forgot-password")]
@@ -240,38 +257,45 @@ namespace BlogSimple.Web.Controllers
             return RedirectToAction("Author", new { authorViewModel.AccountUser.Id });
         }
 
-        [Authorize]
-        public async Task<IActionResult> Logout()
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public IActionResult ChangePassword()
         {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+            var model = _accountBusinessManager.GetChangePasswordViewModel();
+            return View(model);
         }
 
-        [HttpPost("change-password")]
-        [Authorize(Roles = "Unverified, VerifiedUser, Admin")]
-        public async Task<IActionResult> ChangePassword(MyAccountViewModel model)
+        [HttpPost]
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _accountBusinessManager.ChangePasswordAsync(model.ChangePassword, User);
+                var result = await _accountBusinessManager.ChangePasswordAsync(model, User);
                 if (result.Succeeded)
                 {
-
+                    model.PasswordChanged = true;
                     ModelState.Clear();
-                    return RedirectToAction("MyAccount", model);
+                    return View(model);
                 }
 
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-
             }
-            return RedirectToAction("MyAccount");
+
+            return View(model);
         }
 
-        [Authorize(Roles = "VerifiedUser, Admin")]
-        public async Task<IActionResult> DeleteUser()
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public async Task<IActionResult> DeleteAccount()
+        {
+            var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
+            return View(myAccountViewModel);
+        }
+
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public IActionResult DeleteUser()
         {
             _postBusinessManager.DeleteUser(User);
 
@@ -285,7 +309,14 @@ namespace BlogSimple.Web.Controllers
         {
             await _accountBusinessManager.UpdateUserProfile(model, User);
 
-            return RedirectToAction("MyAccount");
+            return RedirectToAction("MyProfile");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

@@ -5,7 +5,6 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -160,14 +159,14 @@ public class PostBusinessManager : IPostBusinessManager
 
         post = await _postService.Create(post);
 
+        // stores image file name 
+        string webRootPath = webHostEnvironment.WebRootPath;
+        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
+
+        EnsureFolder(pathToImage);
+
         if (createViewModel.HeaderImage != null)
         {
-            // stores image file name 
-            string webRootPath = webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
-            
-            EnsureFolder(pathToImage);
-
             IFormFile headerImg = createViewModel.HeaderImage;
 
             using (var fileStream = new FileStream(pathToImage, FileMode.Create))
@@ -178,12 +177,7 @@ public class PostBusinessManager : IPostBusinessManager
         else
         {
             FormFile profileImg;
-            // stores image file name 
-            string webRootPath = webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
             string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
-
-            EnsureFolder(pathToImage);
 
             var stream = File.OpenRead(pathToDefaultImage);
             profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
@@ -191,7 +185,6 @@ public class PostBusinessManager : IPostBusinessManager
                 Headers = new HeaderDictionary(),
                 ContentType = "image/jpg"
             };
-
 
             using (var fileStream = new FileStream(pathToImage, FileMode.Create))
             {

@@ -19,10 +19,16 @@
     <!-- Responsive navbar-->
     @await Component.InvokeAsync("Navigation")
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_content">
+            <main class="container">
+
+                @RenderBody()
+
+            </main>
+
+        </div>
     </div>
 
 

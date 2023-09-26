@@ -1,0 +1,19 @@
+﻿@model BlogSimple.Model.ViewModels.AccountViewModels.MyProfileViewModel;
+
+@{
+    ViewData["Title"] = "My Account";
+    Layout = "~/Views/Account/_DashboardAccountLayout.cshtml";
+}
+
+<div class="container">
+
+    <h1>Access Denied</h1>
+
+    <br />
+    <br />
+
+    <div>
+        <p>Looks like you need to verify your email address before you can access this page.</p>
+        <p>Return to the <a herf="Account/EmailVerification">Email Verification</a> page to resend an email confirmation link to your email!</p>
+    </div>
+</div>

@@ -8,7 +8,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a class="nav-link" asp-controller="Account" asp-action="MyAccount" title="My Account">Hello @User.Identity.Name!</a>
+        <a class="nav-link" asp-controller="Account" asp-action="MyProfile" title="My Profile">Hello @User.Identity.Name!</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" onclick="$('#LogoutForm').submit();" style="cursor:pointer;" title="Logout">Logout</a>

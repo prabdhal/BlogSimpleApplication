@@ -49,6 +49,7 @@ builder.Services.AddIdentity<User, UserRole>()
     builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:DatabaseName"))
     .AddDefaultTokenProviders();
 
+
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequiredLength = 5;

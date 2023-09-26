@@ -1,0 +1,50 @@
+﻿@model BlogSimple.Model.ViewModels.AccountViewModels.EmailConfirmViewModel;
+
+@{
+    ViewData["Title"] = "Email Verification";
+    Layout = "~/Views/Account/_DashboardAccountLayout.cshtml";
+}
+
+<div class="container">
+
+    <h1>Email Verification</h1>
+
+    <br />
+    <br />
+
+    <div>
+        @if (Model.EmailVerified == false)
+        {
+            <div class="text-left">
+                <h4>Verify Your Email Address</h4>
+                <hr />
+                <div>
+                    @if (Model.EmailSent)
+                    {
+                        <p class="alert alert-success">Email sent to your registered email id: @Model.Email</p>
+                    }
+                    <form asp-action="ConfirmEmail">
+                        <div asp-asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <p>Please verify your email address sent to your mail in order to fully access your account. <br>
+                            Click on the button below to resend an email confirmation link.</p>
+                        <input type="hidden" asp-for="@Model.Email" />
+
+                        <div class="form-group">
+                            <input type="submit" value="Resend Email Confirmation" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
+                <br />
+                <br />
+            </div>
+        }
+        else
+        {
+
+            <div class="alert alert-success" role="alert">
+                <p>Congratulations! You have already verified your account!</p>
+            </div>
+        }
+    </div>
+
+</div>
