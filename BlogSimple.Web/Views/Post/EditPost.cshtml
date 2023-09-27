@@ -6,11 +6,11 @@
     Layout = "~/Views/Post/_DashboardLayoutEditor.cshtml";
 }
 
-<h1 class="text-left">Update Post</h1>
+<div class="m-5">
+    <h1 class="text-left">Update Post</h1>
 
-<h4 class="text-left">My Post</h4>
-<hr />
-<div class="row">
+    <h4 class="text-left">My Post</h4>
+    <hr />
     <div class="text-left">
         <form asp-action="EditPost" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>

@@ -2,7 +2,7 @@
 
 namespace BlogSimple.Web.ViewComponents;
 
-public class AdminSideNavViewComponent : ViewComponent
+public class DashboardSideNavViewComponent : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync(string id)
     {
