@@ -1,5 +1,5 @@
-﻿using BlogSimple.Model.ViewModels.PostViewModels;
-using BlogSimple.Web.Attributes;
+﻿using BlogSimple.Model.ViewModels.AccountViewModels;
+using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +10,15 @@ namespace BlogSimple.Web.Controllers;
 public class PostController : Controller
 {
     private readonly IPostBusinessManager _postBusinessManager;
+    private readonly IAccountBusinessManager _accountBusinessManager;
 
-    public PostController(IPostBusinessManager postBusinessManager)
+    public PostController(
+        IPostBusinessManager postBusinessManager,
+        IAccountBusinessManager accountBusinessManager
+        )
     {
         _postBusinessManager = postBusinessManager;
+        _accountBusinessManager = accountBusinessManager;
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
@@ -183,5 +188,13 @@ public class PostController : Controller
         _postBusinessManager.DeleteReply(id, User);
 
         return RedirectToAction("PostDetails", new { viewModel.Post.Id });
+    }
+
+    [Authorize(Roles = "VerifiedUser,Admin")]
+    public async Task<IActionResult> Author(string id)
+    {
+        AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);
+
+        return View(authorViewModel);
     }
 }

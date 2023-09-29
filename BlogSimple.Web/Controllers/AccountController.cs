@@ -254,7 +254,7 @@ namespace BlogSimple.Web.Controllers
         public async Task<IActionResult> UpdateAuthor(AuthorViewModel authorViewModel)
         {
             authorViewModel = await _accountBusinessManager.EditUser(authorViewModel, User);
-            return RedirectToAction("Author", new { authorViewModel.AccountUser.Id });
+            return RedirectToAction("Author", "Post", new { authorViewModel.AccountUser.Id });
         }
 
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
