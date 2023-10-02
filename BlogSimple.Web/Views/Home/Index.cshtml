@@ -19,25 +19,138 @@
         <!-- Blog entries-->
         <div class="col-lg-8">
             <!-- Featured blog post-->
-            <div id="featuredBlogContainer">
+            <div id="featuredBlogContainer"></div>
 
-            </div>
+            @*<div class="">
+                <div class="standard-card featured-post-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="display-row my-1">
+                            <div class="small text-muted display-row display-center-v">
+                                <div class="display-center-v">
+                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M3 9H21M7 3V5M17 3V5M6 13H8M6 17H8M11 13H13M11 17H13M16 13H18M16 17H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <div class="mx-2">
+                                    01/31/1995
+                                </div>
+                            </div>
+                            <div class="small text-muted display-row mx-3">
+                                <div class="display-center-v">
+                                    <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                </div>
+                                <div class="mx-2">
+                                    Prabdeep Dhaliwal
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>*@
 
             <!-- Nested row for non-featured blog posts-->
-            <div class="row" id="blogsDisplayContainer">
-
-            </div>
+            <div class="post-container-row" id="blogsDisplayContainer"></div>
+            @*<div class="post-container-row">
+                <div class="standard-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="post-card-details">
+                            <div class="small text-muted">Last Updated on ${month} ${day}, ${year}</div>
+                            <div class="small text-muted">Prabdeep Dhaliwal</div>
+                        </div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>
+                <div class="standard-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by Prabdeep Dhaliwal</div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>
+                <div class="standard-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by Prabdeep Dhaliwal</div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>
+                <div class="standard-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by Prabdeep Dhaliwal</div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>
+                <div class="standard-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by Prabdeep Dhaliwal</div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>
+                <div class="standard-card post-card mb-4">
+                    <a href="${postDetailsPath}/${postsToShow[i].id}">
+                        <div class="banner-tag web-design">
+                            <div>Web Design</div>
+                        </div>
+                        <img class="card-img-top" src="~/UserFiles/Users/1b275186-3452-4d08-9693-ac360f5b38ec/Posts/650ddd8dac6c42b592af987a/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    </a>
+                    <div class="post-card-body text-left">
+                        <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">Blog Title</a></h2>
+                        <div class="small text-muted">Last Updated on ${month} ${day}, ${year} by Prabdeep Dhaliwal</div>
+                        <p class="card-text text-truncate">This is the long description for the blog post.</p>
+                    </div>
+                </div>*@
             <!-- Pagination-->
-            <nav aria-label="Pagination" id="paginationNavContainer">
-
-            </nav>
+            <nav aria-label="Pagination" id="paginationNavContainer"></nav>
         </div>
         <!-- Side widgets-->
         <div class="col-lg-4">
             <!-- Search widget-->
-            <div class="card mb-4">
-                <div class="card-header">Search</div>
-                <div class="card-body">
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Search</div>
+                <div class="standard-card-body">
                     <div class="input-group">
                         <input class="form-control" id="searchBarInput" type="text" placeholder="Search for blogs..." aria-label="Search for blogs..." aria-describedby="button-search" />
                         <button class="btn btn-primary" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
@@ -45,9 +158,9 @@
                 </div>
             </div>
             <!-- Categories widget-->
-            <div class="card mb-4">
-                <div class="card-header">Categories</div>
-                <div class="card-body">
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Categories</div>
+                <div class="standard-card-body">
                     <div class="row">
                         <ul class="list-unstyled mb-0" id="blogCategoryListContainer">
                         </ul>
@@ -55,11 +168,13 @@
                 </div>
             </div>
             <!-- Side widget-->
-            @*<div class="card mb-4">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-            </div>*@
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Trending Posts</div>
+                <div class="standard-card-body">
+                </div>
+            </div>
         </div>
     </div>
+</div>
 </div>
 
