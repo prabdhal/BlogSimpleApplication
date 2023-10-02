@@ -11,7 +11,7 @@ public class Post
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
     [Required(ErrorMessage = "Please enter the blog title.")]
-    [StringLength(25, ErrorMessage = "Can only have a maximum of 25 characters", MinimumLength = 1)]
+    [StringLength(50, ErrorMessage = "Can only have a maximum of 25 characters", MinimumLength = 1)]
     public string Title { get; set; } = String.Empty;
     [Required(ErrorMessage = "Please enter the blog description.")]
     [StringLength(200, ErrorMessage = "Can only have a maximum of 200 characters", MinimumLength = 1)]

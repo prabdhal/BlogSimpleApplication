@@ -195,11 +195,11 @@ const displayPosts = () => {
                         <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
                             <div>${getPostCategoryName(postsToShow[i].category)}</div >
                         </div>
-                        <img class="card-img-top" src="${getPostImagePath(postsToShow[i].createdBy.id) }/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                        <img class="post-card-img" src="${getPostImagePath(postsToShow[i].createdBy.id) }/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
                     </a>
                     <div class="post-card-body text-left">
                         <h2 class="post-card-title h4"><a href="${postDetailsPath}/${postsToShow[i].id}">${postsToShow[i].title}</a></h2>
-                        <div class="display-row my-1">
+                        <div class="display-row space-between mb-2">
                             <div class="small text-muted display-row display-center-v">
                                 <div class="display-center-v">
                                     <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

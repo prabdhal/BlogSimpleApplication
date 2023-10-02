@@ -4195,65 +4195,6 @@ textarea.form-control-lg {
   box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
-.post-container-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-.featured-post-card {
-  width: 100% !important;
-  position: relative;
-}
-
-.post-card {
-  position: relative;
-  width: 49%;
-}
-
-.standard-card {
-  display: flex;
-  flex-direction: column;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-}
-
-.standard-card-header  {
-  padding: 8px 16px;
-  border-bottom: 1px solid rgba(0,0,0,.125);
-  background-color: rgba(0,0,0,.03);
-}
-
-.standard-card-body {
-  padding: 16px;
-}
-
-.post-card-body {
-  padding: 20px;
-}
-
-.display-row {
-  display: flex;
-  flex-direction: row;
-}
-
-.display-center-v {
-  display: flex;
-  align-items: center;
-}
-
-.post-card-details {
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-}
-
-.post-card-details div:last-child {
-  margin-left: 20px;
-}
-
-.post-card-title a {
-  text-decoration: none;
-}
 
 .card > hr {
   margin-right: 0;
@@ -4346,12 +4287,15 @@ textarea.form-control-lg {
   /*border-radius: var(--bs-card-inner-border-radius);*/
 }
 
+.card-img {
+    width: 100%;
+    max-height: 300px;
+    height: max-content;
+}
+
 .card-img,
 .card-img-top,
 .card-img-bottom {
-  width: 100%;
-  max-height: 300px;
-  height: fit-content;
   overflow-y: hidden;
   border: none;
 }
