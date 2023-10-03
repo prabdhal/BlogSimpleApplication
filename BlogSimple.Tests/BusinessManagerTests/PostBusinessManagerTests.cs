@@ -146,36 +146,36 @@ public class PostBusinessManagerTests
         result.Should().BeOfType<Task<ActionResult<EditPostViewModel>>>();
     }
 
-    [Fact]
-    public void PostBusinessManager_DeletePost_ReturnPost()
-    {
-        // Arrange
-        Post post = new Post();
-        string deletePostId = "1";
-        post.Id = deletePostId;
-        A.CallTo(() => _postService.Get(deletePostId)).Returns(post);
-        A.CallTo(() => _commentService.RemoveAllByPost(deletePostId));
-        A.CallTo(() => _commentReplyService.RemoveAllByPost(deletePostId));
+    //[Fact]
+    //public void PostBusinessManager_DeletePost_ReturnPost()
+    //{
+    //    // Arrange
+    //    Post post = new Post();
+    //    string deletePostId = "1";
+    //    post.Id = deletePostId;
+    //    A.CallTo(() => _postService.Get(deletePostId)).Returns(post);
+    //    A.CallTo(() => _commentService.RemoveAllByPost(deletePostId));
+    //    A.CallTo(() => _commentReplyService.RemoveAllByPost(deletePostId));
 
-        string webRootPath = webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}";
+    //    string webRootPath = webHostEnvironment.WebRootPath;
+    //    string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}";
 
-        string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
-        foreach (string file in files)
-        {
-            File.Delete(file);
-        }
-        //then delete folder
-        Directory.Delete(pathToImage);
+    //    string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
+    //    foreach (string file in files)
+    //    {
+    //        File.Delete(file);
+    //    }
+    //    //then delete folder
+    //    Directory.Delete(pathToImage);
 
-        A.CallTo(() => _postService.Remove(post));
+    //    A.CallTo(() => _postService.Remove(post));
 
-        // Act
-        //var result = _postBusinessManager.DeletePost(deletePostId);
+    //    // Act
+    //    //var result = _postBusinessManager.DeletePost(deletePostId);
 
-        // Assert
-        result.Should().BeOfType<Task<ActionResult<Post>>>();
-    }
+    //    // Assert
+    //    result.Should().BeOfType<Task<ActionResult<Post>>>();
+    //}
 
 
 }

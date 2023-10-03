@@ -93,9 +93,9 @@
         <!-- Side widgets-->
         <div class="col-lg-4">
             <!-- Search widget-->
-            <div class="card mb-4">
-                <div class="card-header">Search</div>
-                <div class="card-body">
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Search</div>
+                <div class="standard-card-body">
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
                         <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
@@ -103,19 +103,19 @@
                 </div>
             </div>
             <!-- Categories widget-->
-            <div class="card mb-4">
-                <div class="card-header">Categories</div>
-                <div class="card-body">
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Categories</div>
+                <div class="standard-card-body">
                     <div class="row">
                         <ul class="list-unstyled mb-0">
-                            @*{
-                            foreach (var cat in Model.PostCategories)
-                            {
-                            <li>
-                            <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
-                            </li>
+                            @{
+                                foreach (var cat in Model.PostCategories)
+                                {
+                                    <li>
+                                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
+                                    </li>
+                                }
                             }
-                            }*@
                         </ul>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
 ﻿let postData = document.querySelector('div.blogData');
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
+const postCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 
+let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
 let dropdownContents = document.querySelectorAll('.dropdown-content');
 const commentTextarea = document.querySelector('.comment-textarea'); 
@@ -162,7 +164,9 @@ const hideCommentButtons = (el) => {
     commentForm.style.display = 'none';
 }
 
-commentBtn.addEventListener('click', (e) => commentButtonValidationCheck(e));
+if (commentBtn != null) {
+    commentBtn.addEventListener('click', (e) => commentButtonValidationCheck(e));
+}
 
 const commentButtonValidationCheck = (e) => {
 
@@ -280,4 +284,20 @@ const getPostCategoryClass = (value) => {
     }
 }
 
+// lists all post cateogries on side widget
+const setUpPostCategoryList = () => {
+    postCategoryData.forEach(cat => {
+        var catName = getPostCategoryName(cat);
+
+        const listItemElement = document.createElement('li');
+        listItemElement.innerHTML = `<a href="#" onclick="return false;">${catName}</a>`;
+        listItemElement.classList = 'list-select';
+        listItemElement.addEventListener('click', () => setPostCategory(catName));
+
+        postCategoryListContainer.append(listItemElement);
+    });
+}
+
+
 createCategoryBadge();
+setUpPostCategoryList();

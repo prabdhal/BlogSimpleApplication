@@ -235,8 +235,16 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userService.Get(userId);
 
+        List<string> postCats = new List<string>();
+
+        foreach (var cat in Enum.GetValues(typeof(PostCategory)))
+        {
+            postCats.Add(cat.ToString());
+        }
+
         return new AuthorViewModel
         {
+            PostCategories = postCats,
             AccountUser = user,
         };
     }
@@ -245,8 +253,16 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
+        List<string> postCats = new List<string>();
+
+        foreach (var cat in Enum.GetValues(typeof(PostCategory)))
+        {
+            postCats.Add(cat.ToString());
+        }
+
         return new AuthorViewModel
         {
+            PostCategories = postCats,
             AccountUser = user,
         };
     }
