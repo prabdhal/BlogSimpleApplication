@@ -10,7 +10,7 @@
 
 
 <!-- Page content-->
-<div class="container mt-5">
+<div class="mt-5">
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Post))'></div>
     <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
@@ -19,14 +19,13 @@
         <div class="col-lg-8 text-left">
             <!-- Post content-->
             <article>
-
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->
                     <h1 class="fw-bolder mb-1">@Model.Post.Title</h1>
                     <!-- Post meta content-->
                     <div class="text-muted fst-italic mb-2">
-                        Posted on @Model.Post.CreatedOn.ToString("MMM d, yyyy") by <a href="/Account/Author/@Model.Post.CreatedBy.Id">@Model.Post.CreatedBy</a>
+                        Posted on @Model.Post.CreatedOn.ToString("MMM d, yyyy") by <a style="text-decoration: none;" href="/Account/Author/@Model.Post.CreatedBy.Id">@Model.Post.CreatedBy</a>
                     </div>
                     <div class="text-muted fst-italic mb-2">Last Updated on @Model.Post.UpdatedOn.ToString("MMM d, yyyy")</div>
                     <!-- Post categories-->
@@ -74,7 +73,7 @@
                     <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Users/@Model.Post.CreatedBy.Id/Posts/@Model.Post.Id/HeaderImage.jpg" alt="@Model.Post.Title" />
                 </figure>
                 <!-- Post content-->
-                <section class="mb-5 text-left">
+                <section class="mb-5 text-left text-break">
                     @Html.Raw(Model.Post.Content)
                 </section>
             </article>
@@ -304,10 +303,89 @@
                     </div>
                 </div>
             </div>
-            <!-- Side widget-->
+            <!-- Related Posts -->
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Related Posts</div>
+                <div class="standard-card-body post-widget-container">
+                    @{
+                        int idx = 0;
+                        foreach (Post post in Model.AllPosts)
+                        {
+                            if (idx < 5 && post.Category.Equals(Model.Post.Category))
+                            {
+                                idx++;
+                                <div class="post-widget-body">
+                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                    <div class="featured-post-card-body-details">
+                                        <span>
+                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                        </span>
+                                        <span>
+                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                        </span>
+                                    </div>
+                                    <hr />
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <!-- Trending Posts -->
             <div class="standard-card mb-4">
                 <div class="standard-card-header">Trending Posts</div>
-                <div class="standard-card-body">
+                <div class="standard-card-body post-widget-container">
+                    @{
+                        idx = 0;
+                        foreach (Post post in Model.AllPosts)
+                        {
+                            if (idx < 5)
+                            {
+                                idx++;
+                                <div class="post-widget-body">
+                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                    <div class="featured-post-card-body-details">
+                                        <span>
+                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                        </span>
+                                        <span>
+                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                        </span>
+                                    </div>
+                                    <hr />
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            
+            <!-- Top Authors -->
+            <div class="standard-card mb-4">
+                <div class="standard-card-header">Top Authors</div>
+                <div class="standard-card-body post-widget-container">
+                    @{
+                        idx = 0;
+                        foreach (Post post in Model.AllPosts)
+                        {
+                            if (idx < 5)
+                            {
+                                idx++;
+                                <div class="post-widget-body">
+                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                    <div class="featured-post-card-body-details">
+                                        <span>
+                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                        </span>
+                                        <span>
+                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                        </span>
+                                    </div>
+                                    <hr />
+                                </div>
+                            }
+                        }
+                    }
                 </div>
             </div>
         </div>

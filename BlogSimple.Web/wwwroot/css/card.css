@@ -156,6 +156,8 @@
     margin: 5px 0;
 }
 
+
+
 /* DASHBOARD POST STYLING */
 /* DASHBOARD POST STYLING */
 /* DASHBOARD POST STYLING */
@@ -165,4 +167,23 @@
     justify-content: start;
     gap: 20px;
     flex-wrap: wrap;
+}
+
+
+
+/* POST WIDGET STYLING */
+/* POST WIDGET STYLING */
+/* POST WIDGET STYLING */
+
+
+.post-widget-container {
+}
+
+
+.post-widget-body {
+    text-align: left;
+}
+
+.post-widget-body h5 {
+    margin-bottom: 20px;
 }

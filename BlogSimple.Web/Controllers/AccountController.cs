@@ -229,7 +229,6 @@ namespace BlogSimple.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "VerifiedUser,Admin")]
         public async Task<IActionResult> Author(string id)
         {
             AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);

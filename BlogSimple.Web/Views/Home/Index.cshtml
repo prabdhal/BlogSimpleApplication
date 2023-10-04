@@ -8,7 +8,7 @@
 
 
 <!-- Page content-->
-<div class="container">
+<div>
     <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedPost))'></div>
     @foreach (var blog in Model.PublishedPosts)
     {
@@ -50,10 +50,32 @@
                     </div>
                 </div>
             </div>
-            <!-- Side widget-->
+            <!-- Trending Posts -->
             <div class="standard-card mb-4">
                 <div class="standard-card-header">Trending Posts</div>
-                <div class="standard-card-body">
+                <div class="standard-card-body post-widget-container">
+                    @{
+                        int idx = 0;
+                        foreach (Post post in Model.PublishedPosts)
+                        {
+                            if (idx < 5)
+                            {
+                                idx++;
+                                <div class="post-widget-body">
+                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                    <div class="featured-post-card-body-details">
+                                        <span>
+                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                        </span>
+                                        <span>
+                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                        </span>
+                                    </div>
+                                    <hr />
+                                </div>
+                            }
+                        }
+                    }
                 </div>
             </div>
         </div>
