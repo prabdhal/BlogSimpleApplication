@@ -1,0 +1,30 @@
+﻿
+
+/* HEADER STYLING */
+/* HEADER STYLING */
+/* HEADER STYLING */
+
+.hero {
+    background-color: #858585;
+    background-image: url("../images/blog-simple-hero-image.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: multiply;
+
+    color: white;
+
+    padding: 200px 0;
+}
+
+.hero-btn {
+    padding: 8px 16px;
+    outline: none;
+    border: none;
+}
+
+a.hero-btn {
+    padding: 9px 16px;
+    background-color: white;
+    text-decoration: none;
+    color: black;
+}
