@@ -104,11 +104,13 @@ const setPostsToDisplay = () => {
 
         console.log('title includes: ' + post.title.toString().toLowerCase().includes(postSearchString));
         console.log('description includes: ' + post.description.toString().toLowerCase().includes(postSearchString));
-        console.log('content includes: ' + post.content.toString().toLowerCase().includes(postSearchString));
+        console.log('search string: ' + postSearchString);
+        console.log('category includes: ' + getPostCategoryName(post.category).toString().toLowerCase().includes(postSearchString));
+        //console.log('content includes: ' + post.content.toString().toLowerCase().includes(postSearchString));
 
         if (post.title.toString().toLowerCase().includes(postSearchString) ||
             post.description.toString().toLowerCase().includes(postSearchString) ||
-            post.content.toString().toLowerCase().includes(postSearchString) ||
+            getPostCategoryName(post.category).toString().toLowerCase().includes(postSearchString) ||
             postSearchString.toString() === "") {
             if (post.category == postCategory || postCategory === 100) {
                 postsToShow.push(post);

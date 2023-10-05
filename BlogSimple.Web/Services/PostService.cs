@@ -35,8 +35,7 @@ public class PostService : IPostService
         // Need to filter by contains text
         var filterSearch = Builders<Post>.Filter.Where(b => b.Title.ToLower().Contains(search) |
             b.Description.ToLower().Contains(search) |
-            b.Category.ToString().ToLower().Contains(search) |
-            b.Content.ToLower().Contains(search));
+            b.Category.ToString().ToLower().Contains(search));
 
         return await _posts.Find(filterSearch).ToListAsync();
     }
@@ -56,8 +55,7 @@ public class PostService : IPostService
         // Need to filter by contains text
         var filterSearch = Builders<Post>.Filter.Where(b => b.Title.ToLower().Contains(search) |
             b.Description.ToLower().Contains(search) |
-            b.Category.ToString().ToLower().Contains(search) |
-            b.Content.ToLower().Contains(search));
+            b.Category.ToString().ToLower().Contains(search));
 
         var filterByPublished = Builders<Post>.Filter.Where(b => b.IsPublished);
 

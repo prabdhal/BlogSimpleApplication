@@ -294,8 +294,7 @@
             </div>
             <!-- Related Posts -->
             @{
-                bool postsExist = true;
-                if (postsExist)
+                if (Model.AllPosts.Any())
                 {
                     <div class="standard-card mb-4">
                         <div class="standard-card-header">Related Posts</div>
@@ -320,10 +319,7 @@
                                         </div>
                                         <hr />
                                     </div>
-                                    postsExist = true;
                                 }
-                                if (idx == 0)
-                                    postsExist = false;
                             }
                         }
                         </div>
@@ -332,8 +328,7 @@
             }
             <!-- Trending Posts -->
             @{
-                bool trendingPostExists = true;
-                if (trendingPostExists)
+                if (Model.AllPosts.Any())
                 {
                     <div class="standard-card mb-4">
                         <div class="standard-card-header">Trending Posts</div>
@@ -357,10 +352,7 @@
                                             </div>
                                             <hr />
                                         </div>
-                                    trendingPostExists = true;
-                                }
-                                if (idx == 0)
-                                    trendingPostExists = false;
+                                    }
                                 }
                             }
                         </div>

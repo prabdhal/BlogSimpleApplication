@@ -9,5 +9,6 @@ public class AuthorViewModel
     public User AccountUser { get; set; }
     public IFormFile CoverImage { get; set; }
     public IEnumerable<User> Authors { get; set; }
-    public IEnumerable<Post> Posts { get; set; }
+    public List<Post> Posts { get; set; }
+    public List<Post> AuthorsPosts { get; set; }
 }

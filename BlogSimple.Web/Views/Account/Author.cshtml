@@ -137,6 +137,72 @@
                     </div>
                 }
             }
+            <!-- Posts by Author -->
+            @{
+                if (Model.AuthorsPosts.Any())
+                {
+                    <div class="standard-card mb-4">
+                        <div class="standard-card-header">Posts by Author</div>
+                        <div class="standard-card-body post-widget-container">
+                            @{
+                                int idx = 0;
+                                foreach (Post post in Model.AuthorsPosts)
+                                {
+                                    if (idx < 5)
+                                    {
+                                        idx++;
+                                        <div class="post-widget-body">
+                                            <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                            <div class="featured-post-card-body-details">
+                                                <span>
+                                                    <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                                </span>
+                                                <span>
+                                                    @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                                </span>
+                                            </div>
+                                            <hr />
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            <!-- Trending Posts -->
+            @{
+                if (Model.Posts.Any())
+                {
+                    <div class="standard-card mb-4">
+                        <div class="standard-card-header">Trending Posts</div>
+                        <div class="standard-card-body post-widget-container">
+                            @{
+                                int idx = 0;
+                                foreach (Post post in Model.Posts)
+                                {
+                                    if (idx < 5)
+                                    {
+                                        idx++;
+                                        <div class="post-widget-body">
+                                            <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                            <div class="featured-post-card-body-details">
+                                                <span>
+                                                    <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                                </span>
+                                                <span>
+                                                    @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                                </span>
+                                            </div>
+                                            <hr />
+                                        </div>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>

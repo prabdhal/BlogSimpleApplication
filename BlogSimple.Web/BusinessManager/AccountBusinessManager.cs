@@ -229,6 +229,8 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<AuthorViewModel> GetAuthorViewModel(string userId)
     {
         var user = await _userService.Get(userId);
+        var posts = await _postService.GetAll();
+        var authorsPosts = await _postService.GetAllByUser(user);
 
         List<string> postCats = new List<string>();
         IEnumerable<User> users = await _userService.GetAll();
@@ -242,13 +244,17 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             PostCategories = postCats,
             AccountUser = user,
-            Authors = users
+            Authors = users,
+            Posts = posts,
+            AuthorsPosts = authorsPosts
         };
     }
 
     public async Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
+        var posts = await _postService.GetAll();
+        var authorsPosts = await _postService.GetAllByUser(user);
 
         List<string> postCats = new List<string>();
         IEnumerable<User> users = await _userService.GetAll();
@@ -262,7 +268,9 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             PostCategories = postCats,
             AccountUser = user,
-            Authors = users
+            Authors = users,
+            Posts = posts,
+            AuthorsPosts = authorsPosts
         };
     }
 
