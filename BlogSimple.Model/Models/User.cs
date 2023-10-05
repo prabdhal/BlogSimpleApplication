@@ -34,7 +34,11 @@ public class User : ApplicationUser
     [Compare("Password")]
     public string ConfirmPassword { get; set; }
 
-    public string Content { get; set; }
+    [Display(Name = "Header")]
+    [StringLength(50, ErrorMessage = "Can only have a maximum of 50 characters", MinimumLength = 1)]
+    public string Heading { get; set; }
+
+    public string Bio { get; set; }
     
     [Display(Name = "Portfolio Website")]
     public string PortfolioLink { get; set; }

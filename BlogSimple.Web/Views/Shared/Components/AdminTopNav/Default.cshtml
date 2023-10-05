@@ -1,4 +1,8 @@
-﻿<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+﻿﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand" style="margin-left:10px;" href="/" title="Home">
         <img src="~/favicon.ico.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -21,6 +25,12 @@
                 <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" title="Home">Home</a></li>
                 <li><a class="dropdown-item" asp-controller="Post" asp-action="Index" title="Dashboard">Dashboard</a></li>
                 <li><a class="dropdown-item" asp-controller="Account" asp-action="MyProfile" title="My Account">My Account</a></li>
+                @{
+                    //if (User.IsInRole("Admin"))
+                    //{
+                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index" title="Admin">Admin</a></li>
+                    //}
+                }
                 <li><hr class="dropdown-divider" /></li>
                 <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout" title="Logout">Logout</a></li>
             </ul>

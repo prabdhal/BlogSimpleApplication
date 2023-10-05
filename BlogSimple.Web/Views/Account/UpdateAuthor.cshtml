@@ -16,7 +16,7 @@
 
 <h4 class="text-left">My Bio</h4>
 <hr />
-    <div class="col-lg-8 text-left">
+    <div class="text-left">
         <!-- Post content-->
         <article>
             <!-- Post header-->
@@ -40,10 +40,10 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
 
                         <div class="form-group">
-                            <label asp-for="HeaderImage">Header Image</label>
+                            <label asp-for="CoverImage">Cover Image</label>
                             <div class="form-floating mb-3">
                                 <div class="custom-file">
-                                    <input asp-for="HeaderImage" class="form-control" accept="image/*" />
+                                    <input asp-for="CoverImage" class="form-control" accept="image/*" />
                                 </div>
                             </div>
                         </div>
@@ -72,11 +72,19 @@
                         </div>
                         <br />
 
-                        Content
                         <div class="form-floating mb-3">
-                            <label asp-for="AccountUser.Content">Content</label>
-                            <textarea asp-for="AccountUser.Content" id="myEditor" class="form-control" type="text"></textarea>
-                            <span asp-validation-for="AccountUser.Content" class="text-danger"></span>
+                            <input asp-for="AccountUser.Heading" class="form-control" type="text" />
+                            <label asp-for="AccountUser.Heading">Heading</label>
+                            <span asp-validation-for="AccountUser.Heading" class="text-danger"></span>
+                        </div>
+                        <br />
+
+                        Introduce yourself and talk about your background!
+                        <br />
+                        <br />
+                        <div class="form-floating mb-3">
+                            <textarea asp-for="AccountUser.Bio" id="myEditor" class="form-control" type="text"></textarea>
+                            <span asp-validation-for="AccountUser.Bio" class="text-danger"></span>
                         </div>
                         <div class="mt-4 mb-0">
                             <div class="d-grid">

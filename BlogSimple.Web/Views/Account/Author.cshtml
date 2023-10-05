@@ -77,6 +77,7 @@
                         }
                     </div>
                     <br />
+                    <h3>@Model.AccountUser.Heading</h3>
                     <figure class="mb-4">
                         <img class="img-fluid rounded blog-details-img" src="~/UserFiles/Users/@Model.AccountUser.Id/CoverImage/UserCoverImage.jpg" alt="@Model.AccountUser.UserName Bio Image">
                     </figure>
@@ -85,46 +86,57 @@
                 <!-- Post content-->
                 <section class="mb-5">
                     <div class="card-body text-left">
-                        @Html.Raw(Model.AccountUser.Content)
+                        @Html.Raw(Model.AccountUser.Bio)
                     </div>
                 </section>
             </article>
         </div>
         <!-- Side widgets-->
         <div class="col-lg-4">
-            <!-- Search widget-->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Search</div>
-                <div class="standard-card-body">
-                    <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-                        <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
-                    </div>
-                </div>
+            <!-- Side widgets-->
+            @*<!-- Search widget-->
+            <div class="card mb-4">
+            <div class="card-header">Search</div>
+            <div class="card-body">
+            <div class="input-group">
+            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+            <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
             </div>
-            <!-- Categories widget-->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Categories</div>
-                <div class="standard-card-body">
-                    <div class="row">
-                        <ul class="list-unstyled mb-0">
+            </div>
+            </div>*@
+            <!-- Top Authors -->
+            @{
+                if (Model.Authors.Any())
+                {
+                    <div class="standard-card mb-4">
+                        <div class="standard-card-header">Notable Authors</div>
+                        <div class="standard-card-body post-widget-container">
                             @{
-                                foreach (var cat in Model.PostCategories)
+                                int idx = 0;
+                                foreach (User author in Model.Authors)
                                 {
-                                    <li>
-                                        <a class="" asp-controller="Home" asp-action="Index" asp-route-id="@cat">@cat</a>
-                                    </li>
+                                    if (idx < 5 && author.Id != Model.AccountUser.Id)
+                                    {
+                                        idx++;
+                                        <div class="post-widget-body">
+                                            <h5><img class="author-profile-pic-widget" src="~/UserFiles/Users/@author.Id/ProfilePicture/ProfilePictureImage.jpg" alt="@author.UserName Profile Picture" /></h5>
+                                            <div class="featured-post-card-body-details">
+                                                <span>
+                                                    <a href="/Account/Author/@author.Id">@author.UserName</a>
+                                                </span>
+                                                <span>
+                                                    @author.Heading
+                                                </span>
+                                            </div>
+                                            <hr />
+                                        </div>
+                                    }
                                 }
                             }
-                        </ul>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <!-- Side widget-->
-            <div class="card mb-4">
-                <div class="card-header">Side Widget</div>
-                <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
-            </div>
+                }
+            }
         </div>
     </div>
 </div>

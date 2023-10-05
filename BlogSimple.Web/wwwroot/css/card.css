@@ -74,6 +74,7 @@
 }
 
 .post-card {
+    height: 100%;
     width: 400px;
     display: flex;
     flex-direction: column;
@@ -96,6 +97,7 @@
 .post-card-body-title {
     font-size: 1.5rem;
     margin-bottom: 15px;
+    height: 55px;
 }
 
 .post-card-body-title a {
@@ -186,4 +188,20 @@
 
 .post-widget-body h5 {
     margin-bottom: 20px;
+}
+
+
+img.author-profile-pic-widget {
+    height: 75px;
+    width: 75px;
+}
+
+
+
+
+
+.ck-editor__editable_inline {
+    height: 100%;
+    min-height: 500px;
+    width: 100%;
 }

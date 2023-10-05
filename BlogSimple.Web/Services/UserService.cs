@@ -17,8 +17,8 @@ public class UserService : IUserService
         var db = mongoClient.GetDatabase(blogSettings.DatabaseName);
         _users = db.GetCollection<User>(blogSettings.UsersCollectionName);
 
-        //var update = Builders<User>.Update.Set("FavoritedBlogs", new List<Blog>());
-        //var remove = Builders<User>.Update.Unset("FavoriteBlogs");
+        //var update = Builders<User>.Update.Set("Bio", new List<User>());
+        //var remove = Builders<User>.Update.Unset("Content");
         //var filter = Builders<User>.Filter.Empty;
         //var options = new UpdateOptions { IsUpsert = true };
 
@@ -26,6 +26,7 @@ public class UserService : IUserService
         //_users.UpdateMany(filter, remove, options);
         //_users.UpdateMany(filter, update, options);
     }
+
     public async Task<User> Create(User user)
     {
         await _users.InsertOneAsync(user);

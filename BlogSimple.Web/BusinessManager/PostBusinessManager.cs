@@ -130,7 +130,7 @@ public class PostBusinessManager : IPostBusinessManager
             Comments = comments,
             CommentReplies = replies,
             AccountUser = user,
-            CommentCount = commentCount
+            CommentCount = commentCount,
         };
     }
 

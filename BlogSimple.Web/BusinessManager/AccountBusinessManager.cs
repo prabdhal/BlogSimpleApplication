@@ -65,7 +65,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             LastName = user.LastName,
             UserName = user.UserName,
             Email = user.Email,
-            Content = null,
+            Bio = null,
             PortfolioLink = null,
             TwitterLink = null,
             GitHubLink = null,
@@ -138,11 +138,6 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-
-        if (user.EmailConfirmed)
-        {
-            await ApplyVerifyUserRole(user);
-        }
 
         return new MyAccountViewModel
         {
@@ -236,6 +231,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var user = await _userService.Get(userId);
 
         List<string> postCats = new List<string>();
+        IEnumerable<User> users = await _userService.GetAll();
 
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
@@ -246,6 +242,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             PostCategories = postCats,
             AccountUser = user,
+            Authors = users
         };
     }
 
@@ -254,6 +251,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
         List<string> postCats = new List<string>();
+        IEnumerable<User> users = await _userService.GetAll();
 
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
@@ -264,6 +262,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             PostCategories = postCats,
             AccountUser = user,
+            Authors = users
         };
     }
 
@@ -271,13 +270,14 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        user.Content = aboutViewModel.AccountUser.Content;
+        user.Bio = aboutViewModel.AccountUser.Bio;
+        user.Heading = aboutViewModel.AccountUser.Heading;
         user.PortfolioLink = aboutViewModel.AccountUser.PortfolioLink;
         user.TwitterLink = aboutViewModel.AccountUser.TwitterLink;
         user.GitHubLink = aboutViewModel.AccountUser.GitHubLink;
         user.LinkedInLink = aboutViewModel.AccountUser.LinkedInLink;
 
-        if (aboutViewModel.HeaderImage != null)
+        if (aboutViewModel.CoverImage != null)
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
             string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\CoverImage\UserCoverImage.jpg";
@@ -286,7 +286,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
             using (var fileStream = new FileStream(pathToImage, FileMode.Create))
             {
-                await aboutViewModel.HeaderImage.CopyToAsync(fileStream);
+                await aboutViewModel.CoverImage.CopyToAsync(fileStream);
             }
         }
 
@@ -355,6 +355,10 @@ public class AccountBusinessManager : IAccountBusinessManager
         IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
         if (result.Succeeded)
         {
+            if (user.Email == "prab.dhaliwal95@gmail.com")
+            {
+                await ApplyAdminUserRole(user);
+            }
             await ApplyVerifyUserRole(user);
         }
         return result;
@@ -387,5 +391,16 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         await _userManager.RemoveFromRoleAsync(user, UnverifiedUserRoleName);
         await _userManager.AddToRoleAsync(user, VerifiedUserRoleName);
+    }
+
+    /// <summary>
+    /// Applies "VerifiedUser" role to the user.
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
+    private async Task ApplyAdminUserRole(User user)
+    {
+        await _userManager.RemoveFromRoleAsync(user, UnverifiedUserRoleName);
+        await _userManager.AddToRoleAsync(user, AdminUserRoleName);
     }
 }

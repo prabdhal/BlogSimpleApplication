@@ -292,102 +292,81 @@
                     </div>
                 </div>
             </div>
-            <!-- Categories widget-->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Categories</div>
-                <div class="standard-card-body">
-                    <div class="row">
-
-                        <ul class="list-unstyled mb-0" id="blogCategoryListContainer">
-                        </ul>
-                    </div>
-                </div>
-            </div>
             <!-- Related Posts -->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Related Posts</div>
-                <div class="standard-card-body post-widget-container">
-                    @{
-                        int idx = 0;
-                        foreach (Post post in Model.AllPosts)
-                        {
-                            if (idx < 5 && post.Category.Equals(Model.Post.Category))
+            @{
+                bool postsExist = true;
+                if (postsExist)
+                {
+                    <div class="standard-card mb-4">
+                        <div class="standard-card-header">Related Posts</div>
+                        <div class="standard-card-body post-widget-container">
+                        @{
+                            int idx = 0;
+
+                            foreach (Post post in Model.AllPosts)
                             {
-                                idx++;
-                                <div class="post-widget-body">
-                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                    <div class="featured-post-card-body-details">
-                                        <span>
-                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                        </span>
-                                        <span>
-                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                        </span>
+                                if (idx < 5 && post.Category.Equals(Model.Post.Category) && post.Id != Model.Post.Id)
+                                {
+                                    idx++;
+                                    <div class="post-widget-body">
+                                        <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                        <div class="featured-post-card-body-details">
+                                            <span>
+                                                <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                            </span>
+                                            <span>
+                                                @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                            </span>
+                                        </div>
+                                        <hr />
                                     </div>
-                                    <hr />
-                                </div>
+                                    postsExist = true;
+                                }
+                                if (idx == 0)
+                                    postsExist = false;
                             }
                         }
-                    }
-                </div>
-            </div>
+                        </div>
+                    </div>
+                }
+            }
             <!-- Trending Posts -->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Trending Posts</div>
-                <div class="standard-card-body post-widget-container">
-                    @{
-                        idx = 0;
-                        foreach (Post post in Model.AllPosts)
-                        {
-                            if (idx < 5)
-                            {
-                                idx++;
-                                <div class="post-widget-body">
-                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                    <div class="featured-post-card-body-details">
-                                        <span>
-                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                        </span>
-                                        <span>
-                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                        </span>
-                                    </div>
-                                    <hr />
-                                </div>
+            @{
+                bool trendingPostExists = true;
+                if (trendingPostExists)
+                {
+                    <div class="standard-card mb-4">
+                        <div class="standard-card-header">Trending Posts</div>
+                        <div class="standard-card-body post-widget-container">
+                            @{
+                                int idx = 0;
+                                foreach (Post post in Model.AllPosts)
+                                {
+                                    if (idx < 5 && post.Id != Model.Post.Id)
+                                    {
+                                        idx++;
+                                        <div class="post-widget-body">
+                                            <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                            <div class="featured-post-card-body-details">
+                                                <span>
+                                                    <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                                </span>
+                                                <span>
+                                                    @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                                </span>
+                                            </div>
+                                            <hr />
+                                        </div>
+                                    trendingPostExists = true;
+                                }
+                                if (idx == 0)
+                                    trendingPostExists = false;
+                                }
                             }
-                        }
-                    }
-                </div>
-            </div>
-            
-            <!-- Top Authors -->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Top Authors</div>
-                <div class="standard-card-body post-widget-container">
-                    @{
-                        idx = 0;
-                        foreach (Post post in Model.AllPosts)
-                        {
-                            if (idx < 5)
-                            {
-                                idx++;
-                                <div class="post-widget-body">
-                                    <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                    <div class="featured-post-card-body-details">
-                                        <span>
-                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                        </span>
-                                        <span>
-                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                        </span>
-                                    </div>
-                                    <hr />
-                                </div>
-                            }
-                        }
-                    }
-                </div>
-            </div>
+                        </div>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
