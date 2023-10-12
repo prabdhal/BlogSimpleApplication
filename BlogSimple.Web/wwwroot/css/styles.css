@@ -610,6 +610,8 @@ progress {
 .blog-details-img {
     height: fit-content;
     max-height: 500px;
+    max-width: 100%;
+    border-radius: 10px;
 }
 
 .img-thumbnail {
