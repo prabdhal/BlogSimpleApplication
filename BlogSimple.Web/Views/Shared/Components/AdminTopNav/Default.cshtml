@@ -2,25 +2,25 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+<nav class="sb-topnav navbar navbar-expand">
     <!-- Navbar Brand-->
-    <a class="navbar-brand" style="margin-left:10px;" href="/" title="Home">
+    <a class="navbar-brand text-white" style="margin-left:10px;" href="/" title="Home">
         <img src="~/favicon.ico.png" width="30" height="30" class="d-inline-block align-top" alt="">
         BlogSimple
     </a>
     <!-- Sidebar Toggle-->
-    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!" title="Toggle Dashboard"><i class="fas fa-bars"></i></button>
+    <button class="dash-menu-btn btn-sm order-1 order-lg-0 me-4 me-lg-0" style="color:#ffffff; background:transparent; border:none; outline:none;" id="sidebarToggle" href="#!" title="Toggle Dashboard"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
     <form asp-controller="Post" asp-action="Index" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
         <div class="input-group">
             <input class="form-control" id="searchBarInput" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
-            <button class="btn btn-primary" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
+            <button class="alt-search-btn" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
         </div>
     </form>
     <!-- Navbar-->
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Profile Dropdown"><i class="fas fa-user fa-fw"></i></a>
+            <a class="account-btn dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Profile Dropdown"><i class="fas fa-user fa-fw" style="color:#ffffff;"></i></a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" asp-controller="Home" asp-action="Index" title="Home">Home</a></li>
                 <li><a class="dropdown-item" asp-controller="Post" asp-action="Index" title="Dashboard">Dashboard</a></li>

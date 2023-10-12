@@ -1,30 +1,73 @@
 ﻿
 
-/* HEADER STYLING */
-/* HEADER STYLING */
-/* HEADER STYLING */
+/* NAV STYLING */
+/* NAV STYLING */
+/* NAV STYLING */
 
+/*
+  #FFF2D8
+  #EAD7BB
+  #BCA37F
+  #113946
+*/
+
+a.nav-brand-text {
+  color: white;
+}
+
+.dash-menu-btn {
+  color: white;
+  border: none;
+  outline: none;
+  background-color: transparent!important;
+}
+
+.navbar-toggler {
+  background-color: #BCA37F;
+}
+
+a.nav-link {
+  color: white;
+  transition: all 50ms ease-in-out;
+}
+
+a.nav-link:hover {
+  color: #BCA37F;
+}
+
+/* HEADER STYLING */
+/* HEADER STYLING */
+/* HEADER STYLING */
 .hero {
-    background-color: #858585;
-    background-image: url("../images/blog-simple-hero-image.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-blend-mode: multiply;
-
-    color: white;
-
-    padding: 200px 0;
+  background-color: #858585;
+  background-image: url("../images/blog-simple-hero-image.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: white;
+  padding: 200px 0;
 }
 
 .hero-btn {
-    padding: 8px 16px;
-    outline: none;
-    border: none;
+  padding: 10px 16px;
+  outline: none;
+  border: none;
+  color: black;
+  background-color: #BCA37F;
+  border-radius: 5px;
+  transition: all 50ms ease-in-out;
 }
 
 a.hero-btn {
-    padding: 9px 16px;
-    background-color: white;
-    text-decoration: none;
-    color: black;
+  padding: 11px 16px;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+  background-color: #BCA37F;
+  border-radius: 5px;
+  transition: all 50ms ease-in-out;
+}
+
+.hero-btn:hover, a.hero-btn:hover {
+    background-color: #FFF2D8;
 }
