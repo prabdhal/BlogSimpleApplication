@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\ckeditor\" />
     <Folder Include="wwwroot\lib\bootstrap\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />
@@ -44,91 +45,11 @@
     <Folder Include="wwwroot\lib\jquery-validation\dist\" />
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
-    <Folder Include="wwwroot\UserFiles\Users\55d05125-cb7b-495b-835c-2cc99f41bff4\ProfilePicture\" />
+    <Folder Include="wwwroot\UserFiles\Users\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Views\Account\ResetPassword.cshtml" />
-    <None Include="wwwroot\assets\ckeditor\build\ckeditor.js" />
-    <None Include="wwwroot\assets\ckeditor\build\ckeditor.js.map" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\af.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ar.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ast.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\az.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\bg.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\bn.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\bs.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ca.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\cs.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\da.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\de-ch.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\de.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\el.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\en-au.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\en-gb.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\eo.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\es-co.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\es.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\et.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\eu.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\fa.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\fi.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\fr.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\gl.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\gu.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\he.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\hi.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\hr.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\hu.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\id.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\it.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ja.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\jv.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\kk.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\km.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\kn.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ko.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ku.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\lt.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\lv.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ms.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\nb.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ne.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\nl.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\no.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\oc.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\pl.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\pt-br.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\pt.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ro.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ru.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\si.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\sk.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\sl.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\sq.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\sr-latn.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\sr.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\sv.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\th.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\tk.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\tr.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\tt.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ug.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\uk.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\ur.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\uz.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\vi.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\zh-cn.js" />
-    <None Include="wwwroot\assets\ckeditor\build\translations\zh.js" />
-    <None Include="wwwroot\assets\ckeditor\LICENSE.md" />
-    <None Include="wwwroot\assets\ckeditor\README.md" />
-    <None Include="wwwroot\assets\ckeditor\sample\script.js" />
-    <None Include="wwwroot\assets\ckeditor\webpack.config.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\assets\ckeditor\build\ckeditor.d.ts" />
-    <TypeScriptCompile Include="wwwroot\assets\ckeditor\src\ckeditor.ts" />
   </ItemGroup>
 
   <ItemGroup>

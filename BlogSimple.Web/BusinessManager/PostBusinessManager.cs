@@ -16,7 +16,7 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly IUserService _userService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
-    private readonly IWebHostEnvironment webHostEnvironment;
+    private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
@@ -27,7 +27,7 @@ public class PostBusinessManager : IPostBusinessManager
         IUserService userService,
         ICommentService commentService,
         ICommentReplyService commentReplyService,
-            IWebHostEnvironment webHostEnvironment
+        IWebHostEnvironment webHostEnvironment
         )
     {
         _userManager = userManager;
@@ -35,7 +35,7 @@ public class PostBusinessManager : IPostBusinessManager
         _userService = userService;
         _commentService = commentService;
         _commentReplyService = commentReplyService;
-        this.webHostEnvironment = webHostEnvironment;
+        this._webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
@@ -160,7 +160,7 @@ public class PostBusinessManager : IPostBusinessManager
         post = await _postService.Create(post);
 
         // stores image file name 
-        string webRootPath = webHostEnvironment.WebRootPath;
+        string webRootPath = _webHostEnvironment.WebRootPath;
         string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
 
         EnsureFolder(pathToImage);
@@ -191,7 +191,6 @@ public class PostBusinessManager : IPostBusinessManager
                 await profileImg.CopyToAsync(fileStream);
             }
         }
-
         return post;
     }
 
@@ -299,7 +298,7 @@ public class PostBusinessManager : IPostBusinessManager
 
         if (editPostViewModel.HeaderImage != null)
         {
-            string webRootPath = webHostEnvironment.WebRootPath;
+            string webRootPath = _webHostEnvironment.WebRootPath;
             string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
 
             EnsureFolder(pathToImage);
@@ -313,7 +312,7 @@ public class PostBusinessManager : IPostBusinessManager
         {
             FormFile profileImg;
             // stores image file name 
-            string webRootPath = webHostEnvironment.WebRootPath;
+            string webRootPath = _webHostEnvironment.WebRootPath;
             string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
             string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
 
@@ -493,7 +492,7 @@ public class PostBusinessManager : IPostBusinessManager
         _commentService.RemoveAllByPost(postId);
         _commentReplyService.RemoveAllByPost(postId);
 
-        string webRootPath = webHostEnvironment.WebRootPath;
+        string webRootPath = _webHostEnvironment.WebRootPath;
         string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}";
 
         string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
