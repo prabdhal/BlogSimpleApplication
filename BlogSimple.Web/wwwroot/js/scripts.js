@@ -356,29 +356,19 @@ searchBarInput.addEventListener('input', (e) => {
     displayPosts();
 });
 
-
-
 // HELPER FUNCTIONS 
 // maps enum int to its name
 const getPostCategoryName = (value) => {
     switch (value) {
         case 0:
-            return 'HTML';
+            return 'Programming';
         case 1:
-            return 'CSS';
+            return 'Game Development';
         case 2:
-            return 'JavaScript';
+            return 'Web Development';
         case 3:
-            return 'C#';
+            return 'General Tutorials';
         case 4:
-            return 'Object-Oriented Programming';
-        case 5:
-            return 'Web Design';
-        case 6:
-            return 'Tutorials';
-        case 7:
-            return 'Freebies';
-        case 8:
             return 'Other';
         default:
             return 'All';
@@ -388,24 +378,16 @@ const getPostCategoryName = (value) => {
 // maps enum name into ints
 const getPostCategoryIdx = (value) => {
     switch (value) {
-        case 'HTML':
+        case 'Programming':
             return 0;
-        case 'CSS':
+        case 'Game Development':
             return 1;
-        case 'JavaScript':
+        case 'Web Development':
             return 2;
-        case 'C#':
+        case 'General Tutorials':
             return 3;
-        case 'Object-Oriented Programming':
-            return 4;
-        case 'Web Design':
-            return 5;
-        case 'Tutorials':
-            return 6;
-        case 'Freebies':
-            return 7;
         case 'Other':
-            return 8;
+            return 4;
         default:
             return 100;
     }
@@ -415,27 +397,21 @@ const getPostCategoryIdx = (value) => {
 const getPostCategoryClass = (value) => {
     switch (value) {
         case 0:
-            return 'html';
+            return 'programming';
         case 1:
-            return 'css';
+            return 'game-development';
         case 2:
-            return 'js';
+            return 'web-development';
         case 3:
-            return 'cs';
+            return 'general-tutorials';
         case 4:
-            return 'oop';
-        case 5:
-            return 'web-design';
-        case 6:
-            return 'tutorials';
-        case 7:
-            return 'freebies';
-        case 8:
             return 'other';
         default:
             return 'all';
     }
 }
+
+
 
 setPostCategory("All");
 setPostSearchString("")

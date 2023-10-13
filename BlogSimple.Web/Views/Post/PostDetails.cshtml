@@ -98,10 +98,10 @@
                                 <textarea asp-for="Comment.Content" class="comment-textarea" onclick="displayCommentButtons(this)" rows="1" placeholder="Join the discussion and leave a comment!"></textarea>
                                 <div class="form-group create-comment-buttons">
                                     @{
-                                        <button class="btn btn-primary" type="button" onclick="hideCommentButtons(this)">Cancel</button>
+                                        <button class="create-comment-btn" type="button" onclick="hideCommentButtons(this)">Cancel</button>
                                         if (SignInManager.IsSignedIn(User))
                                         {
-                                            <button class="btn btn-primary" id="commentBtn" type="submit">Comment</button>
+                                            <button class="create-comment-btn" id="commentBtn" type="submit">Comment</button>
                                         }
                                         else
                                         {
@@ -175,8 +175,8 @@
                                                         <textarea asp-for="@comment.Content" class="comment-textarea" rows="1">@comment.Content</textarea>
                                                         <span asp-validation-for="Comment.Content" class="text-danger"></span>
                                                         <div class="form-group create-reply-buttons">
-                                                            <button class="btn btn-primary" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
-                                                            <input class="btn btn-primary" value="Comment" type="submit" />
+                                                            <button class="create-comment-btn" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
+                                                            <input class="create-comment-btn" value="Comment" type="submit" />
                                                         </div>
                                                     </form>
                                                 </div>
@@ -198,10 +198,10 @@
                                                         <textarea asp-for="CommentReply.Content" class="comment-textarea" rows="1" placeholder="Add a reply..."></textarea>
                                                         <div class="form-group create-reply-buttons">
                                                             @{
-                                                                <button class="btn btn-primary" type="button" onclick="hideCreateReplyForm(this)">Cancel</button>
+                                                                <button class="create-comment-btn" type="button" onclick="hideCreateReplyForm(this)">Cancel</button>
                                                                 if (SignInManager.IsSignedIn(User))
                                                                 {
-                                                                    <button class="btn btn-primary" type="submit">Reply</button>
+                                                                    <button class="create-comment-btn" type="submit">Reply</button>
                                                                 }
                                                                 else
                                                                 {
@@ -259,8 +259,8 @@
                                                                                 <textarea asp-for="@reply.Content" class="comment-textarea" rows="1" name="CommentReply.Content" value="@reply.Content">@reply.Content</textarea>
                                                                                 <span asp-validation-for="CommentReply.Content" class="text-danger"></span>
                                                                                 <div class="form-group create-reply-buttons">
-                                                                                    <button class="btn btn-primary" onclick="hideAllEditReplyInputs()" type="button">Cancel</button>
-                                                                                    <input class="btn btn-primary" value="Reply" type="submit" />
+                                                                                    <button class="create-comment-btn" onclick="hideAllEditReplyInputs()" type="button">Cancel</button>
+                                                                                    <input class="create-comment-btn" value="Reply" type="submit" />
                                                                                 </div>
                                                                             </form>
                                                                         </div>
@@ -288,7 +288,7 @@
                 <div class="standard-card-body">
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Search for posts..." aria-label="Search for posts..." aria-describedby="button-search" />
-                        <button class="btn btn-primary" id="searchBarBtn" type="button">Go!</button>
+                        <button class="search-btn" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
             </div>

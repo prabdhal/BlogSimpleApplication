@@ -4,22 +4,14 @@ namespace BlogSimple.Model.Models;
 
 public enum PostCategory
 {
-    [Display(Name = "HTML")]
-    HTML = 0,
-    [Display(Name = "CSS")]
-    CSS = 1,
-    [Display(Name = "JavaScript")]
-    JavaScript = 2,
-    [Display(Name = "C#")]
-    CSharp = 3,
-    [Display(Name = "Object-Oriented Programming")]
-    OOP = 4,
-    [Display(Name = "Web Design")]
-    WebDesign = 5,
-    [Display(Name = "Tutorials")]
-    Tutorials = 6,
-    [Display(Name = "Freebies")]
-    Freebies = 7,
+    [Display(Name = "Programming")]
+    Programming = 0,
+    [Display(Name = "Game Development")]
+    GameDevelopment = 1,
+    [Display(Name = "Web Development")]
+    WebDevelopment = 2,
+    [Display(Name = "General Tutorials")]
+    GeneralTutorials = 3,
     [Display(Name = "Other")]
-    Other = 8
+    Other = 4
 }
