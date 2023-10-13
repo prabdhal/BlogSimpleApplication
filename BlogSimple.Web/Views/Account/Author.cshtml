@@ -117,18 +117,22 @@
                                 {
                                     if (idx < 5)
                                     {
+                                        if (idx > 0)
+                                        {
+                                            <hr class="post-widget-hr" />
+                                        }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                            <div class="featured-post-card-body-details">
-                                                <span>
-                                                    <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                                </span>
-                                                <span>
-                                                    @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                                </span>
-                                            </div>
-                                            <hr />
+                                            <img class="post-widget-img" src="~/UserFiles/Users/@post.CreatedBy.Id/Posts/@post.Id/HeaderImage.jpg" alt="">
+                                            <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                                            @*<div class="featured-post-card-body-details">
+                                            <span>
+                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                                            </span>
+                                            <span>
+                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
+                                            </span>
+                                            </div>*@
                                         </div>
                                     }
                                 }
@@ -151,18 +155,17 @@
                                 {
                                     if (idx < 5 && author.Id != Model.AccountUser.Id)
                                     {
+                                        if (idx > 0)
+                                        {
+                                            <hr class="post-widget-hr" />
+                                        }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <h5><img class="author-profile-pic-widget" src="~/UserFiles/Users/@author.Id/ProfilePicture/ProfilePictureImage.jpg" alt="@author.UserName Profile Picture" /></h5>
-                                            <div class="featured-post-card-body-details">
-                                                <span>
-                                                    <a href="/Account/Author/@author.Id">@author.UserName</a>
-                                                </span>
-                                                <span>
-                                                    @author.Heading
-                                                </span>
+                                            <img class="author-profile-pic-widget" src="~/UserFiles/Users/@author.Id/ProfilePicture/ProfilePictureImage.jpg" alt="@author.UserName Profile Picture" />
+                                            <div class="post-widget-details">
+                                                <h5><a href="/Account/Author/@author.Id">@author.UserName</a></h5>
+                                                <p>@author.Heading</p>
                                             </div>
-                                            <hr />
                                         </div>
                                     }
                                 }
@@ -184,18 +187,14 @@
                                 {
                                     if (idx < 5)
                                     {
+                                        if (idx > 0)
+                                        {
+                                            <hr class="post-widget-hr" />
+                                        }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <h5><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                            <div class="featured-post-card-body-details">
-                                                <span>
-                                                    <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                                </span>
-                                                <span>
-                                                    @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                                </span>
-                                            </div>
-                                            <hr />
+                                            <img class="post-widget-img" src="~/UserFiles/Users/@post.CreatedBy.Id/Posts/@post.Id/HeaderImage.jpg" alt="">
+                                            <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
                                         </div>
                                     }
                                 }

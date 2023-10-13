@@ -5,13 +5,13 @@
 /* FEATURED STYLING */
 
 .featured-post-card {
-  width: 100%;
-  max-width: 1000px;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-  margin-bottom: 50px;
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    margin-bottom: 50px;
 }
 
 .featured-post-card-img {
@@ -26,15 +26,15 @@
     padding: 20px;
 }
 
-.featured-post-card-body-title { 
+.featured-post-card-body-title {
     font-size: 1.5rem;
     margin-bottom: 15px;
 }
 
-.featured-post-card-body-title a {
-    text-decoration: none;
-    color: black;
-}
+    .featured-post-card-body-title a {
+        text-decoration: none;
+        color: black;
+    }
 
 .featured-post-card-body-description {
     margin-bottom: 20px;
@@ -83,9 +83,6 @@
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
-.post-card:hover {
-}
-
 .post-card-img {
     width: 100%;
     height: 300px;
@@ -99,15 +96,15 @@
 }
 
 .post-card-body-title {
-  font-size: 1.5rem;
-  margin-bottom: 15px;
-  height: 55px;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    height: 55px;
 }
 
-.post-card-body-title a:hover, 
+.post-card-body-title a:hover,
 .post-card-body-details span span a:hover,
 li.list-select a:hover {
-  color: #113946;
+    color: #113946;
 }
 
 .post-card-body-title a {
@@ -152,14 +149,14 @@ li.list-select a:hover {
 }
 
 .standard-card-header {
-  padding: 8px 16px;
-  border-bottom: 1px solid rgb(0,0,0,0.2);
-  background-color: #113946;
-  color: white;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgb(0,0,0,0.2);
+    background-color: #113946;
+    color: white;
 }
 
 .standard-card-body {
-  padding: 8px 16px;
+    padding: 8px 16px;
 }
 
 .standard-card-body a {
@@ -168,7 +165,7 @@ li.list-select a:hover {
 }
 
 .standard-card-body a:hover {
-  color: blue;
+    color: blue;
 }
 
 .standard-card-body div ul li {
@@ -195,54 +192,83 @@ li.list-select a:hover {
 
 
 .post-widget-container {
+    display: flex;
+    flex-direction: column;
 }
 
 
 .post-widget-body {
+    display: flex;
+    justify-content: flex-start;
     text-align: left;
+    align-items: center;
 }
 
-.post-widget-body h5 {
-    margin-bottom: 20px;
+.post-widget-body-title {
+    margin: 0 0 0 20px;
+}
+
+.post-widget-body h5 a {
+    color: #1853f7;
+}
+
+.post-widget-img {
+    width: 75px;
+    height: 75px;
+}
+
+.post-widget-details {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 0 20px;
+}
+
+.post-widget-details p {
+    margin:0px;
+    font-style:italic;
+}
+
+.post-widget-hr {
+    border: 1px solid rgb(0, 0, 0, 0.25);
 }
 
 li.list-select a:hover {
-  color: blue;
+    color: blue;
 }
 
 
 img.author-profile-pic-widget {
-  height: 75px;
-  width: 75px;
+    height: 75px;
+    width: 75px;
 }
 
 .search-btn {
-  background-color: #113946;
-  color: white;
-  border: none;
-  outline: none;
-  padding: 8px 16px;
-  border-radius: 0.375rem;
-  transition: all 50ms ease-in-out;
+    background-color: #113946;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 0.375rem;
+    transition: all 50ms ease-in-out;
 }
 
 .alt-search-btn {
-  background-color: #BCA37F;
-  color: white;
-  border: none;
-  outline: none;
-  padding: 8px 16px;
-  border-radius: 0.375rem;
-  transition: all 50ms ease-in-out;
+    background-color: #BCA37F;
+    color: white;
+    border: none;
+    outline: none;
+    padding: 8px 16px;
+    border-radius: 0.375rem;
+    transition: all 50ms ease-in-out;
 }
 
 .search-btn:hover {
-  background-color: #BCA37F;
+    background-color: #BCA37F;
 }
 
 
 .ck-editor__editable_inline {
-  height: 100%;
-  min-height: 500px;
-  width: 100%;
+    height: 100%;
+    min-height: 500px;
+    width: 100%;
 }
