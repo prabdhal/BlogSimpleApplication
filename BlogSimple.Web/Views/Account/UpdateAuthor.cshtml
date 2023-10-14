@@ -42,7 +42,7 @@
                         <div class="form-group">
                             <label asp-for="CoverImage">Cover Image</label>
                             <div class="form-floating mb-3">
-                                <div class="custom-file">
+                                <div>
                                     <input asp-for="CoverImage" class="form-control" accept="image/*" />
                                 </div>
                             </div>
@@ -79,17 +79,14 @@
                         </div>
                         <br />
 
-                        Introduce yourself and talk about your background!
-                        <br />
+                        Content: <i>Introduce yourself and talk about your background!</i>
                         <br />
                         <div class="form-floating mb-3">
                             <textarea asp-for="AccountUser.Bio" id="myEditor" class="form-control" type="text"></textarea>
                             <span asp-validation-for="AccountUser.Bio" class="text-danger"></span>
                         </div>
                         <div class="mt-4 mb-0">
-                            <div class="d-grid">
-                                <input type="submit" value="Update" class="btn btn-primary btn-block" />
-                            </div>
+                            <input type="submit" value="Update" class="hero-btn" />
                         </div>
                     </form>
                 </div>

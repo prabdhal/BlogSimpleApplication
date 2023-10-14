@@ -25,12 +25,16 @@ nav, footer {
   background-color: #113946 !important;
 }
 
+form {
+  max-width: 1000px;
+}
+
 a {
     cursor: pointer;
 }
 
 .text-left {
-    text-align: left;
+  text-align: left;
 }
 
 .validation-summary ul li {
@@ -219,9 +223,9 @@ textarea.comment-textarea:focus {
     border-radius: 50%;
 }
 
-.svgButton:hover {
-    background-color: #9a9a9a;
-}
+  .svgButton:hover {
+    background-color: #FFF2D8;
+  }
 
 .replyBtn {
     border-radius: 50%;
@@ -229,7 +233,7 @@ textarea.comment-textarea:focus {
 }
 
 .replyBtn:hover {
-    background-color: #9a9a9a;
+    background-color: #FFF2D8;
 }
 
 .cmt {
@@ -265,7 +269,98 @@ textarea.comment-textarea:focus {
     transition: all 50ms ease-in-out;
 }
 
-a.create-comment-btn {
+input[type=file]::file-selector-button {
+  outline: none;
+  border: none;
+  color: black;
+  background-color: #EAD7BB;
+  cursor: pointer;
+  transition: all 50ms ease-in-out;
+}
+
+input[type=file].account-input::file-selector-button {
+  outline: none;
+  border: none;
+  color: white;
+  background-color: #113946;
+  cursor: pointer;
+  transition: all 50ms ease-in-out;
+}
+
+input[type=file].account-input::file-selector-button:hover {
+  background-color: #EAD7BB;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #BCA37F;
+}
+
+.checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #EAD7BB;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #BCA37F;
+}
+/* When the checkbox is checked, add a blue background */
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #113946;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+  a.create-comment-btn {
     padding: 6px 9px;
     background-color: white;
     text-decoration: none;
@@ -273,11 +368,11 @@ a.create-comment-btn {
     background-color: #BCA37F;
     border-radius: 5px;
     transition: all 50ms ease-in-out;
-}
+  }
 
-.create-comment-btn:hover, a.create-comment-btn:hover {
-    background-color:#EAD7BB;
-}
+  .create-comment-btn:hover, a.create-comment-btn:hover {
+    background-color: #EAD7BB;
+  }
 
 .create-reply-buttons {
     display: flex;
@@ -425,6 +520,33 @@ hr {
     clear: both;
     display: table;
 }
+
+
+
+.hero-btn {
+  padding: 10px 16px;
+  outline: none;
+  border: none;
+  color: black;
+  background-color: #BCA37F;
+  border-radius: 5px;
+  transition: all 50ms ease-in-out;
+}
+
+a.hero-btn {
+  padding: 11px 16px;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+  background-color: #BCA37F;
+  border-radius: 5px;
+  transition: all 50ms ease-in-out;
+}
+
+  .hero-btn:hover, a.hero-btn:hover {
+    background-color: #EAD7BB;
+  }
+
 
 /* Change styles for cancel button and delete button on extra small screens */
 @media screen and (max-width: 300px) {

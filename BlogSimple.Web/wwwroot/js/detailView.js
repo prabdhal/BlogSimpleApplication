@@ -207,6 +207,8 @@ window.addEventListener('click', (e) => {
 // HELPER FUNCTIONS 
 // maps enum int to its name
 const getPostCategoryName = (value) => {
+
+  console.log(value);
     switch (value) {
         case 0:
             return 'Programming';
