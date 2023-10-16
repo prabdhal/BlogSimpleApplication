@@ -20,11 +20,11 @@
                 <input asp-for="Post.Title" class="form-control" />
                 <span asp-validation-for="Post.Title" class="text-danger"></span>
             </div>
-            
+
             <br />
             <div class="form-group">
                 <label asp-for="HeaderImage">Header Image</label>
-                <div class="custom-file">
+                <div>
                     <input asp-for="HeaderImage" class="form-control" accept="image/*" />
                 </div>
             </div>
@@ -55,19 +55,22 @@
             </div>
 
             <br />
-            <div class="card-footer">
-                <div class="form-group">
-                    <div class="text-muted">Publish now or save for later edits.</div>
-                    <label>Publish now?</label>
+            <div class="form-group">
+                <div class="text-muted">Publish now or save for later edits.</div>
+                <label class="checkbox-container">
+                    Publish now?
                     <input asp-for="Post.IsPublished" type="checkbox" data-toggle="toggle" />
-                </div>
+                    <span class="checkmark"></span>
+                </label>
             </div>
             <br />
-            <input class="btn btn-primary" type="submit" value="Save" />
+            <input class="hero-btn" type="submit" value="Save" />
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
