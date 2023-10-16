@@ -12,7 +12,7 @@ public enum PostCategory
     WebDevelopment = 2,
     [Display(Name = "General Tutorials")]
     GeneralTutorials = 3,
-    [Display(Name = "General Tutorials")]
+    [Display(Name = "Financial")]
     Financial = 4,
     [Display(Name = "Other")]
     Other = 5

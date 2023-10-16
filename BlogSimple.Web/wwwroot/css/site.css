@@ -41,6 +41,12 @@ a {
     list-style: none;
 }
 
+.myprofile-img-container {
+    display: flex;
+    justify-content: center;
+    max-width: 1000px;
+}
+
 .myaccount-user-profile-img {
     border-radius: 50%;
     height: 150px;

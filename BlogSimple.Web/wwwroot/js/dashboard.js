@@ -336,59 +336,67 @@ window.addEventListener('click', (e) => {
     }
 })
 
+
+
 // HELPER FUNCTIONS 
 // maps enum int to its name
 const getPostCategoryName = (value) => {
-  switch (value) {
-    case 0:
-      return 'Programming';
-    case 1:
-      return 'Game Development';
-    case 2:
-      return 'Web Development';
-    case 3:
-      return 'General Tutorials';
-    case 4:
-      return 'Other';
-    default:
-      return 'All';
-  }
+    switch (value) {
+        case 0:
+            return 'Programming';
+        case 1:
+            return 'Game Development';
+        case 2:
+            return 'Web Development';
+        case 3:
+            return 'General Tutorials';
+        case 4:
+            return 'Financial';
+        case 5:
+            return 'Other';
+        default:
+            return 'All';
+    }
 }
 
 // maps enum name into ints
 const getPostCategoryIdx = (value) => {
-  switch (value) {
-    case 'Programming':
-      return 0;
-    case 'Game Development':
-      return 1;
-    case 'Web Development':
-      return 2;
-    case 'General Tutorials':
-      return 3;
-    case 'Other':
-      return 4;
-    default:
-      return 100;
-  }
+    switch (value) {
+        case 'Programming':
+            return 0;
+        case 'Game Development':
+            return 1;
+        case 'Web Development':
+            return 2;
+        case 'General Tutorials':
+            return 3;
+        case 'Financial':
+            return 4;
+        case 'Other':
+            return 5;
+        default:
+            return 100;
+    }
 }
 
 // maps enum int to color
 const getPostCategoryClass = (value) => {
-  switch (value) {
-    case 0:
-      return 'programming';
-    case 1:
-      return 'game-development';
-    case 2:
-      return 'web-development';
-    case 3:
-      return 'general-tutorials';
-    case 4:
-      return 'other';
-    default:
-      return 'all';
-  }
+    switch (value) {
+        case 0:
+            return 'programming';
+        case 1:
+            return 'game-development';
+        case 2:
+            return 'web-development';
+        case 3:
+            return 'general-tutorials';
+        case 4:
+            return 'financial';
+        case 5:
+            return 'other';
+        default:
+            return 'all';
+    }
 }
 
 

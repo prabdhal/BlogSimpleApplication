@@ -369,6 +369,8 @@ const getPostCategoryName = (value) => {
         case 3:
             return 'General Tutorials';
         case 4:
+            return 'Financial';
+        case 5:
             return 'Other';
         default:
             return 'All';
@@ -386,8 +388,10 @@ const getPostCategoryIdx = (value) => {
             return 2;
         case 'General Tutorials':
             return 3;
-        case 'Other':
+        case 'Financial':
             return 4;
+        case 'Other':
+            return 5;
         default:
             return 100;
     }
@@ -405,6 +409,8 @@ const getPostCategoryClass = (value) => {
         case 3:
             return 'general-tutorials';
         case 4:
+            return 'financial';
+        case 5:
             return 'other';
         default:
             return 'all';

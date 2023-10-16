@@ -23,10 +23,9 @@
 
             <br />
             <div class="form-group">
-                <label asp-for="HeaderImage"></label>
-                <div class="custom-file">
+                <label asp-for="HeaderImage">Header Image</label>
+                <div>
                     <input asp-for="HeaderImage" class="form-control" accept="image/*" />
-                    <label class="custom-file-label text-left">Choose file</label>
                 </div>
             </div>
 
@@ -56,12 +55,13 @@
             </div>
 
             <br />
-            <div class="card-footer">
-                <div class="form-group">
-                    <div class="text-muted">Publish now or save for later edits.</div>
-                    <label>Publish now?</label>
+            <div class="form-group">
+                <div class="text-muted">Publish now or save for later edits.</div>
+                <label class="checkbox-container">
+                    Publish now?
                     <input asp-for="Post.IsPublished" type="checkbox" data-toggle="toggle" />
-                </div>
+                    <span class="checkmark"></span>
+                </label>
             </div>
             <br />
             <input class="hero-btn" type="submit" value="Update" />
