@@ -272,3 +272,25 @@ img.author-profile-pic-widget {
     min-height: 500px;
     width: 100%;
 }
+
+
+
+/* ACCOUNT CARD STYLING */
+/* ACCOUNT CARD STYLING */
+/* ACCOUNT CARD STYLING */
+
+
+
+.account-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #113946;
+    height: 100%;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    padding: 20px;
+    margin: 10px 0;
+}
+
+.account-card .card-body p {
+    margin: 20px 0;
+}

@@ -6,13 +6,11 @@
 <body>
     <!-- Responsive navbar-->
     @await Component.InvokeAsync("Navigation")
-    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
     <!-- Footer-->
     @await Component.InvokeAsync("Footer")
 
