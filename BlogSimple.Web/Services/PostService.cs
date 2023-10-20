@@ -28,6 +28,16 @@ public class PostService : IPostService
         return await _posts.Find(p => p.CreatedBy.Id == user.Id).ToListAsync();
     }
 
+    public async Task<List<Post>> GetAllPublishedByUser(User user)
+    {
+        // Need to filter by user
+        var filterSearch = Builders<Post>.Filter.Where(p => p.CreatedBy.Id == user.Id);
+
+        var filterByPublished = Builders<Post>.Filter.Where(b => b.IsPublished);
+
+        return await _posts.Find(filterSearch & filterByPublished).ToListAsync();
+    }
+
     public async Task<List<Post>> GetAll(string searchString)
     {
         var search = searchString.ToLower();

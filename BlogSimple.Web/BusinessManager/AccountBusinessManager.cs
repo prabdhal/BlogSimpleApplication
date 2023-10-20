@@ -230,7 +230,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userService.Get(userId);
         var posts = await _postService.GetAll();
-        var authorsPosts = await _postService.GetAllByUser(user);
+        var authorsPosts = await _postService.GetAllPublishedByUser(user);
 
         List<string> postCats = new List<string>();
         IEnumerable<User> users = await _userService.GetAll();
@@ -246,7 +246,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             AccountUser = user,
             Authors = users,
             Posts = posts,
-            AuthorsPosts = authorsPosts
+            AuthorsPublishedPosts = authorsPosts
         };
     }
 
@@ -254,7 +254,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         var posts = await _postService.GetAll();
-        var authorsPosts = await _postService.GetAllByUser(user);
+        var authorsPosts = await _postService.GetAllPublishedByUser(user);
 
         List<string> postCats = new List<string>();
         IEnumerable<User> users = await _userService.GetAll();
@@ -270,7 +270,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             AccountUser = user,
             Authors = users,
             Posts = posts,
-            AuthorsPosts = authorsPosts
+            AuthorsPublishedPosts = authorsPosts
         };
     }
 

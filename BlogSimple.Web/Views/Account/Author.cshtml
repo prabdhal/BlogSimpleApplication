@@ -105,14 +105,14 @@
             </div>*@
             <!-- Posts by Author -->
             @{
-                if (Model.AuthorsPosts.Any())
+                if (Model.AuthorsPublishedPosts.Any())
                 {
                     <div class="standard-card mb-4">
                         <div class="standard-card-header">Posts by Author</div>
                         <div class="standard-card-body post-widget-container">
                             @{
                                 int idx = 0;
-                                foreach (Post post in Model.AuthorsPosts)
+                                foreach (Post post in Model.AuthorsPublishedPosts)
                                 {
                                     if (idx < 5)
                                     {
@@ -175,14 +175,14 @@
             }
             <!-- Trending Posts -->
             @{
-                if (Model.Posts.Any())
+                if (Model.AuthorsPublishedPosts.Any())
                 {
                     <div class="standard-card mb-4">
                         <div class="standard-card-header">Trending Posts</div>
                         <div class="standard-card-body post-widget-container">
                             @{
                                 int idx = 0;
-                                foreach (Post post in Model.Posts)
+                                foreach (Post post in Model.AuthorsPublishedPosts)
                                 {
                                     if (idx < 5)
                                     {
