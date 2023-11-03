@@ -36,8 +36,8 @@ const getUserProfilePath = (userId) => {
     return `../../UserFiles/Users/${userId}/ProfilePicture/ProfilePictureImage.jpg`;
 }
 
-const getPostImagePath = (userId) => {
-    return `../../UserFiles/Users/${userId}/Posts`;
+const getPostImagePath = (img) => {
+    return `data:image/jpg;base64,${img}`;
 }
 
 // sets postCategoryIdx
@@ -173,7 +173,7 @@ const displayFeaturedPost = () => {
                 <div class="banner-tag ${getPostCategoryClass(featuredPost.category)}">
                     <div>${getPostCategoryName(featuredPost.category)}</div >
                 </div>
-                <img class="featured-post-card-img" src="${getPostImagePath(featuredPost.createdBy.id)}/${featuredPost.id}/HeaderImage.jpg" alt="${featuredPost.title}" />
+                <img class="featured-post-card-img" src="${getPostImagePath(featuredPost.headerImage)}" alt="${featuredPost.title}" />
             </a>
             <div class="featured-post-card-body">
                 <h2 class="featured-post-card-body-title"><a href="${postDetailsPath}/${featuredPost.id}">${featuredPost.title}</a></h2>
@@ -256,7 +256,7 @@ const displayPosts = () => {
                     <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
                         <div>${getPostCategoryName(postsToShow[i].category)}</div >
                     </div>
-                    <img class="post-card-img" src="${getPostImagePath(postsToShow[i].createdBy.id)}/${postsToShow[i].id}/HeaderImage.jpg" alt="${postsToShow[i].title}" />
+                    <img class="post-card-img" src="${getPostImagePath(postsToShow[i].headerImage)}" alt="${postsToShow[i].title}" />
                 </a>
                 <div class="post-card-body">
                     <h2 class="post-card-body-title"><a href="${postDetailsPath}/${postsToShow[i].id}">${postsToShow[i].title}</a></h2>

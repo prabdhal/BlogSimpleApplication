@@ -35,8 +35,8 @@ let deletePostPath = '/Post/DeletePost';
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
-const getPostImagePath = (userId) => {
-    return `../UserFiles/Users/${userId}/Posts`;
+const getPostImagePath = (img) => {
+    return `data:image/jpg;base64,${img}`;
 }
 
 
@@ -202,7 +202,7 @@ const displayPosts = () => {
                         <div class="banner-tag ${getPostCategoryClass(blogsToShow[i].category)}">
                             <div>${getPostCategoryName(blogsToShow[i].category)}</div >
                         </div>
-                        <img class="post-card-img" src="${getPostImagePath(blogsToShow[i].createdBy.id)}/${blogsToShow[i].id}/HeaderImage.jpg" alt="${blogsToShow[i].title}" />
+                        <img class="post-card-img" src="${getPostImagePath(blogsToShow[i].headerImage)}" alt="${blogsToShow[i].title}" />
                     </a>
                     <div class="post-card-body">
                         <h2 class="post-card-body-title"><a href="${postDetailsPath}/${blogsToShow[i].id}">${blogsToShow[i].title}</a></h2>
