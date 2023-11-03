@@ -109,6 +109,7 @@ public class PostBusinessManager : IPostBusinessManager
     public async Task<PostDetailsViewModel> GetPostDetailsViewModel(string id, ClaimsPrincipal claimsPrincipal)
     {
         Post post = await _postService.Get(id);
+        post.HeaderImage = GetImage(Convert.ToBase64String(post.HeaderImage));
         List<string> postCats = new List<string>();
         var posts = await _postService.GetPublishedOnly("");
         var comments = await _commentService.GetAllByPost(id);
@@ -134,6 +135,17 @@ public class PostBusinessManager : IPostBusinessManager
         };
     }
 
+    private byte[] GetImage(string sBase64String)
+    {
+        byte[] bytes = null;
+        if (!string.IsNullOrEmpty(sBase64String))
+        {
+            bytes = Convert.FromBase64String(sBase64String);
+        }
+        Console.WriteLine(bytes);
+        return bytes;
+    }
+
     public async Task<CreatePostViewModel> GetCreatePostViewModel(ClaimsPrincipal claimsPrincipal)
     {
         CreatePostViewModel createViewModel = new CreatePostViewModel();
@@ -148,10 +160,20 @@ public class PostBusinessManager : IPostBusinessManager
     }
 
     public async Task<Post> CreatePost(CreatePostViewModel createViewModel, ClaimsPrincipal claimsPrincipal)
-    {
-        Post post = createViewModel.Post;
+    { 
+         Post post = createViewModel.Post;
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        if (createViewModel.HeaderImage.Length > 0)
+        {
+            using (var ms = new MemoryStream())
+            {
+                createViewModel.HeaderImage.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                post.HeaderImage = fileBytes;
+            }
+        }
 
         post.CreatedBy = user;
         post.CreatedOn = DateTime.Now;
@@ -159,38 +181,40 @@ public class PostBusinessManager : IPostBusinessManager
 
         post = await _postService.Create(post);
 
-        // stores image file name 
-        string webRootPath = _webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
+        //// stores image file name 
+        //string webRootPath = _webHostEnvironment.WebRootPath;
+        //string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
+        //Console.WriteLine(webRootPath);
+        //Console.WriteLine(pathToImage);
 
-        EnsureFolder(pathToImage);
+        //EnsureFolder(pathToImage);
 
-        if (createViewModel.HeaderImage != null)
-        {
-            IFormFile headerImg = createViewModel.HeaderImage;
+        //if (createViewModel.HeaderImage != null)
+        //{
+        //    IFormFile headerImg = createViewModel.HeaderImage;
 
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await headerImg.CopyToAsync(fileStream);
-            }
-        }
-        else
-        {
-            FormFile profileImg;
-            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
+        //    using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+        //    {
+        //        await headerImg.CopyToAsync(fileStream);
+        //    }
+        //}
+        //else
+        //{
+        //    FormFile profileImg;
+        //    string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
 
-            var stream = File.OpenRead(pathToDefaultImage);
-            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "image/jpg"
-            };
+        //    var stream = File.OpenRead(pathToDefaultImage);
+        //    profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+        //    {
+        //        Headers = new HeaderDictionary(),
+        //        ContentType = "image/jpg"
+        //    };
 
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await profileImg.CopyToAsync(fileStream);
-            }
-        }
+        //    using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+        //    {
+        //        await profileImg.CopyToAsync(fileStream);
+        //    }
+        //}
         return post;
     }
 

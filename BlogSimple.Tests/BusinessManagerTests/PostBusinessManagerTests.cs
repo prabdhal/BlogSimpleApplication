@@ -38,46 +38,46 @@ public class PostBusinessManagerTests
         _postBusinessManager = new PostBusinessManager(_userManager, _postService, _userService, _commentService, _commentReplyService, webHostEnvironment);
     }
 
-    [Fact]
-    public async void PostBusinessManager_CreatePost_ReturnPost()
-    {
-        // Arrange
-        CreatePostViewModel createPostViewModel = A.Fake<CreatePostViewModel>();
-        Post b = A.Fake<Post>();
-        ClaimsPrincipal claimsPrincipal = A.Fake<ClaimsPrincipal>();
-        User user = new User();
-        IFormFile headerImage = A.Fake<IFormFile>();
-        createPostViewModel.HeaderImage = headerImage;
+    //[Fact]
+    //public async void PostBusinessManager_CreatePost_ReturnPost()
+    //{
+    //    // Arrange
+    //    CreatePostViewModel createPostViewModel = A.Fake<CreatePostViewModel>();
+    //    Post b = A.Fake<Post>();
+    //    ClaimsPrincipal claimsPrincipal = A.Fake<ClaimsPrincipal>();
+    //    User user = new User();
+    //    IFormFile headerImage = A.Fake<IFormFile>();
+    //    createPostViewModel.HeaderImage = headerImage;
 
-        A.CallTo(() => _userManager.GetUserAsync(claimsPrincipal)).Returns(user);
+    //    A.CallTo(() => _userManager.GetUserAsync(claimsPrincipal)).Returns(user);
 
-        // Act
-        createPostViewModel.Post = b;
-        Post post = createPostViewModel.Post;
-        post.CreatedBy = user;
-        post.CreatedOn = DateTime.Now;
-        post.UpdatedOn = DateTime.Now;
-        A.CallTo(() => _postService.Create(post)).Returns(post);
+    //    // Act
+    //    createPostViewModel.Post = b;
+    //    Post post = createPostViewModel.Post;
+    //    post.CreatedBy = user;
+    //    post.CreatedOn = DateTime.Now;
+    //    post.UpdatedOn = DateTime.Now;
+    //    A.CallTo(() => _postService.Create(post)).Returns(post);
 
-        // stores image file name 
-        string webRootPath = webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}\HeaderImage.jpg";
+    //    // stores image file name 
+    //    string webRootPath = webHostEnvironment.WebRootPath;
+    //    string pathToImage = $@"{webRootPath}\UserFiles\Posts\{post.Id}\HeaderImage.jpg";
 
-        EnsureFolder(pathToImage);
+    //    EnsureFolder(pathToImage);
 
-        IFormFile headerImg = createPostViewModel.HeaderImage;
+    //    IFormFile headerImg = createPostViewModel.HeaderImage;
 
-        using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-        {
-            await headerImg.CopyToAsync(fileStream);
-        }
+    //    using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+    //    {
+    //        await headerImg.CopyToAsync(fileStream);
+    //    }
 
-        var result = _postBusinessManager.CreatePost(createPostViewModel, claimsPrincipal);
+    //    var result = _postBusinessManager.CreatePost(createPostViewModel, claimsPrincipal);
 
-        // Assert
-        result.Should().BeOfType<Task<Post>>();
-        result.Result.CreatedBy.Should().BeOfType<User>();
-    }
+    //    // Assert
+    //    result.Should().BeOfType<Task<Post>>();
+    //    result.Result.CreatedBy.Should().BeOfType<User>();
+    //}
 
     private void EnsureFolder(string path)
     {

@@ -20,6 +20,7 @@ public class Post
     public PostCategory Category { get; set; }
     [Required(ErrorMessage = "Please enter the blog content.")]
     public string Content { get; set; } = String.Empty;
+    public byte[] HeaderImage { get; set; }
     public bool IsPublished { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
 
