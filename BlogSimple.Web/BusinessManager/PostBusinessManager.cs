@@ -16,7 +16,6 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly IUserService _userService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
-    private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
@@ -26,8 +25,7 @@ public class PostBusinessManager : IPostBusinessManager
         IPostService postService,
         IUserService userService,
         ICommentService commentService,
-        ICommentReplyService commentReplyService,
-        IWebHostEnvironment webHostEnvironment
+        ICommentReplyService commentReplyService
         )
     {
         _userManager = userManager;
@@ -35,7 +33,6 @@ public class PostBusinessManager : IPostBusinessManager
         _userService = userService;
         _commentService = commentService;
         _commentReplyService = commentReplyService;
-        this._webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)

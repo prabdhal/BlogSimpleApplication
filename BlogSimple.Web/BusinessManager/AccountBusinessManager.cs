@@ -1,9 +1,11 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.AccountViewModels;
+using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -177,16 +179,14 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        user.ProfilePictureInput = myAccountViewModel.AccountUser.ProfilePictureInput;
-
-        if (user.ProfilePictureInput == null)
+        if (myAccountViewModel.AccountUser.ProfilePictureInput == null)
         {
         }
-        else if (user.ProfilePictureInput.Length > 0)
+        else if (myAccountViewModel.AccountUser.ProfilePictureInput.Length > 0)
         {
             using (var ms = new MemoryStream())
             {
-                user.ProfilePictureInput.CopyTo(ms);
+                myAccountViewModel.AccountUser.ProfilePictureInput.CopyTo(ms);
                 var fileBytes = ms.ToArray();
                 user.ProfilePicture = fileBytes;
             }
@@ -194,7 +194,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         return new MyAccountViewModel
         {
-            AccountUser = user
+            AccountUser = await _userService.Update(user.UserName, user)
         };
     }
 

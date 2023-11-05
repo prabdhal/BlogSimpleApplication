@@ -66,7 +66,7 @@
                                 }
                                 idx++;
                                 <div class="post-widget-body">
-                                    <img class="post-widget-img" src="~/UserFiles/Users/@post.CreatedBy.Id/Posts/@post.Id/HeaderImage.jpg" alt="">
+                                    <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.Title Image">
                                     <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
                                 </div>
                             }

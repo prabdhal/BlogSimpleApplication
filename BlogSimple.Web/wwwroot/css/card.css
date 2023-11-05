@@ -31,10 +31,10 @@
     margin-bottom: 15px;
 }
 
-    .featured-post-card-body-title a {
-        text-decoration: none;
-        color: black;
-    }
+.featured-post-card-body-title a {
+    text-decoration: none;
+    color: black;
+}
 
 .featured-post-card-body-description {
     margin-bottom: 20px;
@@ -294,3 +294,26 @@ img.author-profile-pic-widget {
 .account-card .card-body p {
     margin: 20px 0;
 }
+
+
+@media only screen and (max-width: 1000px) {
+  .featured-post-card-img {
+    height: 400px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .featured-post-card {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .featured-post-card-img {
+    height: 300px;
+  }
+
+  .post-card {
+    width: 100%;
+  }
+}
+
