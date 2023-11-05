@@ -165,7 +165,10 @@ public class PostBusinessManager : IPostBusinessManager
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        if (createViewModel.HeaderImage.Length > 0)
+        if (createViewModel.HeaderImage == null)
+        {
+        }
+        else if (createViewModel.HeaderImage.Length > 0)
         {
             using (var ms = new MemoryStream())
             {
@@ -180,51 +183,7 @@ public class PostBusinessManager : IPostBusinessManager
         post.UpdatedOn = DateTime.Now;
 
         post = await _postService.Create(post);
-
-        //// stores image file name 
-        //string webRootPath = _webHostEnvironment.WebRootPath;
-        //string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
-        //Console.WriteLine(webRootPath);
-        //Console.WriteLine(pathToImage);
-
-        //EnsureFolder(pathToImage);
-
-        //if (createViewModel.HeaderImage != null)
-        //{
-        //    IFormFile headerImg = createViewModel.HeaderImage;
-
-        //    using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-        //    {
-        //        await headerImg.CopyToAsync(fileStream);
-        //    }
-        //}
-        //else
-        //{
-        //    FormFile profileImg;
-        //    string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
-
-        //    var stream = File.OpenRead(pathToDefaultImage);
-        //    profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
-        //    {
-        //        Headers = new HeaderDictionary(),
-        //        ContentType = "image/jpg"
-        //    };
-
-        //    using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-        //    {
-        //        await profileImg.CopyToAsync(fileStream);
-        //    }
-        //}
         return post;
-    }
-
-    private void EnsureFolder(string path)
-    {
-        string directoryName = Path.GetDirectoryName(path);
-        if (directoryName.Length > 0)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-        }
     }
 
     public async Task<Comment> CreateComment(PostDetailsViewModel postDetailsViewModel, ClaimsPrincipal claimsPrincipal)
@@ -320,39 +279,16 @@ public class PostBusinessManager : IPostBusinessManager
         post.IsPublished = editPostViewModel.Post.IsPublished;
         post.UpdatedOn = DateTime.Now;
 
-        if (editPostViewModel.HeaderImage != null)
+        if (editPostViewModel.HeaderImage == null)
         {
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
-
-            EnsureFolder(pathToImage);
-
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await editPostViewModel.HeaderImage.CopyToAsync(fileStream);
-            }
         }
-        else
+        else if (editPostViewModel.HeaderImage.Length > 0)
         {
-            FormFile profileImg;
-            // stores image file name 
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}\HeaderImage.jpg";
-            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultPostHeaderImage.jpg";
-
-            EnsureFolder(pathToImage);
-
-            var stream = File.OpenRead(pathToDefaultImage);
-            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            using (var ms = new MemoryStream())
             {
-                Headers = new HeaderDictionary(),
-                ContentType = "image/jpg"
-            };
-
-
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await profileImg.CopyToAsync(fileStream);
+                editPostViewModel.HeaderImage.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                post.HeaderImage = fileBytes;
             }
         }
 
@@ -515,17 +451,6 @@ public class PostBusinessManager : IPostBusinessManager
 
         _commentService.RemoveAllByPost(postId);
         _commentReplyService.RemoveAllByPost(postId);
-
-        string webRootPath = _webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\Posts\{post.Id}";
-
-        string[] files = Directory.GetFiles(pathToImage, "*", SearchOption.AllDirectories);
-        foreach (string file in files)
-        {
-            File.Delete(file);
-        }
-        //then delete folder
-        Directory.Delete(pathToImage);
 
         _postService.Remove(post);
         return post;

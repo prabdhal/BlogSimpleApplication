@@ -12,7 +12,7 @@
 
     <div>
         <div class="form-group myprofile-img-container">
-            <img class="myaccount-user-profile-img" src="~/UserFiles/Users/@Model.AccountUser.Id/ProfilePicture/ProfilePictureImage.jpg" alt="@Model.AccountUser.UserName Bio Image">
+            <img class="myaccount-user-profile-img" src="data:image/jpg;base64,@Convert.ToBase64String(Model.AccountUser.ProfilePicture)" alt="@Model.AccountUser.UserName Bio Image" />
             <br />
             <br />
         </div>
@@ -22,10 +22,10 @@
             <input asp-for="AccountUser.Id" readonly hidden />
 
             <div class="form-group">
-                <label asp-for="AccountUser.ProfilePicture">Profile Picture</label>
+                <label asp-for="AccountUser.ProfilePictureInput">Profile Picture</label>
                 <div class="form-floating mb-3">
                     <div class="custom-file">
-                        <input asp-for="AccountUser.ProfilePicture" class="form-control" accept="image/*" />
+                        <input asp-for="AccountUser.ProfilePictureInput" class="form-control" accept="image/*" />
                     </div>
                 </div>
             </div>

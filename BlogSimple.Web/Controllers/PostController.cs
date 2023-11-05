@@ -14,9 +14,6 @@ public class PostController : Controller
 {
     private readonly IPostBusinessManager _postBusinessManager;
     private readonly IAccountBusinessManager _accountBusinessManager;
-    //private readonly IUserService _userService;
-    //private readonly IWebHostEnvironment _webHostEnvironment;
-    //private readonly UserManager<User> _userManager;
 
     public PostController(
         IPostBusinessManager postBusinessManager,
@@ -28,9 +25,6 @@ public class PostController : Controller
     {
         _postBusinessManager = postBusinessManager;
         _accountBusinessManager = accountBusinessManager;
-        //_userService = userService;
-        //_userManager = userManager;
-        //_webHostEnvironment = webHostEnvironment;
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
@@ -209,29 +203,4 @@ public class PostController : Controller
 
         return View(authorViewModel);
     }
-
-    //public async Task<IActionResult> UploadImage()
-    //{
-    //    var u = await _userManager.GetUserAsync(User);
-    //    var user = await _userService.Get(u.Id);
-    //    string webRootPath = _webHostEnvironment.WebRootPath;
-    //    string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\PostUploadedImages/PostContentImage.jpg";
-    //    string filePath = "https://localhost:7187/UserFiles/Users/" + user.Id + "/PostUploadedImages/PostContentImage.jpg";
-
-    //    string directoryName = Path.GetDirectoryName(pathToImage);
-    //    if (directoryName.Length > 0)
-    //    {
-    //        Directory.CreateDirectory(Path.GetDirectoryName(pathToImage));
-    //    }
-
-    //    foreach (IFormFile photo in Request.Form.Files)
-    //    {
-    //        using (var stream = new FileStream(pathToImage, FileMode.Create))
-    //        {
-    //            photo.CopyTo(stream);
-    //        }
-    //    }
-
-    //    return Json(new { url = filePath });
-    //}
 }

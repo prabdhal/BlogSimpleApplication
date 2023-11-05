@@ -16,7 +16,6 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
     private readonly IEmailService _emailService;
-    private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly IConfiguration _configuration;
 
     private readonly string AdminUserRoleName = "Admin";
@@ -30,8 +29,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         ICommentService commentService,
         ICommentReplyService replyService,
         IEmailService emailService,
-        IConfiguration configuration,
-        IWebHostEnvironment webHostEnvironment
+        IConfiguration configuration
         )
     {
         _userManager = userManager;
@@ -41,7 +39,6 @@ public class AccountBusinessManager : IAccountBusinessManager
         _replyService = replyService;
         _emailService = emailService;
         _configuration = configuration;
-        _webHostEnvironment = webHostEnvironment;
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -76,36 +73,16 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         if (result.Succeeded)
         {
-            // stores image file name 
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{newUser.Id}\ProfilePicture\ProfilePictureImage.jpg";
-
-            EnsureFolder(pathToImage);
-
-            if (user.ProfilePicture != null)
+            if (user.ProfilePictureInput == null)
             {
-                IFormFile headerImg = user.ProfilePicture;
-
-                using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-                {
-                    await headerImg.CopyToAsync(fileStream);
-                }
             }
-            else
+            else if (user.ProfilePictureInput.Length > 0)
             {
-                FormFile profileImg;
-                string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
-
-                var stream = File.OpenRead(pathToDefaultImage);
-                profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+                using (var ms = new MemoryStream())
                 {
-                    Headers = new HeaderDictionary(),
-                    ContentType = "image/jpg"
-                };
-
-                using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-                {
-                    await profileImg.CopyToAsync(fileStream);
+                    user.ProfilePictureInput.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    newUser.ProfilePicture = fileBytes;
                 }
             }
 
@@ -148,6 +125,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyProfileViewModel> GetMyProfileViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
+        user.ProfilePicture = GetImage(Convert.ToBase64String(user.ProfilePicture));
         var publishedPost = await _postService.GetAll(user);
         var publishedPostCount = publishedPost.Count();
 
@@ -163,6 +141,17 @@ public class AccountBusinessManager : IAccountBusinessManager
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
             FavoritePostsCount = favoritedPostsCount
         };
+    }
+
+    private byte[] GetImage(string sBase64String)
+    {
+        byte[] bytes = null;
+        if (!string.IsNullOrEmpty(sBase64String))
+        {
+            bytes = Convert.FromBase64String(sBase64String);
+        }
+        Console.WriteLine(bytes);
+        return bytes;
     }
 
     public ChangePasswordViewModel GetChangePasswordViewModel()
@@ -188,35 +177,18 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        user.ProfilePicture = myAccountViewModel.AccountUser.ProfilePicture;
+        user.ProfilePictureInput = myAccountViewModel.AccountUser.ProfilePictureInput;
 
-        string webRootPath = _webHostEnvironment.WebRootPath;
-        string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\ProfilePicture\ProfilePictureImage.jpg";
-
-        EnsureFolder(pathToImage);
-
-        if (user.ProfilePicture != null)
+        if (user.ProfilePictureInput == null)
         {
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await (user.ProfilePicture as FormFile).CopyToAsync(fileStream);
-            }
         }
-        else
+        else if (user.ProfilePictureInput.Length > 0)
         {
-            FormFile profileImg;
-            string pathToDefaultImage = $@"{webRootPath}\UserFiles\DefaultImages\DefaultProfilePictureImage.jpg";
-
-            var stream = File.OpenRead(pathToDefaultImage);
-            profileImg = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name))
+            using (var ms = new MemoryStream())
             {
-                Headers = new HeaderDictionary(),
-                ContentType = "image/jpg"
-            };
-
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
-            {
-                await profileImg.CopyToAsync(fileStream);
+                user.ProfilePictureInput.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                user.ProfilePicture = fileBytes;
             }
         }
 
@@ -229,6 +201,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<AuthorViewModel> GetAuthorViewModel(string userId)
     {
         var user = await _userService.Get(userId);
+        user.HeaderImage = GetImage(Convert.ToBase64String(user.HeaderImage));
         var posts = await _postService.GetAll();
         var authorsPosts = await _postService.GetAllPublishedByUser(user);
 
@@ -285,16 +258,17 @@ public class AccountBusinessManager : IAccountBusinessManager
         user.GitHubLink = aboutViewModel.AccountUser.GitHubLink;
         user.LinkedInLink = aboutViewModel.AccountUser.LinkedInLink;
 
-        if (aboutViewModel.CoverImage != null)
+
+        if (aboutViewModel.CoverImageInput == null)
         {
-            string webRootPath = _webHostEnvironment.WebRootPath;
-            string pathToImage = $@"{webRootPath}\UserFiles\Users\{user.Id}\CoverImage\UserCoverImage.jpg";
-
-            EnsureFolder(pathToImage);
-
-            using (var fileStream = new FileStream(pathToImage, FileMode.Create))
+        }
+        else if (aboutViewModel.CoverImageInput.Length > 0)
+        {
+            using (var ms = new MemoryStream())
             {
-                await aboutViewModel.CoverImage.CopyToAsync(fileStream);
+                user.ProfilePictureInput.CopyTo(ms);
+                var fileBytes = ms.ToArray();
+                aboutViewModel.CoverImage = fileBytes;
             }
         }
 
@@ -302,15 +276,6 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             AccountUser = await _userService.Update(user.UserName, user)
         };
-    }
-
-    private void EnsureFolder(string path)
-    {
-        string directoryName = Path.GetDirectoryName(path);
-        if (directoryName.Length > 0)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-        }
     }
 
     public async Task SendEmailConfirmationEmail(User user, string token)

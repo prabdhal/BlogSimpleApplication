@@ -32,11 +32,7 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 // controller paths
 let postDetailsPath = '/Post/PostDetails';
 
-const getUserProfilePath = (userId) => {
-    return `../../UserFiles/Users/${userId}/ProfilePicture/ProfilePictureImage.jpg`;
-}
-
-const getPostImagePath = (img) => {
+const getImagePath = (img) => {
     return `data:image/jpg;base64,${img}`;
 }
 
@@ -173,7 +169,7 @@ const displayFeaturedPost = () => {
                 <div class="banner-tag ${getPostCategoryClass(featuredPost.category)}">
                     <div>${getPostCategoryName(featuredPost.category)}</div >
                 </div>
-                <img class="featured-post-card-img" src="${getPostImagePath(featuredPost.headerImage)}" alt="${featuredPost.title}" />
+                <img class="featured-post-card-img" src="${getImagePath(featuredPost.headerImage)}" alt="${featuredPost.title}" />
             </a>
             <div class="featured-post-card-body">
                 <h2 class="featured-post-card-body-title"><a href="${postDetailsPath}/${featuredPost.id}">${featuredPost.title}</a></h2>
@@ -191,7 +187,7 @@ const displayFeaturedPost = () => {
                     </span>
                     <span>
                         <span>
-                            <img class="post-creator-img" src="${getUserProfilePath(featuredPost.createdBy.id)}" alt="${featuredPost.createdBy.userName} Profile Picture" />
+                            <img class="post-creator-img" src="${getImagePath(featuredPost.createdBy.profilePicture)}" alt="${featuredPost.createdBy.userName} Profile Picture" />
                             <!--<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -256,7 +252,7 @@ const displayPosts = () => {
                     <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
                         <div>${getPostCategoryName(postsToShow[i].category)}</div >
                     </div>
-                    <img class="post-card-img" src="${getPostImagePath(postsToShow[i].headerImage)}" alt="${postsToShow[i].title}" />
+                    <img class="post-card-img" src="${getImagePath(postsToShow[i].headerImage)}" alt="${postsToShow[i].title}" />
                 </a>
                 <div class="post-card-body">
                     <h2 class="post-card-body-title"><a href="${postDetailsPath}/${postsToShow[i].id}">${postsToShow[i].title}</a></h2>
@@ -274,7 +270,7 @@ const displayPosts = () => {
                         </span>
                         <span>
                             <span>
-                                <img class="post-creator-img" src="${getUserProfilePath(postsToShow[i].createdBy.id)}" alt="${postsToShow[i].createdBy.userName} Profile Picture" />
+                                <img class="post-creator-img" src="${getImagePath(postsToShow[i].createdBy.profilePicture)}" alt="${postsToShow[i].createdBy.userName} Profile Picture" />
                                 <!--<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
