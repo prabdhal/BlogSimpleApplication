@@ -1,11 +1,12 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.AccountViewModels;
-using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -23,6 +24,10 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly string AdminUserRoleName = "Admin";
     private readonly string VerifiedUserRoleName = "VerifiedUser";
     private readonly string UnverifiedUserRoleName = "UnverifiedUser";
+    private readonly int StandardImageWidth = 800;
+    private readonly int StandardImageHeight = 450;
+    private readonly int StandardProfileImageWidth = 150;
+    private readonly int StandardProfileImageHeight = 150;
 
     public AccountBusinessManager(
         UserManager<User> userManager,
@@ -84,7 +89,8 @@ public class AccountBusinessManager : IAccountBusinessManager
                 {
                     user.ProfilePictureInput.CopyTo(ms);
                     var fileBytes = ms.ToArray();
-                    newUser.ProfilePicture = fileBytes;
+                    byte[] resizedImage = ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
+                    newUser.ProfilePicture = resizedImage;
                 }
             }
 
@@ -188,7 +194,8 @@ public class AccountBusinessManager : IAccountBusinessManager
             {
                 myAccountViewModel.AccountUser.ProfilePictureInput.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                user.ProfilePicture = fileBytes;
+                byte[] resizedImage = ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
+                user.ProfilePicture = resizedImage;
             }
         }
 
@@ -196,6 +203,16 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             AccountUser = await _userService.Update(user.UserName, user)
         };
+    }
+
+    private byte[] ResizeImage(byte[] myBytes, int setWidth, int setHeight)
+    {
+        MemoryStream myMemStream = new MemoryStream(myBytes);
+        Image fullsizeImage = Image.FromStream(myMemStream);
+        Image newImage = fullsizeImage.GetThumbnailImage(setWidth, setHeight, null, IntPtr.Zero);
+        MemoryStream myResult = new MemoryStream();
+        newImage.Save(myResult, ImageFormat.Jpeg);
+        return myResult.ToArray();
     }
 
     public async Task<AuthorViewModel> GetAuthorViewModel(string userId)
@@ -259,16 +276,17 @@ public class AccountBusinessManager : IAccountBusinessManager
         user.LinkedInLink = aboutViewModel.AccountUser.LinkedInLink;
 
 
-        if (aboutViewModel.CoverImageInput == null)
+        if (aboutViewModel.AccountUser.HeaderImageInput == null)
         {
         }
-        else if (aboutViewModel.CoverImageInput.Length > 0)
+        else if (aboutViewModel.AccountUser.HeaderImageInput.Length > 0)
         {
             using (var ms = new MemoryStream())
             {
-                user.ProfilePictureInput.CopyTo(ms);
+                aboutViewModel.AccountUser.HeaderImageInput.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                aboutViewModel.CoverImage = fileBytes;
+                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                user.HeaderImage = resizedImage;
             }
         }
 

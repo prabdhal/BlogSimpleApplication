@@ -5,6 +5,8 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -19,6 +21,8 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
+    private readonly int StandardImageWidth = 800;
+    private readonly int StandardImageHeight = 450;
 
     public PostBusinessManager(
         UserManager<User> userManager,
@@ -171,7 +175,8 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 createViewModel.HeaderImage.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                post.HeaderImage = fileBytes;
+                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                post.HeaderImage = resizedImage;
             }
         }
 
@@ -181,6 +186,16 @@ public class PostBusinessManager : IPostBusinessManager
 
         post = await _postService.Create(post);
         return post;
+    }
+
+    private byte[] ResizeImage(byte[] myBytes, int setWidth, int setHeight)
+    {
+        MemoryStream myMemStream = new MemoryStream(myBytes);
+        Image fullsizeImage = Image.FromStream(myMemStream);
+        Image newImage = fullsizeImage.GetThumbnailImage(setWidth, setHeight, null, IntPtr.Zero);
+        MemoryStream myResult = new MemoryStream();
+        newImage.Save(myResult, ImageFormat.Jpeg);  
+        return myResult.ToArray(); 
     }
 
     public async Task<Comment> CreateComment(PostDetailsViewModel postDetailsViewModel, ClaimsPrincipal claimsPrincipal)
@@ -285,7 +300,8 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 editPostViewModel.HeaderImage.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                post.HeaderImage = fileBytes;
+                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                post.HeaderImage = resizedImage;
             }
         }
 
