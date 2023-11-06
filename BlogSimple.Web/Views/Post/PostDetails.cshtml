@@ -149,7 +149,7 @@
                                                         <div>
                                                             <div class="comment-name-date">
                                                                 <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">@comment.CreatedBy.UserName</a></div>
-                                                                <div class="comment-date">@comment.CreatedOn.ToString("MMM d, yyyy")</div>
+                                                                <div class="comment-date">@BlogSimple.Web.Services.TimeToWordsConverters.ConvertTimeToWords(comment.CreatedOn)</div>
                                                             </div>
                                                             <div class="text-break">@comment.Content</div>
                                                             <form class="reply-comment-btns-container" asp-controller="Post" asp-action="LikeComment" asp-route-id="@comment.Id">
@@ -275,7 +275,7 @@
                                                                                 <div>
                                                                                     <div class="comment-name-date">
                                                                                         <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">@reply.CreatedBy.UserName</a></div>
-                                                                                        <div class="comment-date">@reply.CreatedOn.ToString("MMM d, yyyy")</div>
+                                                                                        <div class="comment-date">@BlogSimple.Web.Services.TimeToWordsConverters.ConvertTimeToWords(reply.CreatedOn)</div>
                                                                                     </div>
                                                                                     <div class="text-break">@reply.Content</div>
                                                                                 </div>

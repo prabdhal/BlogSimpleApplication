@@ -76,6 +76,7 @@ a {
 
 .comment-date {
     margin-left: 5px;
+    font-style: italic;
 }
 
 .comment-textarea {
