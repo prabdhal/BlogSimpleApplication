@@ -9,6 +9,7 @@ public class CommentReply
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
+    public Guid CreatedById { get; set; }
     public User CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }

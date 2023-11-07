@@ -17,10 +17,7 @@ public class PostController : Controller
 
     public PostController(
         IPostBusinessManager postBusinessManager,
-        IAccountBusinessManager accountBusinessManager,
-        IUserService userService,
-        UserManager<User> userManager,
-        IWebHostEnvironment webHostEnvironment
+        IAccountBusinessManager accountBusinessManager
         )
     {
         _postBusinessManager = postBusinessManager;

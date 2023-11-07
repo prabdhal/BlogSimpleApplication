@@ -23,9 +23,9 @@ public class Post
     public byte[] HeaderImage { get; set; } = Convert.FromBase64String(DefaultImageBase64String);
     public bool IsPublished { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
-
     [DisplayName("Author")]
     public User CreatedBy { get; set; } = new User();
+    public Guid CreatedById { get; set; }
     
     [DisplayName("Created On")]
     public DateTime CreatedOn { get; set; }

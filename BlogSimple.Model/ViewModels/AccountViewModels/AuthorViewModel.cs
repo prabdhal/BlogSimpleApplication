@@ -1,5 +1,4 @@
 ﻿using BlogSimple.Model.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace BlogSimple.Model.ViewModels.AccountViewModels;
 

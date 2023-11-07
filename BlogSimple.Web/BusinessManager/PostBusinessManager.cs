@@ -114,7 +114,15 @@ public class PostBusinessManager : IPostBusinessManager
         List<string> postCats = new List<string>();
         var posts = await _postService.GetPublishedOnly("");
         var comments = await _commentService.GetAllByPost(id);
+        foreach (Comment c in comments)
+        {
+            c.CreatedBy = await _userService.Get(c.CreatedById);
+        }
         var replies = await _commentReplyService.GetAllByPost(id);
+        foreach (CommentReply r in replies)
+        {
+            r.CreatedBy = await _userService.Get(r.CreatedById);
+        }
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
         int commentCount = comments.Count() + replies.Count();
@@ -181,6 +189,7 @@ public class PostBusinessManager : IPostBusinessManager
         }
 
         post.CreatedBy = user;
+        post.CreatedById = user.Id;
         post.CreatedOn = DateTime.Now;
         post.UpdatedOn = DateTime.Now;
 
@@ -207,6 +216,7 @@ public class PostBusinessManager : IPostBusinessManager
 
         comment.CommentedPost = post;
         comment.CreatedBy = user;
+        comment.CreatedById = user.Id;
         comment.CreatedOn = DateTime.Now;
         comment.UpdatedOn = DateTime.Now;
 
@@ -226,6 +236,7 @@ public class PostBusinessManager : IPostBusinessManager
         reply.RepliedPost = post;
         reply.RepliedComment = comment;
         reply.CreatedBy = user;
+        reply.CreatedById = user.Id;
         reply.CreatedOn = DateTime.Now;
         reply.UpdatedOn = DateTime.Now;
 
