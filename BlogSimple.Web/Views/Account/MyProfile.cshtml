@@ -37,72 +37,40 @@
         <div class="text-left">
             <h4>Account Details - @Model.AccountUser.UserName</h4>
             <hr />
-            <div class="row">
-                <div class="col-sm-4">
-                    First Name:
-                </div>
-                <div class="col-sm-4">
-                    @Model.AccountUser.FirstName
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Last Name:
-                </div>
-                <div class="col-sm-4">
-                    @Model.AccountUser.LastName
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    UserName:
-                </div>
-                <div class="col-sm-4">
-                    @Model.AccountUser.UserName
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Email Address:
-                </div>
-                <div class="col-sm-4">
-                    @Model.AccountUser.Email
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Joined On:
-                </div>
-                <div class="col-sm-4">
-                    @Model.AccountUser.CreatedOn
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Posts Published:
-                </div>
-                <div class="col-sm-4">
-                    @Model.PublishedPostsCount
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Posts Favorited:
-                </div>
-                <div class="col-sm-4">
-                    @Model.FavoritePostsCount
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-4">
-                    Total Comments:
-                </div>
-                <div class="col-sm-4">
-                    @Model.TotalCommentsAndRepliesCount
-                </div>
-                <div class="col-sm-4">
-                </div>
-            </div>
+            <table class="table">
+                <tr>
+                    <th scope="row">First Name</th>
+                    <td>@Model.AccountUser.FirstName</td>
+                </tr>
+                <tr>
+                    <th scope="row">Last Name</th>
+                    <td>@Model.AccountUser.LastName</td>
+                </tr>
+                <tr>
+                    <th scope="row"> UserName</th>
+                    <td>@Model.AccountUser.UserName</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email Address</th>
+                    <td>@Model.AccountUser.Email</td>
+                </tr>
+                <tr>
+                    <th scope="row">Joined On</th>
+                    <td>@Model.AccountUser.CreatedOn</td>
+                </tr>
+                <tr>
+                    <th scope="row">Posts Published</th>
+                    <td>@Model.PublishedPostsCount</td>
+                </tr>
+                <tr>
+                    <th scope="row">Posts Favorited</th>
+                    <td>@Model.FavoritePostsCount</td>
+                </tr>
+                <tr>
+                    <th scope="row">Total Comments</th>
+                    <td>@Model.TotalCommentsAndRepliesCount</td>
+                </tr>
+            </table>
             <br />
             <br />
         </div>

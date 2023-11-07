@@ -54,7 +54,7 @@
                                             <svg height="30px" width="30px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve" fill="#000000">
                                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                            <g id="SVGRepo_iconCarrier"> <style type="text/css">
+                                                <g id="SVGRepo_iconCarrier"><style type="text/css">
                                                                              .st0 {
                                                                                  fill: none;
                                                                                  stroke: #113946;
@@ -139,15 +139,17 @@
                                     foreach (Comment comment in Model.Comments)
                                     {
                                         <div class="comment-container">
-                                            <div class="flex-shrink-0"><img class="user-profile-img" src="data:image/jpg;base64,@Convert.ToBase64String(comment.CreatedBy.ProfilePicture)" alt="@comment.CreatedBy.UserName Bio Image" /></div>
+                                            <a href="/Account/Author/@Model.Post.CreatedBy.Id">
+                                                <div class="flex-shrink-0"><img class="user-profile-img" src="data:image/jpg;base64,@Convert.ToBase64String(comment.CreatedBy.ProfilePicture)" alt="@comment.CreatedBy.UserName Bio Image" /></div>
+                                            </a>
                                             <div class="comment-content-container">
                                                 <!-- Parent comment-->
                                                 <div class="comment-display-section">
                                                     <div class="comment-display-editform-dropdown-container mb-4">
                                                         <div>
                                                             <div class="comment-name-date">
-                                                                <div class="fw-bold">@comment.CreatedBy.UserName</div>
-                                                                <div class="comment-date">@comment.CreatedOn</div>
+                                                                <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">@comment.CreatedBy.UserName</a></div>
+                                                                <div class="comment-date">@BlogSimple.Web.Services.TimeToWordsConverters.ConvertTimeToWords(comment.CreatedOn)</div>
                                                             </div>
                                                             <div class="text-break">@comment.Content</div>
                                                             <form class="reply-comment-btns-container" asp-controller="Post" asp-action="LikeComment" asp-route-id="@comment.Id">
@@ -264,14 +266,16 @@
                                                             if (reply.RepliedComment.Id == comment.Id)
                                                             {
                                                                 <div class="comment-container">
-                                                                    <div class="flex-shrink-0"><img class="user-profile-img" src="data:image/jpg;base64,@Convert.ToBase64String(reply.CreatedBy.ProfilePicture)" alt="@reply.CreatedBy.UserName Bio Image" /></div>
+                                                                    <a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">
+                                                                        <div class="flex-shrink-0"><img class="user-profile-img" src="data:image/jpg;base64,@Convert.ToBase64String(reply.CreatedBy.ProfilePicture)" alt="@reply.CreatedBy.UserName Bio Image" /></div>
+                                                                    </a>
                                                                     <div class="comment-content-container">
                                                                         <div class="comment-display-section">
                                                                             <div class="comment-display-editform-dropdown-container">
                                                                                 <div>
                                                                                     <div class="comment-name-date">
-                                                                                        <div class="fw-bold">@reply.CreatedBy.UserName</div>
-                                                                                        <div class="comment-date">@reply.CreatedOn</div>
+                                                                                        <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">@reply.CreatedBy.UserName</a></div>
+                                                                                        <div class="comment-date">@BlogSimple.Web.Services.TimeToWordsConverters.ConvertTimeToWords(reply.CreatedOn)</div>
                                                                                     </div>
                                                                                     <div class="text-break">@reply.Content</div>
                                                                                 </div>
