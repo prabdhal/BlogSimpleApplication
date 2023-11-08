@@ -89,7 +89,7 @@ public class AccountBusinessManager : IAccountBusinessManager
                 {
                     user.ProfilePictureInput.CopyTo(ms);
                     var fileBytes = ms.ToArray();
-                    byte[] resizedImage = ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
+                    byte[] resizedImage = fileBytes; //ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
                     newUser.ProfilePicture = resizedImage;
                 }
             }
@@ -291,7 +291,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             {
                 aboutViewModel.AccountUser.HeaderImageInput.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                byte[] resizedImage = fileBytes;//ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 user.HeaderImage = resizedImage;
             }
         }
