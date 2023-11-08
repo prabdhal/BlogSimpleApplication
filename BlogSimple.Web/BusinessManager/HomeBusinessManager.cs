@@ -2,16 +2,22 @@
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services.Interfaces;
 
 namespace BlogSimple.Web.BusinessManager;
 
 public class HomeBusinessManager : IHomeBusinessManager
 {
     private readonly IPostService _blogService;
+    private readonly IUserService _userService;
 
-    public HomeBusinessManager(IPostService blogService)
+    public HomeBusinessManager(
+        IPostService blogService,
+        IUserService userService
+        )
     {
         _blogService = blogService;
+        _userService = userService;
     }
 
     public async Task<HomeIndexViewModel> GetHomeIndexViewModel(string searchString)
@@ -23,6 +29,12 @@ public class HomeBusinessManager : IHomeBusinessManager
         if (publishedBlogs.Any())
         {
             featuredBlog = await DetermineFeaturedBlog(publishedBlogs);
+            featuredBlog.CreatedBy = await _userService.Get(featuredBlog.CreatedById);
+        }
+
+        foreach (Post post in publishedBlogs)
+        {
+            post.CreatedBy = await _userService.Get(post.CreatedById);
         }
 
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))

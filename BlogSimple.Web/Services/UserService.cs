@@ -1,6 +1,7 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings.Interfaces;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace BlogSimple.Web.Services;
@@ -50,7 +51,30 @@ public class UserService : IUserService
     }
 
     public async Task<User> Update(string userName, User user)
-    {        
+    {
+        //var filter = Builders<User>.Filter.Eq("UserName", userName);
+        //var update = Builders<User>.Update
+        //    .Set(u => u.FirstName, user.FirstName)
+        //    .Set(u => u.LastName, user.LastName)
+        //    .Set(u => u.UserName, user.UserName)
+        //    .Set(u => u.Email, user.Email)
+        //    .Set(u => u.EmailConfirmed, user.EmailConfirmed)
+        //    .Set(u => u.Password, user.Password)
+        //    .Set(u => u.ConfirmPassword, user.ConfirmPassword)
+        //    .Set(u => u.PasswordHash, user.PasswordHash)
+        //    .Set(u => u.Tokens, user.Tokens)
+        //    .Set(u => u.Heading, user.Heading)
+        //    .Set(u => u.Bio, user.Bio)
+        //    .Set(u => u.CreatedOn, user.CreatedOn)
+        //    .Set(u => u.FavoritedPosts, user.FavoritedPosts)
+        //    .Set(u => u.GitHubLink, user.GitHubLink)
+        //    .Set(u => u.LinkedInLink, user.LinkedInLink)
+        //    .Set(u => u.PortfolioLink, user.PortfolioLink)
+        //    .Set(u => u.TwitterLink, user.TwitterLink)
+        //    .Set(u => u.HeaderImage, user.HeaderImage)
+        //    .Set(u => u.ProfilePicture, user.ProfilePicture)
+        //    .Set(u => u.Roles, user.Roles);
+        //await _users.UpdateOneAsync(filter, update);
         await _users.ReplaceOneAsync(u => u.UserName == userName, user);
         return user;
     }

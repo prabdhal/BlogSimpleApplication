@@ -4,7 +4,6 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Security.Claims;
@@ -192,7 +191,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         {
             using (var ms = new MemoryStream())
             {
-                myAccountViewModel.AccountUser.ProfilePictureInput.CopyTo(ms);
+                await myAccountViewModel.AccountUser.ProfilePictureInput.CopyToAsync(ms);
                 var fileBytes = ms.ToArray();
                 byte[] resizedImage = ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
                 user.ProfilePicture = resizedImage;
