@@ -11,6 +11,7 @@ const postsDisplayContainer = document.querySelector('#blogsDisplayContainer');
 const postCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
+const createPostButton = document.querySelector('#createPostButton');
 
 // data 
 let postData = document.querySelector('div.blogData');
@@ -337,7 +338,6 @@ window.addEventListener('click', (e) => {
 })
 
 
-
 // HELPER FUNCTIONS 
 // maps enum int to its name
 const getPostCategoryName = (value) => {
@@ -403,6 +403,5 @@ const getPostCategoryClass = (value) => {
 
 setPostCategory("All");
 setPostSearchString("")
-//setUpPostCategoryList();
 setPostsToDisplay();
 displayPosts();
