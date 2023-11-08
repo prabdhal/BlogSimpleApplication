@@ -194,7 +194,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             {
                 await myAccountViewModel.AccountUser.ProfilePictureInput.CopyToAsync(ms);
                 var fileBytes = ms.ToArray();
-                byte[] resizedImage = ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
+                byte[] resizedImage = fileBytes; // ResizeImage(fileBytes, StandardProfileImageWidth, StandardProfileImageHeight);
                 user.ProfilePicture = resizedImage;
             }
         }
