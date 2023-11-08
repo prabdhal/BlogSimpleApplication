@@ -183,7 +183,7 @@ public class PostBusinessManager : IPostBusinessManager
                 createViewModel.HeaderImage.CopyTo(ms);
                 var fileBytes = ms.ToArray();
 
-                byte[] resizedImage = fileBytes;//ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 post.HeaderImage = resizedImage;
             }
         }
@@ -317,7 +317,7 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 editPostViewModel.HeaderImage.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                byte[] resizedImage = fileBytes; //ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 post.HeaderImage = resizedImage;
             }
         }

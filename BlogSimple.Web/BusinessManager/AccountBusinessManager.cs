@@ -4,6 +4,7 @@ using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using SkiaSharp;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Security.Claims;
@@ -204,14 +205,20 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
     }
 
-    private byte[] ResizeImage(byte[] myBytes, int setWidth, int setHeight)
+    private static byte[] ResizeImage(byte[] fileContents, int setWidth, int setHeight,
+    SKFilterQuality quality = SKFilterQuality.Medium)
     {
-        MemoryStream myMemStream = new MemoryStream(myBytes);
-        Image fullsizeImage = Image.FromStream(myMemStream);
-        Image newImage = fullsizeImage.GetThumbnailImage(setWidth, setHeight, null, IntPtr.Zero);
-        MemoryStream myResult = new MemoryStream();
-        newImage.Save(myResult, ImageFormat.Jpeg);
-        return myResult.ToArray();
+        using MemoryStream ms = new MemoryStream(fileContents);
+        using SKBitmap sourceBitmap = SKBitmap.Decode(ms);
+
+        //int height = Math.Min(maxHeight, sourceBitmap.Height);
+        //int width = Math.Min(maxWidth, sourceBitmap.Width);
+
+        using SKBitmap scaledBitmap = sourceBitmap.Resize(new SKImageInfo(setWidth, setHeight), quality);
+        using SKImage scaledImage = SKImage.FromBitmap(scaledBitmap);
+        using SKData data = scaledImage.Encode();
+
+        return data.ToArray();
     }
 
     public async Task<AuthorViewModel> GetAuthorViewModel(string userId)
