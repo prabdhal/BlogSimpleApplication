@@ -22,7 +22,6 @@ public class UserService : IUserService
         //var filter = Builders<User>.Filter.Empty;
         //var options = new UpdateOptions { IsUpsert = true };
 
-
         //_users.UpdateMany(filter, remove, options);
         //_users.UpdateMany(filter, update, options);
     }
