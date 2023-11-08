@@ -182,7 +182,8 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 createViewModel.HeaderImage.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+
+                byte[] resizedImage = fileBytes;//ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 post.HeaderImage = resizedImage;
             }
         }
@@ -196,7 +197,7 @@ public class PostBusinessManager : IPostBusinessManager
         return post;
     }
 
-    private byte[] ResizeImage(byte[] fileContents, int setWidth, int setHeight,
+    private static byte[] ResizeImage(byte[] fileContents, int setWidth, int setHeight,
     SKFilterQuality quality = SKFilterQuality.Medium)
     {
         using MemoryStream ms = new MemoryStream(fileContents);
@@ -316,7 +317,7 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 editPostViewModel.HeaderImage.CopyTo(ms);
                 var fileBytes = ms.ToArray();
-                byte[] resizedImage = ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
+                byte[] resizedImage = fileBytes; //ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 post.HeaderImage = resizedImage;
             }
         }
