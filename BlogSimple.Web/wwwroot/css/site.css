@@ -456,9 +456,8 @@ button:hover {
 }
 
 /* Add padding and center-align text to the container */
-.container {
-    padding: 16px;
-    text-align: center;
+.modal-buttons {
+    
 }
 
 /* The Modal (background) */
@@ -471,9 +470,18 @@ button:hover {
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
-    background-color: #474e5d;
-    padding-top: 50px;
-    margin-top: 56px; /* 5% from the top, 15% from the bottom and centered */
+    background-color: #113946;
+    color: #FFF2D8;
+    /*padding-top: 50px;*/
+    /*margin-top: 56px;*/ /* 5% from the top, 15% from the bottom and centered */
+}
+/*    #FFF2D8 #EAD7BB #BCA37F #113946 color:*/
+.modal-content-container{
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* The Modal (background) */
@@ -487,8 +495,8 @@ button:hover {
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
     background-color: #474e5d;
-    padding-top: 50px;
-    margin-top: 56px; /* 5% from the top, 15% from the bottom and centered */
+    /*padding-top: 50px;*/
+    /*margin-top: 56px;*/ /* 5% from the top, 15% from the bottom and centered */
 }
 
 /* Modal Content/Box */
@@ -497,6 +505,8 @@ button:hover {
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    margin: auto;
+    height: 100%;
 }
 
 /* Style the horizontal ruler */

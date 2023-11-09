@@ -158,11 +158,14 @@
                                                                 <button type="submit" class="svgButton">
                                                                     @{
                                                                         bool userLiked = false;
-                                                                        foreach (User user in comment.CommentLikedByUsers)
+                                                                        if (Model.AccountUser != null)
                                                                         {
-                                                                            if (user.Id == Model.AccountUser.Id)
+                                                                            foreach (User user in comment.CommentLikedByUsers)
                                                                             {
-                                                                                userLiked = true;    
+                                                                                if (user.Id == Model.AccountUser.Id)
+                                                                                {
+                                                                                    userLiked = true;    
+                                                                                }
                                                                             }
                                                                         }
                                                                         if (userLiked)
@@ -417,13 +420,13 @@
 <div id="deleteCommentModal" class="delete-comment-modal">
     <span onclick="hideDeleteCommentModal()" class="close" title="Close Modal">&times;</span>
     <form class="modal-content" id="deleteCommentModalForm" method="post">
-        <div class="container">
+        <div class="modal-content-container">
             <h1>Delete comment</h1>
             <p>Delete your comment permanently?</p>
 
-            <div class="clearfix">
-                <button type="button" onclick="hideDeleteCommentModal()">Cancel</button>
-                <button type="submit">Delete</button>
+            <div class="modal-buttons">
+                <button class="hero-btn" type="button" onclick="hideDeleteCommentModal()">Cancel</button>
+                <button class="hero-btn" type="submit">Delete</button>
             </div>
         </div>
     </form>
@@ -433,13 +436,13 @@
 <div id="deleteReplyModal" class="delete-reply-modal">
     <span onclick="hideDeleteReplyModal()" class="close" title="Close Modal">&times;</span>
     <form class="modal-content" id="deleteReplyModalForm" method="post">
-        <div class="container">
+        <div class="modal-content-container">
             <h1>Delete reply</h1>
             <p>Delete your reply permanently?</p>
 
-            <div class="clearfix">
-                <button type="button" onclick="hideDeleteReplyModal()">Cancel</button>
-                <button type="submit">Delete</button>
+            <div class="modal-buttons">
+                <button class="hero-btn" type="button" onclick="hideDeleteReplyModal()">Cancel</button>
+                <button class="hero-btn" type="submit">Delete</button>
             </div>
         </div>
     </form>
