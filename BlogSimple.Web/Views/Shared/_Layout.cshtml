@@ -30,17 +30,15 @@
         </main>
     </div>
 
+    @*<div class="loader"></div>*@
 
     <!-- Footer-->
     @await Component.InvokeAsync("Footer")
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/scripts.js" asp-append-version="true"></script>
+    @*<script src="~/js/loader.js" asp-append-version="true"></script>*@
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.nemyE/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     @await RenderSectionAsync("Scripts", required: false)
 </body>

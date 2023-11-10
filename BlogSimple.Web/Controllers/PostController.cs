@@ -1,10 +1,7 @@
-﻿using BlogSimple.Model.Models;
-using BlogSimple.Model.ViewModels.AccountViewModels;
+﻿using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
-using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -63,14 +60,40 @@ public class PostController : Controller
             content.ValidationState.Equals(ModelValidationState.Invalid) ||
             category.ValidationState.Equals(ModelValidationState.Invalid))
         {
-            return RedirectToAction("CreatePost");
+            var titleErrors = title.Errors.ToList();
+            var descriptionErrors = description.Errors.ToList();
+            var contentErrors = content.Errors.ToList();
+            var categoryErrors = category.Errors.ToList();
+            var errors = titleErrors;
+            for (int i = 0; i < descriptionErrors.Count; i++)
+            {
+                errors.Add(descriptionErrors[i]);
+            }
+            for (int i = 0; i < contentErrors.Count; i++)
+            {
+                errors.Add(contentErrors[i]);
+            }
+            for (int i = 0; i < categoryErrors.Count; i++)
+            {
+                errors.Add(categoryErrors[i]);
+            }
+
+            foreach (var errorMessage in errors)
+            {
+                ModelState.AddModelError("", errorMessage.ErrorMessage);
+            }
+
+            createPostViewModel = await _postBusinessManager.GetCreatePostViewModel(User);
+            return View(createPostViewModel);
         }
-        else
-        {
-            await _postBusinessManager.CreatePost(createPostViewModel, User);
-            return RedirectToAction("PostDetails", new { createPostViewModel.Post.Id });
-        }
+
+        ModelState.Clear();
+
+        await _postBusinessManager.CreatePost(createPostViewModel, User);
+        return RedirectToAction("PostDetails", new { createPostViewModel.Post.Id });
+        
     }
+
 
     [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> EditPost(string id)
@@ -98,13 +121,36 @@ public class PostController : Controller
             content.ValidationState.Equals(ModelValidationState.Invalid) ||
             category.ValidationState.Equals(ModelValidationState.Invalid))
         {
-            return RedirectToAction("CreatePost");
+            var titleErrors = title.Errors.ToList();
+            var descriptionErrors = description.Errors.ToList();
+            var contentErrors = content.Errors.ToList();
+            var categoryErrors = category.Errors.ToList();
+            var errors = titleErrors;
+            for (int i = 0; i < descriptionErrors.Count; i++)
+            {
+                errors.Add(descriptionErrors[i]);
+            }
+            for (int i = 0; i < contentErrors.Count; i++)
+            {
+                errors.Add(contentErrors[i]);
+            }
+            for (int i = 0; i < categoryErrors.Count; i++)
+            {
+                errors.Add(categoryErrors[i]);
+            }
+
+            foreach (var errorMessage in errors)
+            {
+                ModelState.AddModelError("", errorMessage.ErrorMessage);
+            }
+
+            editPostViewModel = await _postBusinessManager.GetEditPostViewModel(editPostViewModel.Post.Id, User);
+            return View(editPostViewModel);
         }
-        else
-        {
-            await _postBusinessManager.EditPost(editPostViewModel, User);
-            return RedirectToAction("PostDetails", new { editPostViewModel.Post.Id });
-        }
+
+        ModelState.Clear();
+        await _postBusinessManager.EditPost(editPostViewModel, User);
+        return RedirectToAction("PostDetails", new { editPostViewModel.Post.Id });
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]

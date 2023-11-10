@@ -19,6 +19,7 @@
 
         <form asp-controller="Account" asp-action="UpdateUserProfilePicture" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+
             <input asp-for="AccountUser.Id" readonly hidden />
 
             <div class="form-group">
@@ -29,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" value="Update" class="hero-btn" />
+            <input id="formSubmitBtn" type="submit" value="Update" class="hero-btn" />
             <br />
         </form>
         <br />
@@ -76,3 +77,18 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    const formSubmitBtn = document.querySelector('#formSubmitBtn');
+
+    formSubmitBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            formSubmitBtn.disabled = true;
+            formSubmitBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + formSubmitBtn.disabled)
+    });
+</script>

@@ -11,6 +11,8 @@
             @RenderBody()
         </main>
     </div>
+
+    <div class="loader"></div>
     <!-- Footer-->
     @await Component.InvokeAsync("Footer")
 
@@ -19,9 +21,6 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script src="~/js/detailView.js" asp-append-version="true"></script>
-
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.nemyE/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
+    <script src="~/js/loader.js" asp-append-version="true"></script>
 </body>
 </html>

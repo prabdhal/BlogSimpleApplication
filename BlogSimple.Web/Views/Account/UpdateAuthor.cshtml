@@ -86,7 +86,7 @@
                             <span asp-validation-for="AccountUser.Bio" class="text-danger"></span>
                         </div>
                         <div class="mt-4 mb-0">
-                            <input type="submit" value="Update" class="hero-btn" />
+                            <input id="formSubmitBtn" type="submit" value="Update" class="hero-btn" />
                         </div>
                     </form>
                 </div>
@@ -130,3 +130,18 @@
         </div>*@
     </div>
 </div>
+
+
+
+<script>
+    const formSubmitBtn = document.querySelector('#formSubmitBtn');
+
+    formSubmitBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            formSubmitBtn.disabled = true;
+            formSubmitBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + formSubmitBtn.disabled)
+    });
+</script>

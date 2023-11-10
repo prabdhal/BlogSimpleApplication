@@ -21,6 +21,7 @@
                         }
                         <form asp-action="Register" method="post" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div class="form-floating mb-3 mb-md-0">
@@ -73,7 +74,7 @@
                             </div>
                             <br />
                             <div class="account-footer">
-                                <input type="submit" value="Register" />
+                                <input id="formSubmitBtn" type="submit" value="Register" />
                                 <div class="my-2 font-weight-bold">OR</div>
                                 <div class="small"><a href="/Account/Login">Have an account? Go to login</a></div>
                             </div>
@@ -86,9 +87,15 @@
 </div>
 
 
+<script>
+    const formSubmitBtn = document.querySelector('#formSubmitBtn');
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    formSubmitBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            formSubmitBtn.disabled = true;
+            formSubmitBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + formSubmitBtn.disabled)
+    });
+</script>

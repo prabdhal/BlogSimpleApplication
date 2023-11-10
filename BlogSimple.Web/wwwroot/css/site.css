@@ -188,6 +188,45 @@ textarea.comment-textarea:focus {
     color: rgba(255, 255, 255, 0.5) !important;
 }
 
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF2D8;
+    transition: opacity 750ms, visibility 750ms;
+}
+
+.loader-hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loader::after {
+    content: "";
+    width: 75px;
+    height: 75px;
+    border: 15px solid #BCA37F;
+    border-top-color: #113946;
+    border-radius: 50%;
+    animation: loading 750ms ease infinite;
+}
+
+@keyframes loading {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+
+
 /* The hero image */
 .hero-image {
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/blog-simple-hero-image.jpg");
@@ -458,6 +497,10 @@ button:hover {
 /* Add padding and center-align text to the container */
 .modal-buttons {
     
+}
+
+.container {
+    text-align: center;
 }
 
 /* The Modal (background) */

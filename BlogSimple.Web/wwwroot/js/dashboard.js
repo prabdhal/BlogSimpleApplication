@@ -16,7 +16,7 @@ const createPostButton = document.querySelector('#createPostButton');
 // data 
 let postData = document.querySelector('div.blogData');
 let postsData = document.querySelectorAll('div.blogsData');
-let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
+//let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
 // pagination values 
 const maxPostsPerPage = 10;
@@ -336,7 +336,6 @@ window.addEventListener('click', (e) => {
         closeAllCommentDropDownMenu();
     }
 })
-
 
 // HELPER FUNCTIONS 
 // maps enum int to its name
