@@ -11,11 +11,12 @@ const postsDisplayContainer = document.querySelector('#blogsDisplayContainer');
 const postCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
+const createPostButton = document.querySelector('#createPostButton');
 
 // data 
 let postData = document.querySelector('div.blogData');
 let postsData = document.querySelectorAll('div.blogsData');
-let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
+//let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
 // pagination values 
 const maxPostsPerPage = 10;
@@ -325,8 +326,6 @@ window.addEventListener('click', (e) => {
     }
 })
 
-
-
 // HELPER FUNCTIONS 
 // maps enum int to its name
 const getPostCategoryName = (value) => {
@@ -392,6 +391,5 @@ const getPostCategoryClass = (value) => {
 
 setPostCategory("All");
 setPostSearchString("")
-//setUpPostCategoryList();
 setPostsToDisplay();
 displayPosts();

@@ -17,6 +17,7 @@
                             <div class="account-body">
                                 <form asp-action="Login">
                                     <div asp-validation-summary="ModelOnly" class="text-danger validation-summary"></div>
+
                                     <div class="form-floating mb-3">
                                         <input asp-for="UserName" class="form-control" />
                                         <label asp-for="UserName">Username</label>
@@ -31,7 +32,7 @@
                                         <a class="small" asp-controller="Account" asp-action="ForgotPassword">Forgot your password?</a>
                                     </div>
                                     <div class="account-footer">
-                                        <input type="submit" value="Login" >
+                                        <input id="formSubmitBtn" type="submit" value="Login">
                                         <div class="my-2 font-weight-bold">OR</div>
                                         <div class="small"><a href="/Account/Register">Need an account? Sign up!</a></div>
                                     </div>
@@ -44,6 +45,15 @@
 </div>
 
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>
+    const formSubmitBtn = document.querySelector('#formSubmitBtn');
+
+    formSubmitBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            formSubmitBtn.disabled = true;
+            formSubmitBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + formSubmitBtn.disabled)
+    });
+</script>

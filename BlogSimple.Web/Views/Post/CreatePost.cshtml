@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Create Post";
-    Layout = "~/Views/Post/_DashboardLayoutIndex.cshtml";
+    Layout = "~/Views/Post/_PostFormLayout.cshtml";
 }
 
 <div class="m-5">
@@ -64,13 +64,22 @@
                 </label>
             </div>
             <br />
-            <input class="hero-btn" type="submit" value="Save" />
+            <input id="formSubmitBtn" class="hero-btn" type="submit" value="Save" />
         </form>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+
+
+<script>
+    const formSubmitBtn = document.querySelector('#formSubmitBtn');
+
+    formSubmitBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            formSubmitBtn.disabled = true;
+            formSubmitBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + formSubmitBtn.disabled)
+    });
+</script>

@@ -41,6 +41,7 @@ namespace BlogSimple.Web.Controllers
                 var emailConfirmModel = await _accountBusinessManager.GetEmailConfirmViewModel(User, model);
                 return RedirectToAction("MyAccount", emailConfirmModel);
             }
+
             return View();
         }
 
