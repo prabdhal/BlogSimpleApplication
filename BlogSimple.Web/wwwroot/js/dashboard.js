@@ -52,16 +52,12 @@ const createCategoryBadge = () => {
 
 // opens modal to delete given post
 const openDeletePostModal = (id) => {
-    console.log('open delete Modal');
     alert(`Are you sure you want to delete post with ${id}`);
 }
 
 
 // sets postCategoryIdx
 const setPostCategory = (selectedCategory) => {
-  console.log(selectedCategory)
-  console.log(postCategoryIdx)
-  console.log(getPostCategoryName(postCategoryIdx))
     // toggle post category on/off upon clicking same category
     if (selectedCategory == getPostCategoryName(postCategoryIdx)) {
         postCategoryIdx = 100;
@@ -69,11 +65,11 @@ const setPostCategory = (selectedCategory) => {
         postCategoryIdx = getPostCategoryIdx(selectedCategory);
     }
 
+    // Category click
     setPostSearchString("");
     searchBarInput.value = "";
     setPostsToDisplay();
     displayPosts();
-    console.log('clicked ' + selectedCategory);
 }
 
 // lists all post cateogries on side widget
@@ -242,7 +238,6 @@ const displayPosts = () => {
     menuIcons.forEach(menu => {
         menu.addEventListener('click', () => {
             openCommentDropDownMenu(menu);
-            console.log('add event listener on menu icons');
         });
     });
 }
@@ -252,11 +247,6 @@ const createPagination = () => {
     paginationNavContainer.innerHTML = '';
     // do pagination only if greater than maxPostsPerPage posts
     if (blogsToShow.length > maxPostsPerPage) {
-
-        console.log('posts length: ' + blogsToShow.length);
-        console.log('max posts: ' + maxPostsPerPage);
-        console.log('total page count: ' + totalPageCount);
-
         const hrElement = document.createElement('hr');
         hrElement.classList = "my-0";
 
@@ -319,7 +309,6 @@ const openCommentDropDownMenu = (element) => {
         closeAllCommentDropDownMenu();
         element.nextElementSibling.classList.add('block');
     }
-    console.log('open drop down menu');
 }
 
 // closes all comment drop down menus

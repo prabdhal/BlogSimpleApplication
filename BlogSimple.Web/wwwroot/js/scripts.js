@@ -43,17 +43,17 @@ const setPostCategory = (selectedCategory) => {
         postCategoryIdx = 100;
         clickedCat = false;
     } else {
+        // Hide featured post
         postCategoryIdx = getPostCategoryIdx(selectedCategory);
-        console.log('hide featured Post!');
         hideFeaturedPost = true;
         clickedCat = true;
     }
-    
+
+    // Search category clicked
     setPostSearchString("");
     searchBarInput.value = "";
     setPostsToDisplay();
     displayPosts();
-    console.log('clicked ' + selectedCategory);
 }
 
 // lists all post cateogries on side widget
@@ -74,14 +74,13 @@ const setUpPostCategoryList = () => {
 const setPostSearchString = (searchString) => {
     postSearchString = searchString.toLowerCase();
     hideFeaturedPost = false;
-    console.log(postSearchString);
 
+    // Hides featured post
     if (postSearchString == '' && clickedCat == false) {
-        console.log('hide featured Post!');
         hideFeaturedPost = true;
     }
 
-    currentPageNumber = 1;
+  currentPageNumber = 1;
 }
 
 // sets postsToShow 
@@ -98,12 +97,7 @@ const setPostsToDisplay = () => {
         // exclude featured posts
         if (post.isFeatured && hideFeaturedPost) return;
 
-        console.log('title includes: ' + post.title.toString().toLowerCase().includes(postSearchString));
-        console.log('description includes: ' + post.description.toString().toLowerCase().includes(postSearchString));
-        console.log('search string: ' + postSearchString);
-        console.log('category includes: ' + getPostCategoryName(post.category).toString().toLowerCase().includes(postSearchString));
-        //console.log('content includes: ' + post.content.toString().toLowerCase().includes(postSearchString));
-
+        // Displays posts that contain the entered search string in their title, description or category
         if (post.title.toString().toLowerCase().includes(postSearchString) ||
             post.description.toString().toLowerCase().includes(postSearchString) ||
             getPostCategoryName(post.category).toString().toLowerCase().includes(postSearchString) ||
@@ -115,10 +109,6 @@ const setPostsToDisplay = () => {
     });
 
     sortPosts();
-
-    console.log('post search string ' + postSearchString);
-    console.log('posts to show ' + postsToShow);
-    console.log('posts to show length ' + postsToShow.length);
     updatePaginationVariables(postsToShow.length);
 }
 
@@ -155,8 +145,8 @@ const displayFeaturedPost = () => {
     featuredPostContainer.innerHTML = '';
 
     if (featuredPost.id == null || hideFeaturedPost == false) return;
-    console.log('display featured post: ' + featuredPost);
 
+    // Displays featured post
     var createdOnDate = new Date(featuredPost.createdOn);
     var year = createdOnDate.getFullYear();
     var month = months[createdOnDate.getMonth()].substring(0, 3);
@@ -292,13 +282,8 @@ const displayPosts = () => {
 // handles pagination and creates/designs the pagination nav accordingly
 const createPagination = () => {
     paginationNavContainer.innerHTML = '';
-    // do pagination only if greater than 10 posts
+    // Do pagination only if greater than 10 posts
     if (postsToShow.length > maxPostsPerPage) {
-
-        console.log('posts length: ' + postsToShow.length);
-        console.log('max posts: ' + maxPostsPerPage);
-        console.log('total page count: ' + totalPageCount);
-
         const hrElement = document.createElement('hr');
         hrElement.classList = "my-0";
 

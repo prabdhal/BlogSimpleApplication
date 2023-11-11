@@ -10,9 +10,9 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+      <!-- Footer-->
+      @await Component.InvokeAsync("Footer")
     </div>
-    <!-- Footer-->
-    @await Component.InvokeAsync("Footer")
 
 
     <partial name="_DashboardScripts" />

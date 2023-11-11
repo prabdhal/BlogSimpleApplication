@@ -30,16 +30,12 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 
 // displays reply form 
 const displayCreateReplyForm = (el) => {
-    console.log(el.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling);
     let replyForm = el.parentElement.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling;
 
     replyForm.style.display = 'flex';
 }
 
 const hideCreateReplyForm = (el) => {
-    console.log(el.parentElement.parentElement.parentElement);
-    console.log(el.parentElement.previousElementSibling);
-
     let replyForm = el.parentElement.parentElement.parentElement;
     let replyFormTextArea = el.parentElement.previousElementSibling;
 
@@ -54,12 +50,10 @@ const openCommentDropDownMenuContent = (el) => {
     } else {
         el.nextElementSibling.style.display = 'block';
     }
-    console.log('openCommentDropDownMenu');
 }
 
 //  displays the edit comment container
 const displayEditInputForComment = (el) => {
-    console.log(el.parentElement.parentElement.parentElement.parentElement.parentElement);
     let commentContainer = el.parentElement.parentElement.parentElement.parentElement.parentElement;
     let editCommentContainer = commentContainer.nextElementSibling;
     hideAllEditCommentInputs();
@@ -70,7 +64,6 @@ const displayEditInputForComment = (el) => {
 
 //  displays the edit replycontainer
 const displayEditInputForReply = (el) => {
-    console.log(el.parentElement.parentElement.parentElement.parentElement.parentElement);
     let replyContainer = el.parentElement.parentElement.parentElement.parentElement.parentElement;
     let editReplyContainer = replyContainer.nextElementSibling;
     hideAllEditCommentInputs();
@@ -127,9 +120,6 @@ const displayDeleteCommentModal = (commentId) => {
 
 // displays delete reply modal
 const displayDeleteReplyModal = (replyId) => {
-    console.log(replyId);
-    console.log(deleteReplyModal);
-    console.log(deleteReplyModal.style.display);
     deleteReplyModal.style.display = 'block';
     deleteReplyModalForm.action = `/Post/DeleteReply/${replyId}`;
 }
@@ -146,8 +136,6 @@ const hideDeleteReplyModal = () => {
 
 // displays comment section buttons 
 const displayCommentButtons = (el) => {
-    console.log(el.nextElementSibling)
-
     let commentFormBtns = el.nextElementSibling;
 
     commentFormBtns.style.display = 'flex';
@@ -155,8 +143,6 @@ const displayCommentButtons = (el) => {
 
 // hides comment section buttons 
 const hideCommentButtons = (el) => {
-    console.log(el.parentElement);
-
     let commentForm = el.parentElement;
     let commentFormTextArea = el.parentElement.previousElementSibling;
 
@@ -207,8 +193,6 @@ window.addEventListener('click', (e) => {
 // HELPER FUNCTIONS 
 // maps enum int to its name
 const getPostCategoryName = (value) => {
-
-  console.log(value);
     switch (value) {
         case 0:
             return 'Programming';

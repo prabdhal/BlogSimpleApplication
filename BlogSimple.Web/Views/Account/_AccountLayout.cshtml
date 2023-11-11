@@ -8,9 +8,9 @@
     @await Component.InvokeAsync("Navigation")
     <main class="container">
         @RenderBody()
+      <!-- Footer-->
+      @await Component.InvokeAsync("Footer")
     </main>
-    <!-- Footer-->
-    @await Component.InvokeAsync("Footer")
 
     
     <partial name="_DashboardScripts" />
