@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+<partial name="_DashboardHead" />
+
+<body class="sb-nav-fixed">
+    <!-- Responsive navbar-->
+    @await Component.InvokeAsync("AdminTopNav")
+
+    <div id="layoutSidenav">
+        <!-- Dashboard Side Nav-->
+        <div id="layoutSidenav_nav">
+            @await Component.InvokeAsync("DashboardSideNav")
+        </div>
+
+        <div id="layoutSidenav_content">
+            <main>
+                @RenderBody()
+            </main>
+            <!-- Footer-->
+            @await Component.InvokeAsync("Footer")
+        </div>
+    </div>
+
+    <div class="loader"></div>
+
+
+    <partial name="_DashboardScripts" />
+    @await RenderSectionAsync("Scripts", required: false)
+    
+    <script src="~/js/admin-side-navbar.js" asp-append-version="true"></script>
+    <script src="~/js/loader.js" asp-append-version="true"></script>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
