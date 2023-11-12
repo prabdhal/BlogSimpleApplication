@@ -122,16 +122,18 @@
                                         }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@Model.AccountUser.UserName Bio Image" />
+                                            <a href="/Post/PostDetails/@post.Id">
+                                                <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@Model.AccountUser.UserName Bio Image" />
+                                            </a>
                                             <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
                                             @*<div class="featured-post-card-body-details">
-                                            <span>
-                                            <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                            </span>
-                                            <span>
-                                            @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                            </span>
-                                            </div>*@
+                        <span>
+                        <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
+                        </span>
+                        <span>
+                        @post.CreatedOn.ToString("MMM/dd/yyyy")
+                        </span>
+                        </div>*@
                                         </div>
                                     }
                                 }
@@ -160,7 +162,9 @@
                                         }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <img class="author-profile-pic-widget" src="data:image/jpg;base64,@Convert.ToBase64String(author.ProfilePicture)" alt="@author.UserName Profile Picture" />
+                                            <a href="/Post/PostDetails/@author.Id">
+                                                <img class="author-profile-pic-widget" src="data:image/jpg;base64,@Convert.ToBase64String(author.ProfilePicture)" alt="@author.UserName Profile Picture" />
+                                            </a>
                                             <div class="post-widget-details">
                                                 <h5><a href="/Account/Author/@author.Id">@author.UserName</a></h5>
                                                 <p>@author.Heading</p>
@@ -192,7 +196,9 @@
                                         }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@Model.AccountUser.UserName Bio Image" />
+                                            <a href="/Post/PostDetails/@post.Id">
+                                                <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@Model.AccountUser.UserName Bio Image" />
+                                            </a>
                                             <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
                                         </div>
                                     }

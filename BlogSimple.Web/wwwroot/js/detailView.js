@@ -2,8 +2,6 @@
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
 const postCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 
-let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
-
 let dropdownContents = document.querySelectorAll('.dropdown-content');
 const commentTextarea = document.querySelector('.comment-textarea'); 
 const commentBtn = document.querySelector('#commentBtn'); 

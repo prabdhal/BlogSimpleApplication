@@ -5,13 +5,12 @@
 @model PostDetailsViewModel;
 @{
     ViewData["Title"] = "View " + Model.Post.Title;
-    Layout = "~/Views/Home/_HomeLayoutDetails.cshtml";
+    Layout = "~/Views/Post/_PostLayoutDetails.cshtml";
 }
 
 
 <!-- Page content-->
 <div class="mt-5">
-    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Post))'></div>
 
     <div class="row">
@@ -362,7 +361,10 @@
                                     }
                                     idx++;
                                     <div class="post-widget-body">
-                                        <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.CreatedBy.UserName Bio Image" />
+                                        
+                                        <a href="/Post/PostDetails/@post.Id">
+                                          <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.CreatedBy.UserName Bio Image" />
+                                        </a>
                                         <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
                                     </div>
                                 }
@@ -391,7 +393,9 @@
                                         }
                                         idx++;
                                         <div class="post-widget-body">
-                                            <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.Title Image" />
+                                            <a href="/Post/PostDetails/@post.Id">
+                                                <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.Title Image" />
+                                            </a>
                                             <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
                                             @*<div class="featured-post-card-body-details">
                                                 <span>

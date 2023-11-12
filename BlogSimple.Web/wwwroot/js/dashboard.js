@@ -1,22 +1,15 @@
-﻿// search bar and buttons refs
-const searchBarInput = document.querySelector('#searchBarInput');
-const searchBarBtn = document.querySelector('#searchBarBtn');
-
-// post menu refs
+﻿// post menu refs
 let dropdownContent = document.querySelectorAll('.dropdown-content');
 let menuIcons = document.querySelectorAll('.menu-icon');
 
 // post and category containers refs
 const postsDisplayContainer = document.querySelector('#blogsDisplayContainer');
-const postCategoryListContainer = document.querySelector('#blogCategoryListContainer');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
 const categoryBadgeContainer = document.querySelector('#categoryBadgeContainer');
-const createPostButton = document.querySelector('#createPostButton');
 
 // data 
 let postData = document.querySelector('div.blogData');
 let postsData = document.querySelectorAll('div.blogsData');
-//let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
 // pagination values 
 const maxPostsPerPage = 10;
@@ -32,7 +25,6 @@ let createPostPath = '/Post/CreatePost';
 let editPostPath = '/Post/EditPost';
 let deletePostPath = '/Post/DeletePost';
 
-
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
@@ -40,57 +32,9 @@ const getPostImagePath = (img) => {
     return `data:image/jpg;base64,${img}`;
 }
 
-
-// create category badge on detail view dashboard
-const createCategoryBadge = () => {
-    let post = JSON.parse(postData.getAttribute("value"));
-
-    const badgeElement = document.createElement('a');
-    badgeElement.innerHTML = `<a class="badge text-decoration-none link-light cs">${post.category}</a>`;
-
-    categoryBadgeContainer.append(badgeElement);
-}
-
 // opens modal to delete given post
 const openDeletePostModal = (id) => {
     alert(`Are you sure you want to delete post with ${id}`);
-}
-
-
-// sets postCategoryIdx
-const setPostCategory = (selectedCategory) => {
-    // toggle post category on/off upon clicking same category
-    if (selectedCategory == getPostCategoryName(postCategoryIdx)) {
-        postCategoryIdx = 100;
-    } else {
-        postCategoryIdx = getPostCategoryIdx(selectedCategory);
-    }
-
-    // Category click
-    setPostSearchString("");
-    searchBarInput.value = "";
-    setPostsToDisplay();
-    displayPosts();
-}
-
-// lists all post cateogries on side widget
-const setUpPostCategoryList = () => {
-    postCategoryData.forEach(cat => {
-        var catName = getPostCategoryName(cat);
-
-        const listItemElement = document.createElement('li');
-        listItemElement.innerHTML = `<a href="#" onclick="return false;">${catName}</a>`;
-        listItemElement.classList = 'list-select';
-        listItemElement.addEventListener('click', () => setPostCategory(catName));
-
-        postCategoryListContainer.append(listItemElement);
-    });
-}
-
-// sets postSearchString 
-const setPostSearchString = (searchString) => {
-    postSearchString = searchString;
-    currentPageNumber = 1;
 }
 
 // sets postsToShow 
@@ -294,14 +238,6 @@ const createPagination = () => {
     }
 }
 
-// search bar event listener 
-searchBarInput.addEventListener('input', (e) => {
-    setPostSearchString(e.target.value);
-    setPostsToDisplay();
-    displayPosts();
-});
-
-
 // opens the comment drop down menu
 const openCommentDropDownMenu = (element) => {
     if (element.nextElementSibling.classList.contains('block')) {
@@ -326,7 +262,16 @@ window.addEventListener('click', (e) => {
     }
 })
 
-// HELPER FUNCTIONS 
+// create category badge on detail view dashboard
+const createCategoryBadge = () => {
+  let post = JSON.parse(postData.getAttribute("value"));
+
+  const badgeElement = document.createElement('a');
+  badgeElement.innerHTML = `<a class="badge text-decoration-none link-light cs">${post.category}</a>`;
+
+  categoryBadgeContainer.append(badgeElement);
+}
+
 // maps enum int to its name
 const getPostCategoryName = (value) => {
     switch (value) {
@@ -388,8 +333,5 @@ const getPostCategoryClass = (value) => {
 }
 
 
-
-setPostCategory("All");
-setPostSearchString("")
 setPostsToDisplay();
 displayPosts();
