@@ -117,7 +117,7 @@
                                         <button class="create-comment-btn" type="button" onclick="hideCommentButtons(this)">Cancel</button>
                                         if (SignInManager.IsSignedIn(User))
                                         {
-                                            <button class="create-comment-btn" id="commentBtn" type="submit">Comment</button>
+                                            <button id="createCommentBtn" class="create-comment-btn" id="commentBtn" type="submit">Comment</button>
                                         }
                                         else
                                         {
@@ -153,7 +153,7 @@
                                                             <form class="reply-comment-btns-container" asp-controller="Post" asp-action="LikeComment" asp-route-id="@comment.Id">
                                                                 <input asp-for="Post.Id" readonly hidden />
                                                                 <input asp-for="Comment.Id" readonly hidden />
-                                                                <button type="submit" class="svgButton">
+                                                                <button id="likeBtn" type="submit" class="svgButton">
                                                                     @{
                                                                         bool userLiked = false;
                                                                         if (Model.AccountUser != null)
@@ -223,7 +223,7 @@
                                                         <span asp-validation-for="Comment.Content" class="text-danger"></span>
                                                         <div class="form-group create-reply-buttons">
                                                             <button class="create-comment-btn" onclick="hideAllEditCommentInputs()" type="button">Cancel</button>
-                                                            <input class="create-comment-btn" value="Comment" type="submit" />
+                                                            <input id="editCommentBtn" class="create-comment-btn" value="Comment" type="submit" />
                                                         </div>
                                                     </form>
                                                 </div>
@@ -248,7 +248,7 @@
                                                                 <button class="create-comment-btn" type="button" onclick="hideCreateReplyForm(this)">Cancel</button>
                                                                 if (SignInManager.IsSignedIn(User))
                                                                 {
-                                                                    <button class="create-comment-btn" type="submit">Reply</button>
+                                                                    <button id="createReplyBtn" class="create-comment-btn" type="submit">Reply</button>
                                                                 }
                                                                 else
                                                                 {
@@ -309,7 +309,7 @@
                                                                                 <span asp-validation-for="CommentReply.Content" class="text-danger"></span>
                                                                                 <div class="form-group create-reply-buttons">
                                                                                     <button class="create-comment-btn" onclick="hideAllEditReplyInputs()" type="button">Cancel</button>
-                                                                                    <input class="create-comment-btn" value="Reply" type="submit" />
+                                                                                    <input id="editReplyBtn" class="create-comment-btn" value="Reply" type="submit" />
                                                                                 </div>
                                                                             </form>
                                                                         </div>
@@ -397,14 +397,6 @@
                                                 <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.Title Image" />
                                             </a>
                                             <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                            @*<div class="featured-post-card-body-details">
-                                                <span>
-                                                    <a href="/Account/Author/@post.CreatedBy.Id">@post.CreatedBy.UserName</a>
-                                                </span>
-                                                <span>
-                                                    @post.CreatedOn.ToString("MMM/dd/yyyy")
-                                                </span>
-                                            </div>*@
                                         </div>
                                     }
                                 }
@@ -429,7 +421,7 @@
 
             <div class="modal-buttons">
                 <button class="hero-btn" type="button" onclick="hideDeleteCommentModal()">Cancel</button>
-                <button class="hero-btn" type="submit">Delete</button>
+                <button id="commentDeleteBtn" class="hero-btn" type="submit">Delete</button>
             </div>
         </div>
     </form>
@@ -445,8 +437,81 @@
 
             <div class="modal-buttons">
                 <button class="hero-btn" type="button" onclick="hideDeleteReplyModal()">Cancel</button>
-                <button class="hero-btn" type="submit">Delete</button>
+                <button id="replyDeleteBtn" class="hero-btn" type="submit">Delete</button>
             </div>
         </div>
     </form>
 </div>
+
+
+<script>
+    const replyDeleteBtn = document.querySelector('#replyDeleteBtn');
+
+    replyDeleteBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            replyDeleteBtn.disabled = true;
+            replyDeleteBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + replyDeleteBtn.disabled)
+    });
+
+    
+    const commentDeleteBtn = document.querySelector('#commentDeleteBtn');
+
+    commentDeleteBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            commentDeleteBtn.disabled = true;
+            commentDeleteBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + commentDeleteBtn.disabled)
+    });
+
+    
+    const createCommentBtn = document.querySelector('#createCommentBtn');
+
+    createCommentBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            createCommentBtn.disabled = true;
+            createCommentBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + createCommentBtn.disabled)
+    });
+
+    
+    const createReplyBtn = document.querySelector('#createReplyBtn');
+
+    createReplyBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            createReplyBtn.disabled = true;
+            createReplyBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+    });
+
+    
+    const editReplyBtn = document.querySelector('#editReplyBtn');
+
+    editReplyBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            editReplyBtn.disabled = true;
+            editReplyBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + editReplyBtn.disabled)
+    });
+
+    
+    const editCommentBtn = document.querySelector('#editCommentBtn');
+
+    editCommentBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            editCommentBtn.disabled = true;
+            editCommentBtn.value = "Processing...";
+            console.log('delay: 50ms');
+        }, 50);
+        console.log('disabled: ' + editCommentBtn.disabled)
+    });
+</script>
