@@ -19,22 +19,16 @@
             <main>
                 @RenderBody()
             </main>
-            <!-- Footer-->
-            @await Component.InvokeAsync("Footer")
         </div>
     </div>
 
     <div class="loader"></div>
+    <!-- Footer-->
+    @await Component.InvokeAsync("Footer")
 
 
     <partial name="_DashboardScripts" />
-    @await RenderSectionAsync("Scripts", required: false)
-
-    <script src="~/js/scripts.js" asp-append-version="true"></script>
     <script src="~/js/admin-side-navbar.js" asp-append-version="true"></script>
     <script src="~/js/loader.js" asp-append-version="true"></script>
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.nemyE/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
 </body>
 </html>
