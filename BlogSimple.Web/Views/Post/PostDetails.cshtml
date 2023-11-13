@@ -26,6 +26,14 @@
                         Posted on @Model.Post.CreatedOn.ToString("MMM d, yyyy") by <a style="text-decoration: none;" href="/Account/Author/@Model.Post.CreatedBy.Id">@Model.Post.CreatedBy</a>
                     </div>
                     <div class="text-muted fst-italic mb-2">Last Updated on @Model.Post.UpdatedOn.ToString("MMM d, yyyy")</div>
+                    <div class="text-muted fst-italic mb-2">
+                        @{
+                            int avgWordsPerMin = 175;
+                            int postWordCount = Model.Post.WordCount;
+                            int result = postWordCount / avgWordsPerMin;
+                        }
+                        @result min read
+                        </div>
                     <!-- Post categories-->
                     <div style="display: flex;justify-content:space-between;">
                         <div id="categoryBadgeContainer"></div>

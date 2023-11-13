@@ -2,11 +2,13 @@
 using BlogSimple.Model.Services.Interfaces;
 using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
+using BlogSimple.Web.Services;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace BlogSimple.Web.BusinessManager;
 
@@ -192,6 +194,7 @@ public class PostBusinessManager : IPostBusinessManager
         post.CreatedById = user.Id;
         post.CreatedOn = DateTime.Now;
         post.UpdatedOn = DateTime.Now;
+        post.WordCount = UtilityMethods.GetWordCount(post.Content);
 
         post = await _postService.Create(post);
         return post;
@@ -307,6 +310,7 @@ public class PostBusinessManager : IPostBusinessManager
         post.Content = editPostViewModel.Post.Content;
         post.IsPublished = editPostViewModel.Post.IsPublished;
         post.UpdatedOn = DateTime.Now;
+        post.WordCount = UtilityMethods.GetWordCount(post.Content);
 
         if (editPostViewModel.HeaderImage == null)
         {
