@@ -30,7 +30,7 @@
                         <span asp-validation-for="@Model.UserRole.RoleName" class="text-danger"></span>
                     </div>
                     <div>
-                        <input type="submit" value="Create Role" class="btn btn-primary btn-block w-100 p-2" />
+                        <input id="createRoleBtn" type="submit" value="Create Role" class="btn btn-primary btn-block w-100 p-2" />
                     </div>
                 </form>
             </div>
@@ -65,7 +65,7 @@
                                     <td>@role.Id</td>
                                     <td>@role.RoleName</td>
                                     <td>
-                                        <form asp-action="DeleteRole" asp-route-id="@role.Id">
+                                        <form id="deleteRoleBtn" asp-action="DeleteRole" asp-route-id="@role.Id">
                                             <input class="btn btn-danger" type="submit" value="Delete Role">
                                         </form>
                                     </td>
@@ -127,5 +127,25 @@
             <br />
         </div>
     </div>
-
 </div>
+
+<script>
+    const createRoleBtn = document.querySelector('#createRoleBtn');
+
+    createRoleBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            createRoleBtn.disabled = true;
+            createRoleBtn.value = "Loading...";
+        }, 50);
+    });
+
+
+    const deleteRoleBtn = document.querySelector('#deleteRoleBtn');
+
+    deleteRoleBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            deleteRoleBtn.disabled = true;
+            deleteRoleBtn.value = "Loading...";
+        }, 50);
+    });
+</script>
