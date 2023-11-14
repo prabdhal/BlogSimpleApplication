@@ -71,6 +71,20 @@
                     <th scope="row">Total Comments</th>
                     <td>@Model.TotalCommentsAndRepliesCount</td>
                 </tr>
+                <tr>
+                    <th scope="row">Total Words Posted</th>
+                    <td>@Model.TotalWordsCount</td>
+                </tr>
+                <tr>
+                    <th scope="row">Total Minutes of Read</th>
+                    <td>
+                        @{
+                            int avgWordsPerMin = 175;
+                            int result = Model.TotalWordsCount / avgWordsPerMin;
+                        }
+                        @result mins
+                    </td>
+                </tr>
             </table>
             <br />
             <br />

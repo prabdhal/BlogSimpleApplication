@@ -134,20 +134,27 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         user.ProfilePicture = GetImage(Convert.ToBase64String(user.ProfilePicture));
-        var publishedPost = await _postService.GetAll(user);
-        var publishedPostCount = publishedPost.Count();
+        var publishedPosts = await _postService.GetAll(user);
+        var publishedPostsCount = publishedPosts.Count();
+        int totalWordsCount = 0;
 
         var comments = await _commentService.GetAll(user);
         var replies = await _replyService.GetAllByUser(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
         var favoritedPostsCount = user.FavoritedPosts.Count();
 
+        foreach (Post post in publishedPosts)
+        {
+            totalWordsCount += post.WordCount;
+        }
+
         return new MyProfileViewModel
         {
             AccountUser = user,
-            PublishedPostsCount = publishedPostCount,
+            PublishedPostsCount = publishedPostsCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoritePostsCount = favoritedPostsCount
+            FavoritePostsCount = favoritedPostsCount,
+            TotalWordsCount = totalWordsCount
         };
     }
 
