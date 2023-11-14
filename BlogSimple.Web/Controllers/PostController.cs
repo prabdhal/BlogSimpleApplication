@@ -1,4 +1,5 @@
-﻿using BlogSimple.Model.ViewModels.AccountViewModels;
+﻿using BlogSimple.Model.Models;
+using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -91,9 +92,8 @@ public class PostController : Controller
 
         await _postBusinessManager.CreatePost(createPostViewModel, User);
         return RedirectToAction("PostDetails", new { createPostViewModel.Post.Id });
-        
-    }
 
+    }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> EditPost(string id)

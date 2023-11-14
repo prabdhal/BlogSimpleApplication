@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SkiaSharp;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 
 namespace BlogSimple.Web.BusinessManager;
 
@@ -19,11 +18,17 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly IUserService _userService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
+    private readonly IAchievementsBusinessManager _bus;
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
     private readonly int StandardImageWidth = 800;
     private readonly int StandardImageHeight = 450;
+
+    // Achievement Events
+    public delegate void FirstPostCreatedEventHandler(User user);
+    public event FirstPostCreatedEventHandler OnFirstPostCreatedEvent;
+
 
     public PostBusinessManager(
         UserManager<User> userManager,
@@ -31,6 +36,8 @@ public class PostBusinessManager : IPostBusinessManager
         IUserService userService,
         ICommentService commentService,
         ICommentReplyService commentReplyService
+        //IAchievementsBusinessManager bus
+        //IAchievementsBusinessManager bus
         )
     {
         _userManager = userManager;
@@ -38,6 +45,7 @@ public class PostBusinessManager : IPostBusinessManager
         _userService = userService;
         _commentService = commentService;
         _commentReplyService = commentReplyService;
+        //_bus = bus;
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
@@ -197,6 +205,10 @@ public class PostBusinessManager : IPostBusinessManager
         post.WordCount = UtilityMethods.GetWordCount(post.Content);
 
         post = await _postService.Create(post);
+
+        // Post Created Successfully
+        OnFirstPostCreatedEvent?.Invoke(user);
+
         return post;
     }
 

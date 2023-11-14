@@ -34,12 +34,14 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentReplyService, CommentReplyService>();
+builder.Services.AddScoped<IAchievementsService, AchievementsService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IPostBusinessManager, PostBusinessManager>();
 builder.Services.AddScoped<IAccountBusinessManager, AccountBusinessManager>();
 builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
+builder.Services.AddScoped<IAchievementsBusinessManager, AchievementsBusinessManager>();
 
 builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
 

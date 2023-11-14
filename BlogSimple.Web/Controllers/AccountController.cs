@@ -124,6 +124,13 @@ namespace BlogSimple.Web.Controllers
         }
 
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
+        public async Task<ActionResult> MyAchievements()
+        {
+            var myAchievements = await _accountBusinessManager.GetMyAchievementsViewModel(User);
+            return View(myAchievements);
+        }
+
+        [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
         public async Task<ActionResult> EmailVerification(EmailConfirmViewModel model)
         {
             var emailConfirmModel = await _accountBusinessManager.GetEmailConfirmViewModel(User, model);

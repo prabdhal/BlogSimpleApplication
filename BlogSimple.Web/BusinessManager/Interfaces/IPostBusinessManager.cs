@@ -2,11 +2,16 @@
 using BlogSimple.Model.ViewModels.PostViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static BlogSimple.Web.BusinessManager.PostBusinessManager;
 
 namespace BlogSimple.Web.BusinessManager.Interfaces;
 
 public interface IPostBusinessManager
 {
+    // Events 
+    event FirstPostCreatedEventHandler OnFirstPostCreatedEvent;
+    
+    //Methods
     Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<FavoritePostsViewModel> GetFavoritePostsViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<CreatePostViewModel> GetCreatePostViewModel(ClaimsPrincipal claimsPrincipal);

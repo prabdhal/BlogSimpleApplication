@@ -5,8 +5,6 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using SkiaSharp;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Security.Claims;
 
 namespace BlogSimple.Web.BusinessManager;
@@ -29,6 +27,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly int StandardProfileImageWidth = 150;
     private readonly int StandardProfileImageHeight = 150;
 
+
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
@@ -47,6 +46,9 @@ public class AccountBusinessManager : IAccountBusinessManager
         _emailService = emailService;
         _configuration = configuration;
     }
+
+    #region Achievement Event Handlers
+    #endregion
 
     public async Task<User> GetUserByEmailAsync(string email)
     {
@@ -75,6 +77,10 @@ public class AccountBusinessManager : IAccountBusinessManager
             GitHubLink = null,
             LinkedInLink = null
         };
+
+        // Initialize Achievements
+        Achievements achievements = new Achievements();
+        newUser.AchievementId = achievements.Id;
 
         IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);
 
@@ -155,6 +161,33 @@ public class AccountBusinessManager : IAccountBusinessManager
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
             FavoritePostsCount = favoritedPostsCount,
             TotalWordsCount = totalWordsCount
+        };
+    }
+
+    public async Task<MyAchievementsViewModel> GetMyAchievementsViewModel(ClaimsPrincipal claimsPrincipal)
+    {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
+
+        Achievements achievements = new Achievements();
+        var publishedPosts = await _postService.GetAll(user);
+        var publishedPostsCount = publishedPosts.Count();
+        int totalWordsCount = 0;
+
+        var comments = await _commentService.GetAll(user);
+        var replies = await _replyService.GetAllByUser(user);
+        var totalCommentsCount = comments.Count();
+        var totalRepliesCount = replies.Count();
+        var favoritedPostsCount = user.FavoritedPosts.Count();
+
+        foreach (Post post in publishedPosts)
+        {
+            totalWordsCount += post.WordCount;
+        }
+
+        return new MyAchievementsViewModel
+        {
+            AccountUser = user,
+            Achievements = achievements,
         };
     }
 
