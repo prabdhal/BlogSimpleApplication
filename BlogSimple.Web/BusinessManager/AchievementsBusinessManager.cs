@@ -11,8 +11,7 @@ public class AchievementsBusinessManager : IAchievementsBusinessManager
 
 
     public AchievementsBusinessManager(
-        IAchievementsService achivementsService,
-        IPostBusinessManager postBusinessManager
+        IAchievementsService achivementsService
         )
     {
         _achievementsService = achivementsService;
@@ -27,5 +26,10 @@ public class AchievementsBusinessManager : IAchievementsBusinessManager
         Achievements achievements = await _achievementsService.Get(user.AchievementId);
         achievements.CreatedPostFirstTime = true;
         await _achievementsService.Update(achievements.Id, achievements);
+    }
+
+    public async Task<Achievements> CreateAchievement()
+    {
+        return await _achievementsService.Create();
     }
 }

@@ -8,7 +8,7 @@ public class Achievements
 {
     [BsonId]
     [BsonRepresentation(BsonType.ObjectId)]
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     [DisplayName("First Post Created")]
     public bool CreatedPostFirstTime { get; set; } = false;

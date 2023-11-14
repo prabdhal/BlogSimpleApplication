@@ -10,27 +10,22 @@ public class AchievementsService : IAchievementsService
     private readonly IMongoCollection<Achievements> _achievements;
 
     public AchievementsService(
-        IPostSimpleDatabaseSettings blogSettings,
+        IPostSimpleDatabaseSettings postSettings,
         IMongoClient mongoClient
         )
     {
-        var db = mongoClient.GetDatabase(blogSettings.DatabaseName);
-        _achievements = db.GetCollection<Achievements>(blogSettings.AchievementsCollectionName);
+        var db = mongoClient.GetDatabase(postSettings.DatabaseName);
+        _achievements = db.GetCollection<Achievements>(postSettings.AchievementsCollectionName);
     }
 
-    public async Task<Achievements> Create(Achievements achievements)
+    public async Task<Achievements> Create()
     {
+        Achievements achievements = new Achievements();
         await _achievements.InsertOneAsync(achievements);
         return achievements;
     }
 
     public async Task<Achievements> Get(string id)
-    {
-        var achievements = await _achievements.Find(u => u.Id == Guid.Parse(id)).FirstOrDefaultAsync();
-        return achievements;
-    }
-
-    public async Task<Achievements> Get(Guid id)
     {
         var achievements = await _achievements.Find(u => u.Id == id).FirstOrDefaultAsync();
         return achievements;
@@ -41,13 +36,13 @@ public class AchievementsService : IAchievementsService
         return await _achievements.Find(_ => true).ToListAsync();
     }
 
-    public async Task<Achievements> Update(Guid id, Achievements achievements)
+    public async Task<Achievements> Update(string id, Achievements achievements)
     {
         await _achievements.ReplaceOneAsync(a => a.Id == id, achievements);
         return achievements;
     }
 
-    public async void Remove(Guid id)
+    public async void Remove(string id)
     {
         await _achievements.DeleteOneAsync(u => u.Id == id);
     }

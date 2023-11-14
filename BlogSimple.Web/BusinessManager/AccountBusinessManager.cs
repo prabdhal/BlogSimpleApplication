@@ -18,6 +18,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly ICommentReplyService _replyService;
     private readonly IEmailService _emailService;
     private readonly IConfiguration _configuration;
+    private readonly IAchievementsBusinessManager _achievementsBusinessManager;
 
     private readonly string AdminUserRoleName = "Admin";
     private readonly string VerifiedUserRoleName = "VerifiedUser";
@@ -35,7 +36,8 @@ public class AccountBusinessManager : IAccountBusinessManager
         ICommentService commentService,
         ICommentReplyService replyService,
         IEmailService emailService,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IAchievementsBusinessManager achievementsBusinessManager
         )
     {
         _userManager = userManager;
@@ -45,6 +47,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         _replyService = replyService;
         _emailService = emailService;
         _configuration = configuration;
+        _achievementsBusinessManager = achievementsBusinessManager;
     }
 
     #region Achievement Event Handlers
@@ -79,7 +82,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
 
         // Initialize Achievements
-        Achievements achievements = new Achievements();
+        Achievements achievements = await _achievementsBusinessManager.CreateAchievement();
         newUser.AchievementId = achievements.Id;
 
         IdentityResult result = await _userManager.CreateAsync(newUser, user.Password);

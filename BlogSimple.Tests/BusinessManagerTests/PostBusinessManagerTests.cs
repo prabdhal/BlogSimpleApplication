@@ -35,7 +35,7 @@ public class PostBusinessManagerTests
         webHostEnvironment = A.Fake<IWebHostEnvironment>();
 
         // SUT
-        _postBusinessManager = new PostBusinessManager(_userManager, _postService, _userService, _commentService, _commentReplyService, webHostEnvironment);
+        //_postBusinessManager = new PostBusinessManager(_userManager, _postService, _userService, _commentService, _commentReplyService, webHostEnvironment);
     }
 
     //[Fact]

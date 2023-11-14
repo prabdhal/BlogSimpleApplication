@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogSimple.Web.Controllers
 {
+    [Authorize(Roles = "VerifiedUser,Admin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<UserRole> _roleManager;
@@ -29,7 +30,6 @@ namespace BlogSimple.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "VerifiedUser,Admin")]
         public async Task<IActionResult> CreateRole(MyAdminViewModel model)
         {
             if (ModelState.IsValid)
@@ -44,7 +44,6 @@ namespace BlogSimple.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "VerifiedUser,Admin")]
         public IActionResult DeleteRole(string id)
         {
             _adminBusinessManager.DeleteRole(id);

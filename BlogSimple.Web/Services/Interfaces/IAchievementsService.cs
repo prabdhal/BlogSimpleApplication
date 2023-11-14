@@ -4,10 +4,9 @@ namespace BlogSimple.Web.Services.Interfaces;
 
 public interface IAchievementsService
 {
-    Task<Achievements> Create(Achievements achievements);
+    Task<Achievements> Create();
     Task<Achievements> Get(string id);
-    Task<Achievements> Get(Guid id);
     Task<List<Achievements>> GetAll();
-    Task<Achievements> Update(Guid id, Achievements achievements);
-    void Remove(Guid id);
+    Task<Achievements> Update(string id, Achievements achievements);
+    void Remove(string id);
 }
