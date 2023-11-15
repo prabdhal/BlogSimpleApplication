@@ -24,41 +24,40 @@
     padding: 10px;
 }
 
-    .account-header h3 {
-    }
+
+.account-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.account-input-row-container {
+    width: 98%;
+}
 
 .account-body {
     padding: 10px;
 }
 
-.account-footer {
+.account-footer a {
+    text-decoration: none;
 }
 
-    .account-footer a {
-        text-decoration: none;
-    }
-
-    .account-footer input {
-        width: 100px;
-        padding: 8px 16px;
-        border-radius: 5px;
-        background-color: #BCA37F;
-        border: none;
-        transition: all 50ms ease-in-out;
-    }
-
-
-        .account-footer input:hover {
-        }
-
+.account-footer input {
+    width: 100px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #BCA37F;
+    border: none;
+    transition: all 50ms ease-in-out;
+}
 
 .account-btn {
     color: white;
 }
 
-    .account-btn:hover {
-        color: #FFF2D8;
-    }
+.account-btn:hover {
+    color: #FFF2D8;
+}
 
 .dashboard-header-text {
     color: white;
@@ -75,6 +74,18 @@
     gap: 10px;
 }
 
-    .dash-nav-link:hover {
-        color: #FFF2D8;
+.dash-nav-link:hover {
+    color: #FFF2D8;
+}
+
+@media only screen and (max-width: 500px) {
+    .account-row {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
     }
+    .account-input-row-container {
+        width: 100%;
+    }
+}
+
