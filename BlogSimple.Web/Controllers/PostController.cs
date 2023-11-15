@@ -1,5 +1,4 @@
-﻿using BlogSimple.Model.Models;
-using BlogSimple.Model.ViewModels.AccountViewModels;
+﻿using BlogSimple.Model.ViewModels.AccountViewModels;
 using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using Microsoft.AspNetCore.Authorization;

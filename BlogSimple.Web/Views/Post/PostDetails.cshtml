@@ -11,6 +11,18 @@
 
 <!-- Page content-->
 <div class="mt-5">
+    
+    <!-- Achievement Notification Banner-->
+    @if (Model.AchievementsNotificationModel.Name != null)
+    {
+        <div class="alert alert-primary" role="alert">
+            <h4 class="alert-heading">Achievement Earned!</h4>
+            <h4 class="alert-heading">@Model.AchievementsNotificationModel.Name</h4>
+            <p>@Model.AchievementsNotificationModel.Description</p>
+        </div>
+    }
+
+
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Post))'></div>
 
     <div class="row">

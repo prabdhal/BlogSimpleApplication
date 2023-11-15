@@ -13,4 +13,5 @@ public class PostDetailsViewModel
     public List<CommentReply> CommentReplies { get; set; } = new List<CommentReply>();
     public User AccountUser { get; set; }
     public int CommentCount { get; set; }
+    public AchievementsNotificationModel AchievementsNotificationModel { get; set; }
 }

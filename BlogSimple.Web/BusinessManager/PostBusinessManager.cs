@@ -18,6 +18,7 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly IUserService _userService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
+    private readonly IAchievementsService _achievementService;
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
@@ -35,7 +36,8 @@ public class PostBusinessManager : IPostBusinessManager
         IUserService userService,
         ICommentService commentService,
         ICommentReplyService commentReplyService,
-        IAchievementsBusinessManager achievementsBusinessManager
+        IAchievementsBusinessManager achievementsBusinessManager,
+        IAchievementsService achievementService
         )
     {
         _userManager = userManager;
@@ -43,6 +45,7 @@ public class PostBusinessManager : IPostBusinessManager
         _userService = userService;
         _commentService = commentService;
         _commentReplyService = commentReplyService;
+        _achievementService = achievementService; 
         OnFirstPostCreatedEvent += achievementsBusinessManager.FirstPostCreated; 
     }
 
@@ -116,11 +119,27 @@ public class PostBusinessManager : IPostBusinessManager
 
     public async Task<PostDetailsViewModel> GetPostDetailsViewModel(string id, ClaimsPrincipal claimsPrincipal)
     {
+        var user = await _userManager.GetUserAsync(claimsPrincipal);
         Post post = await _postService.Get(id);
         post.HeaderImage = GetImage(Convert.ToBase64String(post.HeaderImage));
         List<string> postCats = new List<string>();
         var posts = await _postService.GetPublishedOnly("");
         var comments = await _commentService.GetAllByPost(id);
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+
+        AchievementsNotificationModel achievementNotification = new AchievementsNotificationModel();
+
+        if (achievements.CreatedPostFirstTimeActive)
+        {
+            achievements.CreatedPostFirstTimeActive = false;
+
+            achievementNotification.Name = achievements.CreatedPostFirstTimeName;
+            achievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
+            achievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
+
+            await _achievementService.Update(achievements.Id, achievements);
+        }        
+
         foreach (Comment c in comments)
         {
             c.CreatedBy = await _userService.Get(c.CreatedById);
@@ -130,7 +149,6 @@ public class PostBusinessManager : IPostBusinessManager
         {
             r.CreatedBy = await _userService.Get(r.CreatedById);
         }
-        var user = await _userManager.GetUserAsync(claimsPrincipal);
 
         int commentCount = comments.Count() + replies.Count();
 
@@ -148,6 +166,8 @@ public class PostBusinessManager : IPostBusinessManager
             CommentReplies = replies,
             AccountUser = user,
             CommentCount = commentCount,
+            AchievementsNotificationModel = achievementNotification
+
         };
     }
 
@@ -205,7 +225,11 @@ public class PostBusinessManager : IPostBusinessManager
         post = await _postService.Create(post);
 
         // Post Created Successfully
-        OnFirstPostCreatedEvent?.Invoke(user);
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        if (achievements.CreatedPostFirstTime == false)
+        {
+            OnFirstPostCreatedEvent?.Invoke(user);
+        }
 
         return post;
     }

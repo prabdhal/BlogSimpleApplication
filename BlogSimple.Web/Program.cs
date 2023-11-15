@@ -27,7 +27,7 @@ builder.Services.AddSingleton<IPostSimpleDatabaseSettings>(e =>
     e.GetRequiredService<IOptions<BlogSimpleDatabaseSettings>>().Value);
 
 builder.Services.AddSingleton<IMongoClient>(e =>
-    new MongoClient(builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString")));
+    new MongoClient(builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:TestConnectionString")));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
@@ -47,7 +47,7 @@ builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SM
 
 builder.Services.AddIdentity<User, UserRole>()
     .AddMongoDbStores<User, UserRole, Guid>(
-    builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString"),
+    builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:TestConnectionString"),
     builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:DatabaseName"))
     .AddDefaultTokenProviders();
 
