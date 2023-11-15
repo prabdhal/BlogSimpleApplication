@@ -149,7 +149,7 @@ public class PostBusinessManager : IPostBusinessManager
             await _achievementService.Update(achievements.Id, achievements);
             achievementNotificationsList.Add(createdPostFirstTimeNameAchievementNotification);
         }
-        if (achievements.PublishedPostFirstTime)
+        if (achievements.PublishedPostFirstTimeActive)
         {
             achievements.PublishedPostFirstTimeActive = false;
 
@@ -160,7 +160,7 @@ public class PostBusinessManager : IPostBusinessManager
             await _achievementService.Update(achievements.Id, achievements);
             achievementNotificationsList.Add(publishedPostFirstTimeAchievementNotification);
         }
-        if (achievements.EditPostFirstTime)
+        if (achievements.EditPostFirstTimeActive)
         {
             achievements.EditPostFirstTimeActive = false;
 
