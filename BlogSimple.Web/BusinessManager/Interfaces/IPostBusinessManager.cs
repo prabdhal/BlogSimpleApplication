@@ -9,7 +9,9 @@ namespace BlogSimple.Web.BusinessManager.Interfaces;
 public interface IPostBusinessManager
 {
     // Events 
-    event FirstPostCreatedEventHandler OnFirstPostCreatedEvent;
+    event PostCreatedEventHandler OnFirstPostCreatedEvent;
+    event PostPublishedEventHandler OnFirstPostPublishedEvent;
+    event PostEditedEventHandler OnFirstPostEditedEvent;
 
     //Methods
     Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal);

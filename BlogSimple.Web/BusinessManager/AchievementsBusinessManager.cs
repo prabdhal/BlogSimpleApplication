@@ -20,16 +20,29 @@ public class AchievementsBusinessManager : IAchievementsBusinessManager
         //postBusinessManager.OnFirstPostCreatedEvent += FirstPostCreated;
     }
 
+    public async Task<Achievements> CreateAchievement()
+    {
+        return await _achievementsService.Create();
+    }
+
     public async void FirstPostCreated(User user)
     {
-        // Fetch Users Achievement Model
         Achievements achievements = await _achievementsService.Get(user.AchievementId);
         achievements.CreatedPostFirstTime = true;
         await _achievementsService.Update(achievements.Id, achievements);
     }
 
-    public async Task<Achievements> CreateAchievement()
+    public async void FirstPostPublished(User user)
     {
-        return await _achievementsService.Create();
+        Achievements achievements = await _achievementsService.Get(user.AchievementId);
+        achievements.PublishedPostFirstTime = true;
+        await _achievementsService.Update(achievements.Id, achievements);
+    }
+
+    public async void FirstPostEdited(User user)
+    {
+        Achievements achievements = await _achievementsService.Get(user.AchievementId);
+        achievements.EditPostFirstTime = true;
+        await _achievementsService.Update(achievements.Id, achievements);
     }
 }

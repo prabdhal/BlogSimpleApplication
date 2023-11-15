@@ -26,8 +26,12 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly int StandardImageHeight = 450;
 
     // Achievement Events
-    public delegate void FirstPostCreatedEventHandler(User user);
-    public event FirstPostCreatedEventHandler OnFirstPostCreatedEvent;
+    public delegate void PostCreatedEventHandler(User user);
+    public event PostCreatedEventHandler OnFirstPostCreatedEvent;
+    public delegate void PostPublishedEventHandler(User user);
+    public event PostPublishedEventHandler OnFirstPostPublishedEvent;
+    public delegate void PostEditedEventHandler(User user);
+    public event PostEditedEventHandler OnFirstPostEditedEvent;
 
 
     public PostBusinessManager(
@@ -47,6 +51,8 @@ public class PostBusinessManager : IPostBusinessManager
         _commentReplyService = commentReplyService;
         _achievementService = achievementService; 
         OnFirstPostCreatedEvent += achievementsBusinessManager.FirstPostCreated; 
+        OnFirstPostPublishedEvent += achievementsBusinessManager.FirstPostPublished; 
+        OnFirstPostEditedEvent += achievementsBusinessManager.FirstPostEdited; 
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
@@ -127,18 +133,44 @@ public class PostBusinessManager : IPostBusinessManager
         var comments = await _commentService.GetAllByPost(id);
         Achievements achievements = await _achievementService.Get(user.AchievementId);
 
-        AchievementsNotificationModel achievementNotification = new AchievementsNotificationModel();
+        List<AchievementsNotificationModel> achievementNotificationsList = new List<AchievementsNotificationModel>();
+        AchievementsNotificationModel createdPostFirstTimeNameAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel editPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
 
         if (achievements.CreatedPostFirstTimeActive)
         {
             achievements.CreatedPostFirstTimeActive = false;
 
-            achievementNotification.Name = achievements.CreatedPostFirstTimeName;
-            achievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
-            achievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
+            createdPostFirstTimeNameAchievementNotification.Name = achievements.CreatedPostFirstTimeName;
+            createdPostFirstTimeNameAchievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
+            createdPostFirstTimeNameAchievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
 
             await _achievementService.Update(achievements.Id, achievements);
-        }        
+            achievementNotificationsList.Add(createdPostFirstTimeNameAchievementNotification);
+        }
+        if (achievements.PublishedPostFirstTime)
+        {
+            achievements.PublishedPostFirstTimeActive = false;
+
+            publishedPostFirstTimeAchievementNotification.Name = achievements.PublishedPostFirstTimeName;
+            publishedPostFirstTimeAchievementNotification.Description = achievements.PublishedPostFirstTimeDescription;
+            publishedPostFirstTimeAchievementNotification.ImagePath = achievements.PublishedPostFirstTimeImagePath;
+
+            await _achievementService.Update(achievements.Id, achievements);
+            achievementNotificationsList.Add(publishedPostFirstTimeAchievementNotification);
+        }
+        if (achievements.EditPostFirstTime)
+        {
+            achievements.EditPostFirstTimeActive = false;
+
+            editPostFirstTimeAchievementNotification.Name = achievements.EditPostFirstTimeName;
+            editPostFirstTimeAchievementNotification.Description = achievements.EditPostFirstTimeDescription;
+            editPostFirstTimeAchievementNotification.ImagePath = achievements.EditPostFirstTimeImagePath;
+
+            await _achievementService.Update(achievements.Id, achievements);
+            achievementNotificationsList.Add(editPostFirstTimeAchievementNotification);
+        }
 
         foreach (Comment c in comments)
         {
@@ -166,7 +198,7 @@ public class PostBusinessManager : IPostBusinessManager
             CommentReplies = replies,
             AccountUser = user,
             CommentCount = commentCount,
-            AchievementsNotificationModel = achievementNotification
+            AchievementsNotificationList = achievementNotificationsList
 
         };
     }
@@ -229,6 +261,10 @@ public class PostBusinessManager : IPostBusinessManager
         if (achievements.CreatedPostFirstTime == false)
         {
             OnFirstPostCreatedEvent?.Invoke(user);
+        }
+        if  (achievements.PublishedPostFirstTime == false && post.IsPublished)
+        {
+            OnFirstPostPublishedEvent?.Invoke(user);
         }
 
         return post;
@@ -358,6 +394,17 @@ public class PostBusinessManager : IPostBusinessManager
                 byte[] resizedImage = fileBytes;//ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 post.HeaderImage = resizedImage;
             }
+        }
+        
+        // Post Edited Successfully
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        if (achievements.EditPostFirstTime == false)
+        {
+            OnFirstPostEditedEvent?.Invoke(user);
+        }
+        if (achievements.PublishedPostFirstTime == false && post.IsPublished)
+        {
+            OnFirstPostPublishedEvent?.Invoke(user);
         }
 
         return new EditPostViewModel

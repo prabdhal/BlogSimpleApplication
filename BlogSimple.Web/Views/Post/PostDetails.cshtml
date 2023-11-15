@@ -13,13 +13,17 @@
 <div class="mt-5">
     
     <!-- Achievement Notification Banner-->
-    @if (Model.AchievementsNotificationModel.Name != null)
+    @if (Model.AchievementsNotificationList.Any())
     {
-        <div class="alert alert-primary" role="alert">
-            <h4 class="alert-heading">Achievement Earned!</h4>
-            <h4 class="alert-heading">@Model.AchievementsNotificationModel.Name</h4>
-            <p>@Model.AchievementsNotificationModel.Description</p>
-        </div>
+        foreach (AchievementsNotificationModel achievement in Model.AchievementsNotificationList)
+        {
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Congratulations! A New Achievement Earned!</h4>
+                <hr>
+                <h4 class="alert-heading">@achievement.Name</h4>
+                <p>@achievement.Description</p>
+            </div>
+        }
     }
 
 
