@@ -21,11 +21,11 @@ public class Achievements
     public bool PublishedPostFirstTime { get; set; } = false;
     public bool PublishedPostFirstTimeActive { get; set; } = true;
 
-    public string EditPostFirstTimeName { get; set; } = "Editor";
-    public string EditPostFirstTimeDescription { get; set; } = "You edited your blog post for the first time!";
-    public string EditPostFirstTimeImagePath { get; set; }
-    public bool EditPostFirstTime { get; set; } = false;
-    public bool EditPostFirstTimeActive { get; set; } = true;
+    public string EditedPostFirstTimeName { get; set; } = "Editor";
+    public string EditedPostFirstTimeDescription { get; set; } = "You edited your blog post for the first time!";
+    public string EditedPostFirstTimeImagePath { get; set; }
+    public bool EditedPostFirstTime { get; set; } = false;
+    public bool EditedPostFirstTimeActive { get; set; } = true;
 
     public string FavoritePostFirstTimeName { get; set; } = "Favorite";
     public string FavoritePostFirstTimeDescription { get; set; } = "You saved a blog post for the first time!";
@@ -51,29 +51,29 @@ public class Achievements
     public bool PublishedOver500TotalWords { get; set; } = false;
     public bool PublishedOver500TotalWordsActive { get; set; } = true;
 
-    public string PublishedOver1000WordsName { get; set; } = "Intermediate Words Smith";
-    public string PublishedOver1000WordsDescription { get; set; } = "You have published over 1,000 total words!";
-    public string PublishedOver1000WordsImagePath { get; set; }
-    public bool PublishedOver1000Words { get; set; } = false;
-    public bool PublishedOver1000WordsActive { get; set; } = true;
+    public string PublishedOver1000TotalWordsName { get; set; } = "Intermediate Words Smith";
+    public string PublishedOver1000TotalWordsDescription { get; set; } = "You have published over 1,000 total words!";
+    public string PublishedOver1000TotalWordsImagePath { get; set; }
+    public bool PublishedOver1000TotalWords { get; set; } = false;
+    public bool PublishedOver1000TotalWordsActive { get; set; } = true;
 
-    public string PublishedOver5000WordsName { get; set; } = "Senior Words Smith";
-    public string PublishedOver5000WordsDescription { get; set; } = "You have published over 5,000 total words!";
-    public string PublishedOver5000WordsImagePath { get; set; }
-    public bool PublishedOver5000Words { get; set; } = false;
-    public bool PublishedOver5000WordsActive { get; set; } = true;
+    public string PublishedOver5000TotalWordsName { get; set; } = "Senior Words Smith";
+    public string PublishedOver5000TotalWordsDescription { get; set; } = "You have published over 5,000 total words!";
+    public string PublishedOver5000TotalWordsImagePath { get; set; }
+    public bool PublishedOver5000TotalWords { get; set; } = false;
+    public bool PublishedOver5000TotalWordsActive { get; set; } = true;
 
-    public string PublishedOver10000WordsName { get; set; } = "Master Words Smith";
-    public string PublishedOver10000WordsDescription { get; set; } = "You have published over 10,000 words!";
-    public string PublishedOver10000WordsImagePath { get; set; }
-    public bool PublishedOver10000Words { get; set; } = false;
-    public bool PublishedOver10000WordsActive { get; set; } = true;
+    public string PublishedOver10000TotalWordsName { get; set; } = "Master Words Smith";
+    public string PublishedOver10000TotalWordsDescription { get; set; } = "You have published over 10,000 words!";
+    public string PublishedOver10000TotalWordsImagePath { get; set; }
+    public bool PublishedOver10000TotalWords { get; set; } = false;
+    public bool PublishedOver10000TotalWordsActive { get; set; } = true;
 
-    public string PublishedOver50000WordsName { get; set; } = "God-Like Words Smith";
-    public string PublishedOver50000WordsDescription { get; set; } = "You have published over 50,000 words!";
-    public string PublishedOver50000WordsImagePath { get; set; }
-    public bool PublishedOver50000Words { get; set; } = false;
-    public bool PublishedOver50000WordsActive { get; set; } = true;
+    public string PublishedOver50000TotalWordsName { get; set; } = "God-Like Words Smith";
+    public string PublishedOver50000TotalWordsDescription { get; set; } = "You have published over 50,000 words!";
+    public string PublishedOver50000TotalWordsImagePath { get; set; }
+    public bool PublishedOver50000TotalWords { get; set; } = false;
+    public bool PublishedOver50000TotalWordsActive { get; set; } = true;
 
     public string PublishedFivePostsName { get; set; } = "Intermediate Poster";
     public string PublishedFivePostsDescription { get; set; } = "You have published five blog posts!";
@@ -93,17 +93,17 @@ public class Achievements
     public bool PublishedTenPosts { get; set; } = false;
     public bool PublishedTenPostsActive { get; set; } = true;
 
-    public string LikeACommentName { get; set; } = "Supporter";
-    public string LikeACommentDescription { get; set; } = "You have liked a comment for the first time!";
-    public string LikeACommentImagePath { get; set; }
-    public bool LikeAComment { get; set; } = false;
-    public bool LikeACommentActive { get; set; } = true;
+    public string LikedCommentFirstTimeName { get; set; } = "Supporter";
+    public string LikedCommentFirstTimeDescription { get; set; } = "You have liked a comment for the first time!";
+    public string LikedCommentFirstTimeImagePath { get; set; }
+    public bool LikedCommentFirstTime { get; set; } = false;
+    public bool LikedCommentFirstTimeActive { get; set; } = true;
 
     public string LikedFiveCommentsName { get; set; } = "Intermediate Supporter";
     public string LikedFiveCommentsDescription { get; set; } = "You have published five blog posts!";
     public string LikedFiveCommentsImagePath { get; set; }
     public bool LikedFiveComments { get; set; } = false;
-    public bool ActiveActive { get; set; } = true;
+    public bool LikedFiveCommentsActive { get; set; } = true;
 
     public string LikedTenCommentsName { get; set; } = "Senior Supporter";
     public string LikedTenCommentsDescription { get; set; } = "You have published ten comments!";

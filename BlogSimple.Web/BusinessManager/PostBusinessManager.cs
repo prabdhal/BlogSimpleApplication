@@ -27,11 +27,19 @@ public class PostBusinessManager : IPostBusinessManager
 
     // Achievement Events
     public delegate void PostCreatedEventHandler(User user);
-    public event PostCreatedEventHandler OnFirstPostCreatedEvent;
+    public event PostCreatedEventHandler OnPostCreatedEvent;
     public delegate void PostPublishedEventHandler(User user);
-    public event PostPublishedEventHandler OnFirstPostPublishedEvent;
+    public event PostPublishedEventHandler OnPostPublishedEvent;
     public delegate void PostEditedEventHandler(User user);
-    public event PostEditedEventHandler OnFirstPostEditedEvent;
+    public event PostEditedEventHandler OnPostEditedEvent;
+    public delegate void PostFavoritedEventHandler(User user);
+    public event PostFavoritedEventHandler OnPostFavoritedEvent;
+    public delegate void CommentPublishedEventHandler(User user);
+    public event CommentPublishedEventHandler OnCommentPublishedEvent;
+    public delegate void OnCommentLikedEventHandler(User user);
+    public event OnCommentLikedEventHandler OnCommentLikedEvent;
+    public delegate void ReplyPublishedEventHandler(User user);
+    public event ReplyPublishedEventHandler OnReplyPublishedEvent;
 
 
     public PostBusinessManager(
@@ -50,9 +58,13 @@ public class PostBusinessManager : IPostBusinessManager
         _commentService = commentService;
         _commentReplyService = commentReplyService;
         _achievementService = achievementService; 
-        OnFirstPostCreatedEvent += achievementsBusinessManager.FirstPostCreated; 
-        OnFirstPostPublishedEvent += achievementsBusinessManager.FirstPostPublished; 
-        OnFirstPostEditedEvent += achievementsBusinessManager.FirstPostEdited; 
+        OnPostCreatedEvent += achievementsBusinessManager.PostCreated; 
+        OnPostPublishedEvent += achievementsBusinessManager.PostPublished; 
+        OnPostEditedEvent += achievementsBusinessManager.PostEdited;
+        OnPostFavoritedEvent += achievementsBusinessManager.PostFavorited;
+        OnCommentPublishedEvent += achievementsBusinessManager.CommentPublished;
+        OnReplyPublishedEvent += achievementsBusinessManager.ReplyPublished;
+        OnCommentLikedEvent += achievementsBusinessManager.CommentLiked; 
     }
 
     public async Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal)
@@ -111,6 +123,12 @@ public class PostBusinessManager : IPostBusinessManager
         {
             postCats.Add(cat.ToString());
         }
+        
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        if (achievements.FavoritePostFirstTime == false)
+        {
+            OnPostFavoritedEvent?.Invoke(user);
+        }
 
         return new PostDetailsViewModel
         {
@@ -131,45 +149,14 @@ public class PostBusinessManager : IPostBusinessManager
         List<string> postCats = new List<string>();
         var posts = await _postService.GetPublishedOnly("");
         var comments = await _commentService.GetAllByPost(id);
-        Achievements achievements = await _achievementService.Get(user.AchievementId);
-
+        Achievements achievements;
         List<AchievementsNotificationModel> achievementNotificationsList = new List<AchievementsNotificationModel>();
-        AchievementsNotificationModel createdPostFirstTimeNameAchievementNotification = new AchievementsNotificationModel();
-        AchievementsNotificationModel publishedPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
-        AchievementsNotificationModel editPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
 
-        if (achievements.CreatedPostFirstTimeActive)
+        if (user != null)
         {
-            achievements.CreatedPostFirstTimeActive = false;
-
-            createdPostFirstTimeNameAchievementNotification.Name = achievements.CreatedPostFirstTimeName;
-            createdPostFirstTimeNameAchievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
-            createdPostFirstTimeNameAchievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
-
+            achievements = await _achievementService.Get(user.AchievementId);
+            achievementNotificationsList = GetAchievementsNotificationsList(achievements);
             await _achievementService.Update(achievements.Id, achievements);
-            achievementNotificationsList.Add(createdPostFirstTimeNameAchievementNotification);
-        }
-        if (achievements.PublishedPostFirstTimeActive)
-        {
-            achievements.PublishedPostFirstTimeActive = false;
-
-            publishedPostFirstTimeAchievementNotification.Name = achievements.PublishedPostFirstTimeName;
-            publishedPostFirstTimeAchievementNotification.Description = achievements.PublishedPostFirstTimeDescription;
-            publishedPostFirstTimeAchievementNotification.ImagePath = achievements.PublishedPostFirstTimeImagePath;
-
-            await _achievementService.Update(achievements.Id, achievements);
-            achievementNotificationsList.Add(publishedPostFirstTimeAchievementNotification);
-        }
-        if (achievements.EditPostFirstTimeActive)
-        {
-            achievements.EditPostFirstTimeActive = false;
-
-            editPostFirstTimeAchievementNotification.Name = achievements.EditPostFirstTimeName;
-            editPostFirstTimeAchievementNotification.Description = achievements.EditPostFirstTimeDescription;
-            editPostFirstTimeAchievementNotification.ImagePath = achievements.EditPostFirstTimeImagePath;
-
-            await _achievementService.Update(achievements.Id, achievements);
-            achievementNotificationsList.Add(editPostFirstTimeAchievementNotification);
         }
 
         foreach (Comment c in comments)
@@ -201,6 +188,184 @@ public class PostBusinessManager : IPostBusinessManager
             AchievementsNotificationList = achievementNotificationsList
 
         };
+    }
+
+    private List<AchievementsNotificationModel> GetAchievementsNotificationsList(Achievements achievements)
+    {
+        List<AchievementsNotificationModel> results = new List<AchievementsNotificationModel>();
+        AchievementsNotificationModel createdPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedFivePostsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedTenPostsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel editPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel favoritedPostFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedCommentFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel likedCommentFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedReplyFirstTimeAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedOver500TotalWordsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedOver1000TotalWordsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedOver5000TotalWordsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedOver10000TotalWordsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedOver50000TotalWordsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedFiveCommentsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel likedFiveCommentsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel likedTenCommentsAchievementNotification = new AchievementsNotificationModel();
+
+        if (achievements.CreatedPostFirstTimeActive && achievements.CreatedPostFirstTime)
+        {
+            achievements.CreatedPostFirstTimeActive = false;
+
+            createdPostFirstTimeAchievementNotification.Name = achievements.CreatedPostFirstTimeName;
+            createdPostFirstTimeAchievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
+            createdPostFirstTimeAchievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
+            results.Add(createdPostFirstTimeAchievementNotification);
+        }
+        if (achievements.PublishedPostFirstTimeActive && achievements.PublishedPostFirstTime)
+        {
+            achievements.PublishedPostFirstTimeActive = false;
+
+            publishedPostFirstTimeAchievementNotification.Name = achievements.PublishedPostFirstTimeName;
+            publishedPostFirstTimeAchievementNotification.Description = achievements.PublishedPostFirstTimeDescription;
+            publishedPostFirstTimeAchievementNotification.ImagePath = achievements.PublishedPostFirstTimeImagePath;
+            results.Add(publishedPostFirstTimeAchievementNotification);
+        }
+        if (achievements.PublishedFivePostsActive && achievements.PublishedFivePosts)
+        {
+            achievements.PublishedFivePostsActive = false;
+
+            publishedFivePostsAchievementNotification.Name = achievements.PublishedFivePostsName;
+            publishedFivePostsAchievementNotification.Description = achievements.PublishedFivePostsDescription;
+            publishedFivePostsAchievementNotification.ImagePath = achievements.PublishedFivePostsImagePath;
+            results.Add(publishedFivePostsAchievementNotification);
+        }
+        if (achievements.PublishedTenPostsActive && achievements.PublishedTenPosts)
+        {
+            achievements.PublishedTenPostsActive = false;
+
+            publishedTenPostsAchievementNotification.Name = achievements.PublishedTenPostsName;
+            publishedTenPostsAchievementNotification.Description = achievements.PublishedTenPostsDescription;
+            publishedTenPostsAchievementNotification.ImagePath = achievements.PublishedTenPostsImagePath;
+            results.Add(publishedTenPostsAchievementNotification);
+        }
+        if (achievements.EditedPostFirstTimeActive && achievements.EditedPostFirstTime)
+        {
+            achievements.EditedPostFirstTimeActive = false;
+
+            editPostFirstTimeAchievementNotification.Name = achievements.EditedPostFirstTimeName;
+            editPostFirstTimeAchievementNotification.Description = achievements.EditedPostFirstTimeDescription;
+            editPostFirstTimeAchievementNotification.ImagePath = achievements.EditedPostFirstTimeImagePath;
+            results.Add(editPostFirstTimeAchievementNotification);
+        }
+        if (achievements.FavoritePostFirstTimeActive && achievements.FavoritePostFirstTime)
+        {
+            achievements.FavoritePostFirstTimeActive = false;
+
+            favoritedPostFirstTimeAchievementNotification.Name = achievements.FavoritePostFirstTimeName;
+            favoritedPostFirstTimeAchievementNotification.Description = achievements.FavoritePostFirstTimeDescription;
+            favoritedPostFirstTimeAchievementNotification.ImagePath = achievements.FavoritePostFirstTimeImagePath;
+            results.Add(favoritedPostFirstTimeAchievementNotification);
+        }
+        if (achievements.PublishedCommentFirstTimeActive && achievements.PublishedCommentFirstTime)
+        {
+            achievements.PublishedCommentFirstTimeActive = false;
+
+            publishedCommentFirstTimeAchievementNotification.Name = achievements.PublishedCommentFirstTimeName;
+            publishedCommentFirstTimeAchievementNotification.Description = achievements.PublishedCommentFirstTimeDescription;
+            publishedCommentFirstTimeAchievementNotification.ImagePath = achievements.PublishedCommentFirstTimeImagePath;
+            results.Add(publishedCommentFirstTimeAchievementNotification);
+        }
+        if (achievements.LikedCommentFirstTimeActive && achievements.LikedCommentFirstTime)
+        {
+            achievements.LikedCommentFirstTimeActive = false;
+
+            likedCommentFirstTimeAchievementNotification.Name = achievements.LikedCommentFirstTimeName;
+            likedCommentFirstTimeAchievementNotification.Description = achievements.LikedCommentFirstTimeDescription;
+            likedCommentFirstTimeAchievementNotification.ImagePath = achievements.LikedCommentFirstTimeImagePath;
+            results.Add(likedCommentFirstTimeAchievementNotification);
+        }
+        if (achievements.PublishedReplyFirstTimeActive && achievements.PublishedReplyFirstTime)
+        {
+            achievements.PublishedReplyFirstTimeActive = false;
+
+            publishedReplyFirstTimeAchievementNotification.Name = achievements.PublishedReplyFirstTimeName;
+            publishedReplyFirstTimeAchievementNotification.Description = achievements.PublishedReplyFirstTimeDescription;
+            publishedReplyFirstTimeAchievementNotification.ImagePath = achievements.PublishedReplyFirstTimeImagePath;
+            results.Add(publishedReplyFirstTimeAchievementNotification);
+        }
+        if (achievements.PublishedOver500TotalWordsActive && achievements.PublishedOver500TotalWords)
+        {
+            achievements.PublishedOver500TotalWordsActive = false;
+
+            publishedOver500TotalWordsAchievementNotification.Name = achievements.CreatedPostFirstTimeName;
+            publishedOver500TotalWordsAchievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
+            publishedOver500TotalWordsAchievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
+            results.Add(publishedOver500TotalWordsAchievementNotification);
+        }
+        if (achievements.PublishedOver1000TotalWordsActive && achievements.PublishedOver1000TotalWords)
+        {
+            achievements.PublishedOver1000TotalWordsActive = false;
+
+            publishedOver1000TotalWordsAchievementNotification.Name = achievements.PublishedOver1000TotalWordsName;
+            publishedOver1000TotalWordsAchievementNotification.Description = achievements.PublishedOver1000TotalWordsDescription;
+            publishedOver1000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver1000TotalWordsImagePath;
+            results.Add(publishedOver1000TotalWordsAchievementNotification);
+        }
+        if (achievements.PublishedOver5000TotalWordsActive && achievements.PublishedOver5000TotalWords)
+        {
+            achievements.PublishedOver5000TotalWordsActive = false;
+
+            publishedOver5000TotalWordsAchievementNotification.Name = achievements.PublishedOver5000TotalWordsName;
+            publishedOver5000TotalWordsAchievementNotification.Description = achievements.PublishedOver5000TotalWordsDescription;
+            publishedOver5000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver5000TotalWordsImagePath;
+            results.Add(publishedOver5000TotalWordsAchievementNotification);
+        }
+        if (achievements.PublishedOver10000TotalWordsActive && achievements.PublishedOver10000TotalWords)
+        {
+            achievements.PublishedOver10000TotalWordsActive = false;
+
+            publishedOver10000TotalWordsAchievementNotification.Name = achievements.PublishedOver10000TotalWordsName;
+            publishedOver10000TotalWordsAchievementNotification.Description = achievements.PublishedOver10000TotalWordsDescription;
+            publishedOver10000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver10000TotalWordsImagePath;
+            results.Add(publishedOver10000TotalWordsAchievementNotification);
+        }
+        if (achievements.PublishedOver50000TotalWordsActive && achievements.PublishedOver50000TotalWords)
+        {
+            achievements.PublishedOver50000TotalWordsActive = false;
+
+            publishedOver50000TotalWordsAchievementNotification.Name = achievements.PublishedOver50000TotalWordsName;
+            publishedOver50000TotalWordsAchievementNotification.Description = achievements.PublishedOver50000TotalWordsDescription;
+            publishedOver50000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver50000TotalWordsImagePath;
+            results.Add(publishedOver50000TotalWordsAchievementNotification);
+        }
+        if (achievements.PublishedFiveCommentsActive && achievements.PublishedFiveComments)
+        {
+            achievements.PublishedOver10000TotalWordsActive = false;
+
+            publishedFiveCommentsAchievementNotification.Name = achievements.PublishedFiveCommentsName;
+            publishedFiveCommentsAchievementNotification.Description = achievements.PublishedFiveCommentsDescription;
+            publishedFiveCommentsAchievementNotification.ImagePath = achievements.PublishedFiveCommentsImagePath;
+            results.Add(publishedFiveCommentsAchievementNotification);
+        }
+        if (achievements.LikedFiveCommentsActive && achievements.LikedFiveComments)
+        {
+            achievements.PublishedOver50000TotalWordsActive = false;
+
+            likedFiveCommentsAchievementNotification.Name = achievements.LikedFiveCommentsName;
+            likedFiveCommentsAchievementNotification.Description = achievements.LikedFiveCommentsDescription;
+            likedFiveCommentsAchievementNotification.ImagePath = achievements.LikedFiveCommentsImagePath;
+            results.Add(likedFiveCommentsAchievementNotification);
+        }
+        if (achievements.LikedTenCommentsActive && achievements.LikedTenComments)
+        {
+            achievements.LikedTenCommentsActive = false;
+
+            likedTenCommentsAchievementNotification.Name = achievements.LikedTenCommentsName;
+            likedFiveCommentsAchievementNotification.Description = achievements.LikedTenCommentsDescription;
+            likedFiveCommentsAchievementNotification.ImagePath = achievements.LikedTenCommentsImagePath;
+            results.Add(likedTenCommentsAchievementNotification);
+        }
+
+        return results;
     }
 
     private byte[] GetImage(string sBase64String)
@@ -260,11 +425,22 @@ public class PostBusinessManager : IPostBusinessManager
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.CreatedPostFirstTime == false)
         {
-            OnFirstPostCreatedEvent?.Invoke(user);
+            OnPostCreatedEvent?.Invoke(user);
         }
-        if  (achievements.PublishedPostFirstTime == false && post.IsPublished)
+        if (post.IsPublished)
         {
-            OnFirstPostPublishedEvent?.Invoke(user);
+            if (achievements.PublishedPostFirstTime == false || 
+                achievements.PublishedOver500TotalWords == false || 
+                achievements.PublishedOver1000TotalWords == false ||
+                achievements.PublishedOver5000TotalWords == false ||
+                achievements.PublishedOver10000TotalWords == false ||
+                achievements.PublishedOver50000TotalWords == false ||
+                achievements.PublishedFivePosts == false ||
+                achievements.PublishedTenPosts == false
+                )
+            {
+                OnPostPublishedEvent?.Invoke(user);
+            }
         }
 
         return post;
@@ -301,6 +477,14 @@ public class PostBusinessManager : IPostBusinessManager
 
         comment = await _commentService.Create(comment);
 
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        if (achievements.PublishedCommentFirstTime == false ||
+            achievements.PublishedFiveComments == false
+            )
+        {
+            OnCommentPublishedEvent?.Invoke(user);
+        }
+
         return comment;
     }
 
@@ -320,6 +504,12 @@ public class PostBusinessManager : IPostBusinessManager
         reply.UpdatedOn = DateTime.Now;
 
         reply = await _commentReplyService.Create(reply);
+
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        if (achievements.PublishedReplyFirstTime == false)
+        {
+            OnReplyPublishedEvent?.Invoke(user);
+        }
 
         await _commentService.Update(comment.Id, comment);
 
@@ -398,13 +588,21 @@ public class PostBusinessManager : IPostBusinessManager
         
         // Post Edited Successfully
         Achievements achievements = await _achievementService.Get(user.AchievementId);
-        if (achievements.EditPostFirstTime == false)
+        if (achievements.EditedPostFirstTime == false)
         {
-            OnFirstPostEditedEvent?.Invoke(user);
+            OnPostEditedEvent?.Invoke(user);
         }
-        if (achievements.PublishedPostFirstTime == false && post.IsPublished)
+        if (post.IsPublished)
         {
-            OnFirstPostPublishedEvent?.Invoke(user);
+            if (achievements.PublishedPostFirstTime == false ||
+                achievements.PublishedOver500TotalWords == false ||
+                achievements.PublishedOver1000TotalWords == false ||
+                achievements.PublishedOver5000TotalWords == false ||
+                achievements.PublishedOver10000TotalWords == false ||
+                achievements.PublishedOver50000TotalWords == false)
+            {
+                OnPostPublishedEvent?.Invoke(user);
+            }
         }
 
         return new EditPostViewModel
@@ -531,6 +729,15 @@ public class PostBusinessManager : IPostBusinessManager
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
             postCats.Add(cat.ToString());
+        }
+
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        if (achievements.LikedCommentFirstTimeActive == false ||
+            achievements.LikedFiveComments == false ||
+            achievements.LikedTenComments == false
+            )
+        {
+            OnCommentLikedEvent?.Invoke(user);
         }
 
         return new PostDetailsViewModel
