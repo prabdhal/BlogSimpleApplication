@@ -100,11 +100,8 @@ public class PostBusinessManager : IPostBusinessManager
     public async Task<PostDetailsViewModel> FavoritePost(string id, ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-
         var post = await _postService.Get(id);
-
         var userAlreadyFavorited = user.FavoritedPosts.Where(b => b.Id == post.Id).FirstOrDefault();
-
         if (userAlreadyFavorited is null)
         {
             user.FavoritedPosts.Add(post);
@@ -114,16 +111,18 @@ public class PostBusinessManager : IPostBusinessManager
             var removePost = user.FavoritedPosts.Where(b => b.Id == post.Id).FirstOrDefault();
             user.FavoritedPosts.Remove(removePost);
         }
-        var savedUser = await _userService.Update(user.UserName, user);
 
         List<string> postCats = new List<string>();
         var comments = await _commentService.GetAllByPost(post.Id);
-
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
             postCats.Add(cat.ToString());
         }
-        
+
+        // Saved post to users favorite list
+        var savedUser = await _userService.Update(user.UserName, user);
+
+        //  Achievement Event Trigger
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.FavoritePostFirstTime == false)
         {
@@ -296,9 +295,9 @@ public class PostBusinessManager : IPostBusinessManager
         {
             achievements.PublishedOver500TotalWordsActive = false;
 
-            publishedOver500TotalWordsAchievementNotification.Name = achievements.CreatedPostFirstTimeName;
-            publishedOver500TotalWordsAchievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
-            publishedOver500TotalWordsAchievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
+            publishedOver500TotalWordsAchievementNotification.Name = achievements.PublishedOver500TotalWordsName;
+            publishedOver500TotalWordsAchievementNotification.Description = achievements.PublishedOver500TotalWordsDescription;
+            publishedOver500TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver500TotalWordsImagePath;
             results.Add(publishedOver500TotalWordsAchievementNotification);
         }
         if (achievements.PublishedOver1000TotalWordsActive && achievements.PublishedOver1000TotalWords)
@@ -339,7 +338,7 @@ public class PostBusinessManager : IPostBusinessManager
         }
         if (achievements.PublishedFiveCommentsActive && achievements.PublishedFiveComments)
         {
-            achievements.PublishedOver10000TotalWordsActive = false;
+            achievements.PublishedFiveCommentsActive = false;
 
             publishedFiveCommentsAchievementNotification.Name = achievements.PublishedFiveCommentsName;
             publishedFiveCommentsAchievementNotification.Description = achievements.PublishedFiveCommentsDescription;
@@ -348,7 +347,7 @@ public class PostBusinessManager : IPostBusinessManager
         }
         if (achievements.LikedFiveCommentsActive && achievements.LikedFiveComments)
         {
-            achievements.PublishedOver50000TotalWordsActive = false;
+            achievements.LikedFiveCommentsActive = false;
 
             likedFiveCommentsAchievementNotification.Name = achievements.LikedFiveCommentsName;
             likedFiveCommentsAchievementNotification.Description = achievements.LikedFiveCommentsDescription;
@@ -360,8 +359,8 @@ public class PostBusinessManager : IPostBusinessManager
             achievements.LikedTenCommentsActive = false;
 
             likedTenCommentsAchievementNotification.Name = achievements.LikedTenCommentsName;
-            likedFiveCommentsAchievementNotification.Description = achievements.LikedTenCommentsDescription;
-            likedFiveCommentsAchievementNotification.ImagePath = achievements.LikedTenCommentsImagePath;
+            likedTenCommentsAchievementNotification.Description = achievements.LikedTenCommentsDescription;
+            likedTenCommentsAchievementNotification.ImagePath = achievements.LikedTenCommentsImagePath;
             results.Add(likedTenCommentsAchievementNotification);
         }
 
@@ -419,9 +418,10 @@ public class PostBusinessManager : IPostBusinessManager
         post.UpdatedOn = DateTime.Now;
         post.WordCount = UtilityMethods.GetWordCount(post.Content);
 
+        // Create Post
         post = await _postService.Create(post);
 
-        // Post Created Successfully
+        // Achievement Event Trigger
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.CreatedPostFirstTime == false)
         {
@@ -475,8 +475,10 @@ public class PostBusinessManager : IPostBusinessManager
         comment.CreatedOn = DateTime.Now;
         comment.UpdatedOn = DateTime.Now;
 
+        // Create Comment
         comment = await _commentService.Create(comment);
 
+        // Achievement Event Triggered
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.PublishedCommentFirstTime == false ||
             achievements.PublishedFiveComments == false
@@ -503,8 +505,10 @@ public class PostBusinessManager : IPostBusinessManager
         reply.CreatedOn = DateTime.Now;
         reply.UpdatedOn = DateTime.Now;
 
+        // Reply created
         reply = await _commentReplyService.Create(reply);
 
+        // Achievement Event Triggered
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.PublishedReplyFirstTime == false)
         {
@@ -585,8 +589,11 @@ public class PostBusinessManager : IPostBusinessManager
                 post.HeaderImage = resizedImage;
             }
         }
-        
-        // Post Edited Successfully
+
+        // Post Saved
+        post = await _postService.Update(editPostViewModel.Post.Id, post);
+
+        // Achievement Event Triggered
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.EditedPostFirstTime == false)
         {
@@ -607,7 +614,7 @@ public class PostBusinessManager : IPostBusinessManager
 
         return new EditPostViewModel
         {
-            Post = await _postService.Update(editPostViewModel.Post.Id, post)
+            Post = post
         };
     }
 
@@ -626,7 +633,6 @@ public class PostBusinessManager : IPostBusinessManager
             return new NotFoundResult();
 
         var replies = await _commentReplyService.GetAllByPost(post.Id);
-
         comment.Content = postDetailsViewModel.Comment.Content;
 
         List<string> postCats = new List<string>();
@@ -639,11 +645,14 @@ public class PostBusinessManager : IPostBusinessManager
             postCats.Add(cat.ToString());
         }
 
+        // Comment Updated
+        comment = await _commentService.Update(commentId, comment);
+
         return new PostDetailsViewModel
         {
             PostCategories = postCats,
             Post = post,
-            Comment = await _commentService.Update(commentId, comment),
+            Comment = comment,
             Comments = comments,
             AccountUser = user,
             CommentCount = commentCount
@@ -682,13 +691,16 @@ public class PostBusinessManager : IPostBusinessManager
             postCats.Add(cat.ToString());
         }
 
+        // Reply Updated
+        reply = await _commentReplyService.Update(replyId, reply);
+
         return new PostDetailsViewModel
         {
             PostCategories = postCats,
             Post = post,
             Comment = comment,
             Comments = comments,
-            CommentReply = await _commentReplyService.Update(replyId, reply),
+            CommentReply = reply,
             AccountUser = user,
             CommentCount = commentCount
         };
@@ -731,6 +743,10 @@ public class PostBusinessManager : IPostBusinessManager
             postCats.Add(cat.ToString());
         }
 
+        // Comment Updated
+        comment = await _commentService.Update(commentId, comment);
+
+        // Achievement Event Triggered
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.LikedCommentFirstTimeActive == false ||
             achievements.LikedFiveComments == false ||
@@ -744,7 +760,7 @@ public class PostBusinessManager : IPostBusinessManager
         {
             PostCategories = postCats,
             Post = post,
-            Comment = await _commentService.Update(commentId, comment),
+            Comment = comment,
             Comments = comments,
             AccountUser = user,
             CommentCount = commentCount
