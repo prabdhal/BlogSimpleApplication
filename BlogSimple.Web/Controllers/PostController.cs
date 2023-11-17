@@ -91,9 +91,8 @@ public class PostController : Controller
 
         await _postBusinessManager.CreatePost(createPostViewModel, User);
         return RedirectToAction("PostDetails", new { createPostViewModel.Post.Id });
-        
-    }
 
+    }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
     public async Task<IActionResult> EditPost(string id)

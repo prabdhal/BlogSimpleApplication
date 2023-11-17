@@ -2,11 +2,22 @@
 using BlogSimple.Model.ViewModels.PostViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using static BlogSimple.Web.BusinessManager.PostBusinessManager;
 
 namespace BlogSimple.Web.BusinessManager.Interfaces;
 
 public interface IPostBusinessManager
 {
+    // Events 
+    event PostCreatedEventHandler OnPostCreatedEvent;
+    event PostPublishedEventHandler OnPostPublishedEvent;
+    event PostEditedEventHandler OnPostEditedEvent;
+    event PostFavoritedEventHandler OnPostFavoritedEvent;
+    event CommentPublishedEventHandler OnCommentPublishedEvent;
+    event OnCommentLikedEventHandler OnCommentLikedEvent;
+    event ReplyPublishedEventHandler OnReplyPublishedEvent;
+
+    //Methods
     Task<DashboardIndexViewModel> GetDashboardIndexViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<FavoritePostsViewModel> GetFavoritePostsViewModel(string searchString, ClaimsPrincipal claimsPrincipal);
     Task<CreatePostViewModel> GetCreatePostViewModel(ClaimsPrincipal claimsPrincipal);
@@ -24,6 +35,6 @@ public interface IPostBusinessManager
     Task<CommentReply> CreateReply(PostDetailsViewModel postDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     Task<ActionResult<PostDetailsViewModel>> EditReply(string commentId, PostDetailsViewModel postDetailsViewModel, ClaimsPrincipal claimsPrincipal);
     void DeleteReply(string replyId, ClaimsPrincipal claimsPrincipal);
-    Task<EditPostViewModel> GetEditPostViewModelViaReply(string replyId); 
+    Task<EditPostViewModel> GetEditPostViewModelViaReply(string replyId);
     void DeleteUser(ClaimsPrincipal claimsPrincipal);
 }

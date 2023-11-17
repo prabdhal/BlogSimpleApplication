@@ -11,6 +11,20 @@
 
 <!-- Page content-->
 <div class="mt-5">
+    <script src="/lib//jquery//dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <!-- Achievement Notification Banner-->
+    @if (Model.AchievementsNotificationList.Any())
+    {
+        foreach (AchievementsNotificationModel achievement in Model.AchievementsNotificationList)
+        {
+            <script type="text/javascript">
+                toastr.success('@achievement.Name<br>@achievement.Description</br>')
+            </script>
+        }
+    }
+
     <div hidden class="blogData" value='@Html.Raw(Json.Serialize(Model.Post))'></div>
 
     <div class="row">

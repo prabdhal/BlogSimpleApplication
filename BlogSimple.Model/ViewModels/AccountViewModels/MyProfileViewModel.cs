@@ -8,4 +8,5 @@ public class MyProfileViewModel
     public int PublishedPostsCount { get; set; }
     public int TotalCommentsAndRepliesCount { get; set; }
     public int FavoritePostsCount { get; set; }
+    public int TotalWordsCount { get; set; }
 }

@@ -12,6 +12,7 @@ public interface IAccountBusinessManager
     Task<IdentityResult> CreateUserAsync(User user);
     Task<MyAccountViewModel> GetMyAccountViewModel(ClaimsPrincipal claimsPrincipal);
     Task<MyProfileViewModel> GetMyProfileViewModel(ClaimsPrincipal claimsPrincipal);
+    Task<MyAchievementsViewModel> GetMyAchievementsViewModel(ClaimsPrincipal claimsPrincipal);
     Task<EmailConfirmViewModel> GetEmailConfirmViewModel(ClaimsPrincipal claimsPrincipal, EmailConfirmViewModel model);
     ChangePasswordViewModel GetChangePasswordViewModel();
     Task<AuthorViewModel> GetAuthorViewModel(string userId);
