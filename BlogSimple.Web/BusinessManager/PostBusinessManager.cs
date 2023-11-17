@@ -207,6 +207,8 @@ public class PostBusinessManager : IPostBusinessManager
         AchievementsNotificationModel publishedOver10000TotalWordsAchievementNotification = new AchievementsNotificationModel();
         AchievementsNotificationModel publishedOver50000TotalWordsAchievementNotification = new AchievementsNotificationModel();
         AchievementsNotificationModel publishedFiveCommentsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel publishedTenCommentsAchievementNotification = new AchievementsNotificationModel();
+        AchievementsNotificationModel published20CommentsAchievementNotification = new AchievementsNotificationModel();
         AchievementsNotificationModel likedFiveCommentsAchievementNotification = new AchievementsNotificationModel();
         AchievementsNotificationModel likedTenCommentsAchievementNotification = new AchievementsNotificationModel();
 
@@ -335,6 +337,24 @@ public class PostBusinessManager : IPostBusinessManager
             publishedOver50000TotalWordsAchievementNotification.Description = achievements.PublishedOver50000TotalWordsDescription;
             publishedOver50000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver50000TotalWordsImagePath;
             results.Add(publishedOver50000TotalWordsAchievementNotification);
+        }
+        if (achievements.PublishedTenCommentsActive && achievements.PublishedTenComments)
+        {
+            achievements.PublishedTenCommentsActive = false;
+
+            publishedTenCommentsAchievementNotification.Name = achievements.PublishedTenCommentsName;
+            publishedTenCommentsAchievementNotification.Description = achievements.PublishedTenCommentsDescription;
+            publishedTenCommentsAchievementNotification.ImagePath = achievements.PublishedTenCommentsImagePath;
+            results.Add(publishedTenCommentsAchievementNotification);
+        }
+        if (achievements.Published20CommentsActive && achievements.Published20Comments)
+        {
+            achievements.Published20CommentsActive = false;
+
+            published20CommentsAchievementNotification.Name = achievements.Published20CommentsName;
+            published20CommentsAchievementNotification.Description = achievements.Published20CommentsDescription;
+            published20CommentsAchievementNotification.ImagePath = achievements.Published20CommentsImagePath;
+            results.Add(published20CommentsAchievementNotification);
         }
         if (achievements.PublishedFiveCommentsActive && achievements.PublishedFiveComments)
         {
@@ -481,7 +501,9 @@ public class PostBusinessManager : IPostBusinessManager
         // Achievement Event Triggered
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         if (achievements.PublishedCommentFirstTime == false ||
-            achievements.PublishedFiveComments == false
+            achievements.PublishedFiveComments == false || 
+            achievements.PublishedTenComments == false || 
+            achievements.Published20Comments == false 
             )
         {
             OnCommentPublishedEvent?.Invoke(user);

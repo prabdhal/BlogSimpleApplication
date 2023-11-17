@@ -87,6 +87,18 @@ public class Achievements
     public bool PublishedFiveComments { get; set; } = false;
     public bool PublishedFiveCommentsActive { get; set; } = true;
 
+    public string PublishedTenCommentsName { get; set; } = "Advanced Commenter";
+    public string PublishedTenCommentsDescription { get; set; } = "You have published five comments!";
+    public string PublishedTenCommentsImagePath { get; set; }
+    public bool PublishedTenComments { get; set; } = false;
+    public bool PublishedTenCommentsActive { get; set; } = true;
+
+    public string Published20CommentsName { get; set; } = "Senior Commenter";
+    public string Published20CommentsDescription { get; set; } = "You have published five comments!";
+    public string Published20CommentsImagePath { get; set; }
+    public bool Published20Comments { get; set; } = false;
+    public bool Published20CommentsActive { get; set; } = true;
+
     public string PublishedTenPostsName { get; set; } = "Senior Poster";
     public string PublishedTenPostsDescription { get; set; } = "You have published five blog posts!";
     public string PublishedTenPostsImagePath { get; set; }

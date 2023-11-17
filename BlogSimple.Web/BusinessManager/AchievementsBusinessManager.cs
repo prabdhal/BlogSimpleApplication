@@ -141,6 +141,14 @@ public class AchievementsBusinessManager : IAchievementsBusinessManager
 
     private void CommentCountAchievementCheck(Achievements achievements, List<Comment> comments)
     {
+        if (comments.Count >= 20 && achievements.Published20Comments == false)
+        {
+            achievements.Published20Comments = true;
+        }
+        if (comments.Count >= 10 && achievements.PublishedTenComments == false)
+        {
+            achievements.PublishedTenComments = true;
+        }
         if (comments.Count >= 5 && achievements.PublishedFiveComments == false)
         {
             achievements.PublishedFiveComments = true;
