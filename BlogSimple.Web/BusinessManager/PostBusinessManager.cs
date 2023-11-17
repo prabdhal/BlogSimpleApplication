@@ -19,6 +19,7 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _commentReplyService;
     private readonly IAchievementsService _achievementService;
+    private readonly IAchievementsBusinessManager _achievementsBusinessManager;
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
@@ -58,6 +59,7 @@ public class PostBusinessManager : IPostBusinessManager
         _commentService = commentService;
         _commentReplyService = commentReplyService;
         _achievementService = achievementService; 
+        _achievementsBusinessManager = achievementsBusinessManager; 
         OnPostCreatedEvent += achievementsBusinessManager.PostCreated; 
         OnPostPublishedEvent += achievementsBusinessManager.PostPublished; 
         OnPostEditedEvent += achievementsBusinessManager.PostEdited;
@@ -76,6 +78,14 @@ public class PostBusinessManager : IPostBusinessManager
         var loggedInUser = await _userService.Get(user.Id);
 
         var userPosts = posts.Where(b => b.CreatedBy.Email == user.Email);
+
+        // Initialize Achievements
+        if (user.AchievementId == "0")
+        {
+            Achievements achievements = await _achievementsBusinessManager.CreateAchievement();
+            user.AchievementId = achievements.Id;
+            await _userService.Update(user.UserName, user);
+        }
 
         return new DashboardIndexViewModel
         {
