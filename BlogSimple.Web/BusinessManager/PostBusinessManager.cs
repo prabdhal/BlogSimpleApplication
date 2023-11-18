@@ -79,13 +79,13 @@ public class PostBusinessManager : IPostBusinessManager
 
         var userPosts = posts.Where(b => b.CreatedBy.Email == user.Email);
 
-        // Initialize Achievements
-        if (user.AchievementId == "0")
-        {
-            Achievements achievements = await _achievementsBusinessManager.CreateAchievement();
-            user.AchievementId = achievements.Id;
-            await _userService.Update(user.UserName, user);
-        }
+        //// Initialize Achievements
+        //if (user.AchievementId == "0")
+        //{
+        //    Achievements achievements = await _achievementsBusinessManager.CreateAchievement();
+        //    user.AchievementId = achievements.Id;
+        //    await _userService.Update(user.UserName, user);
+        //}
 
         return new DashboardIndexViewModel
         {
