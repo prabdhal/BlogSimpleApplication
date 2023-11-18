@@ -81,6 +81,12 @@ public class Achievements
     public bool PublishedFivePosts { get; set; } = false;
     public bool PublishedFivePostsActive { get; set; } = true;
 
+    public string PublishedTenPostsName { get; set; } = "Senior Poster";
+    public string PublishedTenPostsDescription { get; set; } = "You have published five blog posts!";
+    public string PublishedTenPostsImagePath { get; set; }
+    public bool PublishedTenPosts { get; set; } = false;
+    public bool PublishedTenPostsActive { get; set; } = true;
+
     public string PublishedFiveCommentsName { get; set; } = "Intermediate Commenter";
     public string PublishedFiveCommentsDescription { get; set; } = "You have published five comments!";
     public string PublishedFiveCommentsImagePath { get; set; }
@@ -98,12 +104,6 @@ public class Achievements
     public string Published20CommentsImagePath { get; set; }
     public bool Published20Comments { get; set; } = false;
     public bool Published20CommentsActive { get; set; } = true;
-
-    public string PublishedTenPostsName { get; set; } = "Senior Poster";
-    public string PublishedTenPostsDescription { get; set; } = "You have published five blog posts!";
-    public string PublishedTenPostsImagePath { get; set; }
-    public bool PublishedTenPosts { get; set; } = false;
-    public bool PublishedTenPostsActive { get; set; } = true;
 
     public string LikedCommentFirstTimeName { get; set; } = "Supporter";
     public string LikedCommentFirstTimeDescription { get; set; } = "You have liked a comment for the first time!";
