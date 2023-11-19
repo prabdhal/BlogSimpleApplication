@@ -114,10 +114,10 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task GenerateEmailConfirmationTokenAsync(User user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        if (!string.IsNullOrEmpty(token))
-        {
-            await SendEmailConfirmationEmail(user, token);
-        }
+        //if (!string.IsNullOrEmpty(token))
+        //{
+        //    await SendEmailConfirmationEmail(user, token);
+        //}
     }
 
     public async Task GenerateForgotPasswordConfirmationTokenAsync(User user)
