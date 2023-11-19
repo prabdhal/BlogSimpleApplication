@@ -364,7 +364,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             }
         };
 
-        //await _emailService.SendEmailForEmailConfirmation(options);
+        await _emailService.SendEmailForEmailConfirmation(options);
     }
 
     public async Task SendForgotPasswordEmail(User user, string token)
