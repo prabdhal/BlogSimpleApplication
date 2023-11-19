@@ -170,7 +170,7 @@ namespace BlogSimple.Web.Controllers
                     return View(model);
                 }
 
-                //await _accountBusinessManager.GenerateEmailConfirmationTokenAsync(user);
+                await _accountBusinessManager.GenerateEmailConfirmationTokenAsync(user);
                 model.EmailSent = true;
                 ModelState.Clear();
             }
