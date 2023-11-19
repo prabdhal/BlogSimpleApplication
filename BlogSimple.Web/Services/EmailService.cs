@@ -56,7 +56,7 @@ public class EmailService : IEmailService
             Port = _smtpConfig.Port,
             EnableSsl = true,
             
-            UseDefaultCredentials = false,
+            UseDefaultCredentials = true,
             Credentials = networkCredential
         };
 
