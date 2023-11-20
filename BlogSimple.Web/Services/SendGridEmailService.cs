@@ -1,21 +1,21 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.Extensions.Options;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace BlogSimple.Web.Services;
 
-public class EmailService : IEmailService
+public class SendGridEmailService : ISendGridEmailService
 {
     private const string templatePath = @"EmailTemplate/{0}.html";
-    private readonly SMTPConfigModel _smtpConfig;
+    private readonly SendGridConfigModel _sendGridConfig;
 
-    public EmailService(IOptions<SMTPConfigModel> smtpConfig)
+    public SendGridEmailService(IOptions<SendGridConfigModel> sendGridConfig)
     {
-        _smtpConfig = smtpConfig.Value;
+        _sendGridConfig = sendGridConfig.Value;
     }
+
 
     public async Task SendEmailForEmailConfirmation(UserEmailOptions userEmailOptions)
     {
@@ -35,34 +35,21 @@ public class EmailService : IEmailService
 
     private async Task SendEmail(UserEmailOptions userEmailOptions)
     {
-        MailMessage mail = new MailMessage
-        {
-            Subject = userEmailOptions.Subject,
-            Body = userEmailOptions.Body,
-            From = new MailAddress(_smtpConfig.SenderAddress, _smtpConfig.SenderDisplayName),
-            IsBodyHtml = _smtpConfig.IsBodyHTML
-        };
-
-        //foreach (var toEmail in userEmailOptions.ToEmail)
+        //List<EmailAddress> to = new List<EmailAddress>();
+        //foreach (var toEmail in userEmailOptions.ToEmails)
         //{
-        //    mail.To.Add(toEmail);
+        //    to.Add(new EmailAddress(toEmail, "Example User"));
         //}
 
-        NetworkCredential networkCredential = new NetworkCredential(_smtpConfig.UserName, _smtpConfig.Password);
-
-        SmtpClient smtpClient = new SmtpClient
-        {
-            Host = _smtpConfig.Host,
-            Port = _smtpConfig.Port,
-            EnableSsl = _smtpConfig.EnableSSL,
-            
-            UseDefaultCredentials = _smtpConfig.UseDefaultCredentials,
-            Credentials = networkCredential
-        };
-
-        mail.BodyEncoding = Encoding.Default;
-
-        await smtpClient.SendMailAsync(mail);
+        var apiKey = _sendGridConfig.APIKeyPassword;
+        var client = new SendGridClient(apiKey);
+        var from = new EmailAddress(_sendGridConfig.SenderAddress, _sendGridConfig.SenderDisplayName);
+        var to = new EmailAddress(userEmailOptions.ToEmail, userEmailOptions.FullName);
+        var subject = userEmailOptions.Subject;
+        var msg = MailHelper.CreateSingleEmail(from, to, subject, userEmailOptions.Body, userEmailOptions.Body);
+        var response = await client.SendEmailAsync(msg);
+        //Console.WriteLine(response.StatusCode);
+        //Console.WriteLine(response.Body);
     }
 
     private string GetEmailBody(string templateName)

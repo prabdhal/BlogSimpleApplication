@@ -35,7 +35,8 @@ builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentReplyService, CommentReplyService>();
 builder.Services.AddScoped<IAchievementsService, AchievementsService>();
-builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<ISendGridEmailService, SendGridEmailService>();
+//builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IPostBusinessManager, PostBusinessManager>();
@@ -43,7 +44,8 @@ builder.Services.AddScoped<IAccountBusinessManager, AccountBusinessManager>();
 builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
 builder.Services.AddScoped<IAchievementsBusinessManager, AchievementsBusinessManager>();
 
-builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
+//builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
+builder.Services.Configure<SendGridConfigModel>(builder.Configuration.GetSection("SendGridConfig"));
 
 builder.Services.AddIdentity<User, UserRole>()
     .AddMongoDbStores<User, UserRole, Guid>(
@@ -63,7 +65,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
     options.User.RequireUniqueEmail = true;
 });
-builder.Services.Configure<IdentityOptions>(options 
+builder.Services.Configure<IdentityOptions>(options
     => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
 builder.Services.AddControllersWithViews().AddJsonOptions(options =>

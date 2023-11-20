@@ -16,7 +16,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly IPostService _postService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
-    private readonly IEmailService _emailService;
+    private readonly ISendGridEmailService _emailService;
     private readonly IConfiguration _configuration;
     private readonly IAchievementsBusinessManager _achievementsBusinessManager;
 
@@ -35,7 +35,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         IPostService postService,
         ICommentService commentService,
         ICommentReplyService replyService,
-        IEmailService emailService,
+        ISendGridEmailService emailService,
         IConfiguration configuration,
         IAchievementsBusinessManager achievementsBusinessManager
         )
@@ -352,10 +352,8 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         UserEmailOptions options = new UserEmailOptions
         {
-            ToEmails = new List<string>()
-            {
-                user.Email
-            },
+            ToEmail = user.Email,
+            FullName = user.FirstName + " " + user.LastName,
             PlaceHolders = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("{{FirstName}}", user.FirstName),
@@ -374,10 +372,8 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         UserEmailOptions options = new UserEmailOptions
         {
-            ToEmails = new List<string>()
-            {
-                user.Email
-            },
+            ToEmail = user.Email,
+            FullName = user.FirstName + " " + user.LastName,
             PlaceHolders = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("{{FirstName}}", user.FirstName),
