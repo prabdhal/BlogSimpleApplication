@@ -26,10 +26,10 @@ public class SendGridEmailService : ISendGridEmailService
 
     public async Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions)
     {
-        //userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Password Reset", userEmailOptions.PlaceHolders);
-        //userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
+        userEmailOptions.Subject = "BlogSimple Password Reset";
+        userEmailOptions.Body = "ForgotPassword";
 
-        //await SendEmail(userEmailOptions);
+        await SendEmail(userEmailOptions);
     }
 
     private async Task SendEmail(UserEmailOptions userEmailOptions)
