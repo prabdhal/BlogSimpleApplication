@@ -10,9 +10,9 @@ public class SendGridEmailService : ISendGridEmailService
     private const string templatePath = @"EmailTemplate/{0}.html";
     private readonly ISendGridConfig _sendGridConfig;
 
-    public SendGridEmailService()
+    public SendGridEmailService(ISendGridConfig sendGridConfig)
     {
-        //_sendGridConfig = sendGridConfig;
+        _sendGridConfig = sendGridConfig;
     }
 
 
@@ -29,7 +29,7 @@ public class SendGridEmailService : ISendGridEmailService
         userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Password Reset", userEmailOptions.PlaceHolders);
         userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
 
-        //await SendEmail(userEmailOptions);
+        await SendEmail(userEmailOptions);
     }
 
     private async Task SendEmail(UserEmailOptions userEmailOptions)
@@ -41,8 +41,6 @@ public class SendGridEmailService : ISendGridEmailService
         var subject = userEmailOptions.Subject;
         var msg = MailHelper.CreateSingleEmail(from, to, subject, userEmailOptions.Body, userEmailOptions.Body);
         var response = await client.SendEmailAsync(msg);
-        //Console.WriteLine(response.StatusCode);
-        //Console.WriteLine(response.Body);
     }
 
     private string GetEmailBody(string templateName)

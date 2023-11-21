@@ -347,7 +347,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
     public async Task SendEmailConfirmationEmail(User user, string token)
     {
-        string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+        string appDomain = _configuration.GetSection("Application:ProdAppDomain").Value;
         string configurationLink = _configuration.GetSection("Application:EmailConfirmation").Value;
 
         UserEmailOptions options = new UserEmailOptions
@@ -367,7 +367,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 
     public async Task SendForgotPasswordEmail(User user, string token)
     {
-        string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+        string appDomain = _configuration.GetSection("Application:ProdAppDomain").Value;
         string configurationLink = _configuration.GetSection("Application:ForgotPassword").Value;
 
         UserEmailOptions options = new UserEmailOptions
