@@ -51,8 +51,8 @@ public class SendGridEmailService : ISendGridEmailService
 
     private string UpdatePlaceHolders(string text, List<KeyValuePair<string, string>> keyValuePairs)
     {
-        if (!string.IsNullOrEmpty(text) && keyValuePairs != null)
-        {
+        //if (!string.IsNullOrEmpty(text) && keyValuePairs != null)
+        //{
             //foreach (var placeholder in keyValuePairs)
             //{
             //    if (text.Contains(placeholder.Key))
@@ -60,7 +60,7 @@ public class SendGridEmailService : ISendGridEmailService
             //        text = text.Replace(placeholder.Key, placeholder.Value);
             //    }
             //}
-        }
+        //}
 
         return text;
     }
