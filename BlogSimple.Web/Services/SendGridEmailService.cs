@@ -26,8 +26,8 @@ public class SendGridEmailService : ISendGridEmailService
 
     public async Task SendEmailForForgotPassword(UserEmailOptions userEmailOptions)
     {
-        userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Password Reset", userEmailOptions.PlaceHolders);
-        userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
+        userEmailOptions.Subject = "BlogSimple Password Reset";//UpdatePlaceHolders("BlogSimple Password Reset", userEmailOptions.PlaceHolders);
+        userEmailOptions.Body = "ForgotPassword"; //UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
 
         await SendEmail(userEmailOptions);
     }
@@ -51,16 +51,16 @@ public class SendGridEmailService : ISendGridEmailService
 
     private string UpdatePlaceHolders(string text, List<KeyValuePair<string, string>> keyValuePairs)
     {
-        //if (!string.IsNullOrEmpty(text) && keyValuePairs != null)
-        //{
-            //foreach (var placeholder in keyValuePairs)
-            //{
-            //    if (text.Contains(placeholder.Key))
-            //    {
-            //        text = text.Replace(placeholder.Key, placeholder.Value);
-            //    }
-            //}
-        //}
+        if (!string.IsNullOrEmpty(text) && keyValuePairs != null)
+        {
+            foreach (var placeholder in keyValuePairs)
+            {
+                if (text.Contains(placeholder.Key))
+                {
+                    text = text.Replace(placeholder.Key, placeholder.Value);
+                }
+            }
+        }
 
         return text;
     }
