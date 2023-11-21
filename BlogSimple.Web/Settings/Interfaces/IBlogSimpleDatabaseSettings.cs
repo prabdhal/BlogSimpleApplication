@@ -1,6 +1,6 @@
 ﻿namespace BlogSimple.Web.Settings.Interfaces;
 
-public interface IPostSimpleDatabaseSettings
+public interface IBlogSimpleDatabaseSettings
 {
     public string PostsCollectionName { get; set; }
     public string UsersCollectionName { get; set; }

@@ -1,6 +1,5 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Web.Services.Interfaces;
-using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -30,17 +29,11 @@ public class SendGridEmailService : ISendGridEmailService
         userEmailOptions.Subject = UpdatePlaceHolders("BlogSimple Password Reset", userEmailOptions.PlaceHolders);
         userEmailOptions.Body = UpdatePlaceHolders(GetEmailBody("ForgotPassword"), userEmailOptions.PlaceHolders);
 
-        await SendEmail(userEmailOptions);
+        //await SendEmail(userEmailOptions);
     }
 
     private async Task SendEmail(UserEmailOptions userEmailOptions)
     {
-        //List<EmailAddress> to = new List<EmailAddress>();
-        //foreach (var toEmail in userEmailOptions.ToEmails)
-        //{
-        //    to.Add(new EmailAddress(toEmail, "Example User"));
-        //}
-
         var apiKey = _sendGridConfig.APIKey;
         var client = new SendGridClient(apiKey);
         var from = new EmailAddress(_sendGridConfig.SenderAddress, _sendGridConfig.SenderDisplayName);

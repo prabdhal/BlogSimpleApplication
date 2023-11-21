@@ -10,7 +10,7 @@ public class PostService : IPostService
     private readonly IMongoCollection<Post> _posts;
 
     public PostService(
-        IPostSimpleDatabaseSettings postSettings,
+        IBlogSimpleDatabaseSettings postSettings,
         IMongoClient mongoClient
         )
     {

@@ -22,7 +22,7 @@ builder.Services.Configure<SendGridConfig>(
     builder.Configuration.GetSection(nameof(SendGridConfig)));
 
 // Ties the interface class with the class.
-builder.Services.AddSingleton<IPostSimpleDatabaseSettings>(e =>
+builder.Services.AddSingleton<IBlogSimpleDatabaseSettings>(e =>
     e.GetRequiredService<IOptions<BlogSimpleDatabaseSettings>>().Value);
 builder.Services.AddSingleton<ISendGridConfig>(e =>
     e.GetRequiredService<IOptions<SendGridConfig>>().Value);

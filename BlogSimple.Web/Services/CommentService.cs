@@ -10,7 +10,7 @@ public class CommentService : ICommentService
     private readonly IMongoCollection<Comment> _comments;
 
     public CommentService(
-        IPostSimpleDatabaseSettings blogSettings,
+        IBlogSimpleDatabaseSettings blogSettings,
         IMongoClient mongoClient
         )
     {

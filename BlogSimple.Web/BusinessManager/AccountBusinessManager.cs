@@ -23,10 +23,10 @@ public class AccountBusinessManager : IAccountBusinessManager
     private readonly string AdminUserRoleName = "Admin";
     private readonly string VerifiedUserRoleName = "VerifiedUser";
     private readonly string UnverifiedUserRoleName = "UnverifiedUser";
-    private readonly int StandardImageWidth = 800;
-    private readonly int StandardImageHeight = 450;
-    private readonly int StandardProfileImageWidth = 150;
-    private readonly int StandardProfileImageHeight = 150;
+    //private readonly int StandardImageWidth = 800;
+    //private readonly int StandardImageHeight = 450;
+    //private readonly int StandardProfileImageWidth = 150;
+    //private readonly int StandardProfileImageHeight = 150;
 
 
     public AccountBusinessManager(

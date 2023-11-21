@@ -10,7 +10,7 @@ public class AchievementsService : IAchievementsService
     private readonly IMongoCollection<Achievements> _achievements;
 
     public AchievementsService(
-        IPostSimpleDatabaseSettings postSettings,
+        IBlogSimpleDatabaseSettings postSettings,
         IMongoClient mongoClient
         )
     {

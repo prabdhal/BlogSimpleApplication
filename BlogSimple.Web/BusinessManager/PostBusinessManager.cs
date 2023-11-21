@@ -23,8 +23,8 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
-    private readonly int StandardImageWidth = 800;
-    private readonly int StandardImageHeight = 450;
+    //private readonly int StandardImageWidth = 800;
+    //private readonly int StandardImageHeight = 450;
 
     // Achievement Events
     public delegate void PostCreatedEventHandler(User user);

@@ -2,7 +2,7 @@
 
 namespace BlogSimple.Web.Settings;
 
-public class BlogSimpleDatabaseSettings : IPostSimpleDatabaseSettings
+public class BlogSimpleDatabaseSettings : IBlogSimpleDatabaseSettings
 {
     public string PostsCollectionName { get; set; }
     public string UsersCollectionName { get; set; }
