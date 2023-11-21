@@ -125,7 +125,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         if (!string.IsNullOrEmpty(token))
         {
-            //await SendForgotPasswordEmail(user, token);
+            await SendForgotPasswordEmail(user, token);
         }
     }
 
@@ -382,7 +382,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             }
         };
 
-        await _emailService.SendEmailForForgotPassword(options);
+        //await _emailService.SendEmailForForgotPassword(options);
     }
 
     public async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)
