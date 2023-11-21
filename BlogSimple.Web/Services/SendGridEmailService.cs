@@ -9,11 +9,11 @@ namespace BlogSimple.Web.Services;
 public class SendGridEmailService : ISendGridEmailService
 {
     private const string templatePath = @"EmailTemplate/{0}.html";
-    private readonly SendGridConfig _sendGridConfig;
+    private readonly ISendGridConfig _sendGridConfig;
 
-    public SendGridEmailService(IOptions<SendGridConfig> sendGridConfig)
+    public SendGridEmailService(ISendGridConfig sendGridConfig)
     {
-        _sendGridConfig = sendGridConfig.Value;
+        _sendGridConfig = sendGridConfig;
     }
 
 

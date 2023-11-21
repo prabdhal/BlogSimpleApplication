@@ -14,17 +14,14 @@ using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
-
-// Gets all the settings from appsettings.json and maps them to DatabaseSettings class. 
+// Gets all the settings from appsettings.json/secrets and maps them to respective class. 
 builder.Services.Configure<BlogSimpleDatabaseSettings>(
     builder.Configuration.GetSection(nameof(BlogSimpleDatabaseSettings)));
 builder.Services.Configure<SendGridConfig>(
     builder.Configuration.GetSection(nameof(SendGridConfig)));
 
 // Ties the interface class with the class.
-// Hence provides the instance of the class (which contains database settings) whenever an instance of the interface is required.
 builder.Services.AddSingleton<IPostSimpleDatabaseSettings>(e =>
     e.GetRequiredService<IOptions<BlogSimpleDatabaseSettings>>().Value);
 builder.Services.AddSingleton<ISendGridConfig>(e =>
