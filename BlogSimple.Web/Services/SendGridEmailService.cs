@@ -41,7 +41,7 @@ public class SendGridEmailService : ISendGridEmailService
         //    to.Add(new EmailAddress(toEmail, "Example User"));
         //}
 
-        var apiKey = _sendGridConfig.APIKeyPassword;
+        var apiKey = _sendGridConfig.APIKey;
         var client = new SendGridClient(apiKey);
         var from = new EmailAddress(_sendGridConfig.SenderAddress, _sendGridConfig.SenderDisplayName);
         var to = new EmailAddress(userEmailOptions.ToEmail, userEmailOptions.FullName);

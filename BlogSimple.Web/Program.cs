@@ -27,7 +27,7 @@ builder.Services.AddSingleton<IPostSimpleDatabaseSettings>(e =>
     e.GetRequiredService<IOptions<BlogSimpleDatabaseSettings>>().Value);
 
 builder.Services.AddSingleton<IMongoClient>(e =>
-    new MongoClient(builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString")));
+    new MongoClient(builder.Configuration.GetSection("BlogSimpleDatabaseSettings:ProdConnectionString").Value));
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
@@ -49,8 +49,8 @@ builder.Services.Configure<SendGridConfigModel>(builder.Configuration.GetSection
 
 builder.Services.AddIdentity<User, UserRole>()
     .AddMongoDbStores<User, UserRole, Guid>(
-    builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:ConnectionString"),
-    builder.Configuration.GetValue<string>("BlogSimpleDatabaseSettings:DatabaseName"))
+    builder.Configuration.GetSection("BlogSimpleDatabaseSettings:ProdConnectionString").Value,
+    builder.Configuration.GetSection("BlogSimpleDatabaseSettings:DatabaseName").Value)
     .AddDefaultTokenProviders();
 
 
