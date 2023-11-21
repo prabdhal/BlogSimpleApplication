@@ -111,6 +111,10 @@ namespace BlogSimple.Web.Controllers
                         ModelState.AddModelError("", "Invalid credentials");
                     }
                 }
+                else
+                {
+                    ModelState.AddModelError("", "User does not exist");
+                }
             }
 
             return View();
