@@ -10,9 +10,9 @@ public class SendGridEmailService : ISendGridEmailService
     private const string templatePath = @"EmailTemplate/{0}.html";
     private readonly ISendGridConfig _sendGridConfig;
 
-    public SendGridEmailService(ISendGridConfig sendGridConfig)
+    public SendGridEmailService()
     {
-        _sendGridConfig = sendGridConfig;
+        //_sendGridConfig = sendGridConfig;
     }
 
 
