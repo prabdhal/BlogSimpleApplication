@@ -199,7 +199,7 @@ namespace BlogSimple.Web.Controllers
                 var user = await _accountBusinessManager.GetUserByEmailAsync(model.Email);
                 if (user != null)
                 {
-                    //await _accountBusinessManager.GenerateForgotPasswordConfirmationTokenAsync(user);
+                    await _accountBusinessManager.GenerateForgotPasswordConfirmationTokenAsync(user);
                 }
 
                 ModelState.Clear();

@@ -125,7 +125,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         if (!string.IsNullOrEmpty(token))
         {
-            await SendForgotPasswordEmail(user, token);
+            //await SendForgotPasswordEmail(user, token);
         }
     }
 
