@@ -382,7 +382,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             }
         };
 
-        //await _emailService.SendEmailForForgotPassword(options);
+        await _emailService.SendEmailForForgotPassword(options);
     }
 
     public async Task<IdentityResult> ConfirmEmailAsync(string uid, string token)
