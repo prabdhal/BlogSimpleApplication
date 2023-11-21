@@ -1,6 +1,6 @@
 ﻿namespace BlogSimple.Model.Models;
 
-public class SendGridConfigModel
+public interface ISendGridConfig
 {
     public string APIKey { get; set; }
     public string SenderAddress { get; set; }

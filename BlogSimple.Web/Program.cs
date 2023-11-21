@@ -20,11 +20,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Gets all the settings from appsettings.json and maps them to DatabaseSettings class. 
 builder.Services.Configure<BlogSimpleDatabaseSettings>(
     builder.Configuration.GetSection(nameof(BlogSimpleDatabaseSettings)));
+builder.Services.Configure<SendGridConfig>(
+    builder.Configuration.GetSection(nameof(SendGridConfig)));
 
 // Ties the interface class with the class.
 // Hence provides the instance of the class (which contains database settings) whenever an instance of the interface is required.
 builder.Services.AddSingleton<IPostSimpleDatabaseSettings>(e =>
     e.GetRequiredService<IOptions<BlogSimpleDatabaseSettings>>().Value);
+builder.Services.AddSingleton<ISendGridConfig>(e =>
+    e.GetRequiredService<IOptions<SendGridConfig>>().Value);
 
 builder.Services.AddSingleton<IMongoClient>(e =>
     new MongoClient(builder.Configuration.GetSection("BlogSimpleDatabaseSettings:ProdConnectionString").Value));
@@ -36,7 +40,6 @@ builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<ICommentReplyService, CommentReplyService>();
 builder.Services.AddScoped<IAchievementsService, AchievementsService>();
 builder.Services.AddTransient<ISendGridEmailService, SendGridEmailService>();
-//builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IHomeBusinessManager, HomeBusinessManager>();
 builder.Services.AddScoped<IPostBusinessManager, PostBusinessManager>();
@@ -45,7 +48,6 @@ builder.Services.AddScoped<IAdminBusinessManager, AdminBusinessManager>();
 builder.Services.AddScoped<IAchievementsBusinessManager, AchievementsBusinessManager>();
 
 //builder.Services.Configure<SMTPConfigModel>(builder.Configuration.GetSection("SMTPConfig"));
-builder.Services.Configure<SendGridConfigModel>(builder.Configuration.GetSection("SendGridConfig"));
 
 builder.Services.AddIdentity<User, UserRole>()
     .AddMongoDbStores<User, UserRole, Guid>(
