@@ -13,6 +13,7 @@ public class AccountBusinessManager : IAccountBusinessManager
 {
     private readonly UserManager<User> _userManager;
     private readonly IUserService _userService;
+    private readonly IAchievementsService _achievementService;
     private readonly IPostService _postService;
     private readonly ICommentService _commentService;
     private readonly ICommentReplyService _replyService;
@@ -32,6 +33,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     public AccountBusinessManager(
         UserManager<User> userManager,
         IUserService userService,
+        IAchievementsService achievementService,
         IPostService postService,
         ICommentService commentService,
         ICommentReplyService replyService,
@@ -42,6 +44,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         _userManager = userManager;
         _userService = userService;
+        _achievementService = achievementService;
         _postService = postService;
         _commentService = commentService;
         _replyService = replyService;
@@ -171,7 +174,7 @@ public class AccountBusinessManager : IAccountBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        Achievements achievements = new Achievements();
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
         var publishedPosts = await _postService.GetAll(user);
         var publishedPostsCount = publishedPosts.Count();
         int totalWordsCount = 0;

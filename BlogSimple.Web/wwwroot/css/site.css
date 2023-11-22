@@ -37,6 +37,17 @@ a {
   text-align: left;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+}
+
+.grid-item {
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    text-align: center;
+}
+
 .validation-summary ul li {
     list-style: none;
 }
