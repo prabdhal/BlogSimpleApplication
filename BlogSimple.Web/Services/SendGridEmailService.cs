@@ -45,7 +45,7 @@ public class SendGridEmailService : ISendGridEmailService
 
     private string GetEmailBody(string templateName)
     {
-        var body = File.ReadAllText("~/EmailTemplate/" +  templateName + ".html");
+        var body = File.ReadAllText("EmailTemplate/" +  templateName + ".html");
         return body;
     }
 
