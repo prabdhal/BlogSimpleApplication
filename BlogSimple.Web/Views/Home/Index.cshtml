@@ -8,7 +8,6 @@
 
 
 <!-- Page content-->
-<div>
     <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedPost))'></div>
     @foreach (var blog in Model.PublishedPosts)
     {
@@ -19,9 +18,9 @@
     <br />
     <br />
     <div id="featuredBlogHeader"></div>
-    <div class="row">
+<div class="home-index-row">
         <!-- Blog entries-->
-        <div class="col-lg-8">
+        <div class="blog-col">
             <!-- Featured blog post-->
             <div id="featuredBlogContainer"></div>
 
@@ -32,7 +31,7 @@
             <div aria-label="Pagination" id="paginationNavContainer"></div>
         </div>
         <!-- Side widgets-->
-        <div class="col-lg-4">
+        <div class="widget-col">
             <!-- Search widget-->
             <div class="standard-card mb-4">
                 <div class="standard-card-header">Search</div>
@@ -79,4 +78,3 @@
             </div>
         </div>
     </div>
-</div>

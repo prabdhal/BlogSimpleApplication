@@ -33,6 +33,33 @@ a {
     cursor: pointer;
 }
 
+.home-index-row {
+    width: 100%;
+    --bs-gutter-x: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+.home-index-row>* {
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    margin-top: var(--bs-gutter-y);
+}
+
+.blog-col {
+    width: 70%;
+}
+
+.widget-col {
+    width: 30%;
+}
+
 .text-left {
   text-align: left;
 }
@@ -606,6 +633,11 @@ a.hero-btn {
     background-color: #EAD7BB;
   }
 
+@media screen and (max-width: 1000px) {
+    .blog-col,.widget-col{
+        width: 100%;
+    }
+}
 
 /* Change styles for cancel button and delete button on extra small screens */
 @media screen and (max-width: 300px) {
