@@ -51,6 +51,10 @@
     transition: all 50ms ease-in-out;
 }
 
+.account-footer input:hover {
+    background-color: #FFF2D8;
+}
+
 .account-btn {
     color: white;
 }

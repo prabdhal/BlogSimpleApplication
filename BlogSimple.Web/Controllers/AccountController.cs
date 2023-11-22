@@ -92,19 +92,19 @@ namespace BlogSimple.Web.Controllers
                 if (user != null)
                 {
                     Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
-                    if (result.Succeeded || user.EmailConfirmed == false)
+                    if (result.Succeeded && user.EmailConfirmed == true)
                     {
-                        if (user.EmailConfirmed == false)
-                        {
-                            EmailConfirmViewModel model = new EmailConfirmViewModel
-                            {
-                                Email = user.Email,
-                                EmailSent = true,
-                                EmailVerified = user.EmailConfirmed
-                            };
-                            return RedirectToAction("EmailVerification", model);
-                        }
                         return Redirect(returnurl ?? "/Post/Index");
+                    }
+                    else if (result.Succeeded && user.EmailConfirmed == false)
+                    {
+                        EmailConfirmViewModel model = new EmailConfirmViewModel
+                        {
+                            Email = user.Email,
+                            EmailSent = true,
+                            EmailVerified = user.EmailConfirmed
+                        };
+                        return RedirectToAction("EmailVerification", model);
                     }
                     else
                     {
