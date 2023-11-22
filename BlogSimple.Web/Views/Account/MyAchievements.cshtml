@@ -14,76 +14,122 @@
         <div class="text-left">
             <h4>Achievement Details - @Model.AccountUser.UserName</h4>
             <hr />
-            <table class="table">
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.CreatedPostFirstTime)</th>
-                    <td>@Model.Achievements.CreatedPostFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedPostFirstTime)</th>
-                    <td>@Model.Achievements.PublishedPostFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedFivePosts)</th>
-                    <td>@Model.Achievements.PublishedFivePosts</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedTenPosts)</th>
-                    <td>@Model.Achievements.PublishedTenPosts</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.EditedPostFirstTime)</th>
-                    <td>@Model.Achievements.EditedPostFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.FavoritePostFirstTime)</th>
-                    <td>@Model.Achievements.FavoritePostFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedCommentFirstTime)</th>
-                    <td>@Model.Achievements.PublishedCommentFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedFiveComments)</th>
-                    <td>@Model.Achievements.PublishedFiveComments</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.LikedCommentFirstTime)</th>
-                    <td>@Model.Achievements.LikedCommentFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.LikedFiveComments)</th>
-                    <td>@Model.Achievements.LikedFiveComments</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.LikedTenComments)</th>
-                    <td>@Model.Achievements.LikedTenComments</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedReplyFirstTime)</th>
-                    <td>@Model.Achievements.PublishedReplyFirstTime</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedOver1000TotalWords)</th>
-                    <td>@Model.Achievements.PublishedOver1000TotalWords</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedOver5000TotalWords)</th>
-                    <td>@Model.Achievements.PublishedOver5000TotalWords</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedOver10000TotalWords)</th>
-                    <td>@Model.Achievements.PublishedOver10000TotalWords</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedOver500TotalWords)</th>
-                    <td>@Model.Achievements.PublishedOver500TotalWords</td>
-                </tr>
-                <tr>
-                    <th scope="row">@Html.DisplayNameFor(model => model.Achievements.PublishedOver50000TotalWords)</th>
-                    <td>@Model.Achievements.PublishedOver50000TotalWords</td>
-                </tr>
-            </table>
+            <div class="grid-container">
+                <div class="grid-item">
+                    <strong>Create a Post</strong>
+                    @Model.Achievements.CreatedPostFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.CreatedPostFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Publish a Post</strong>
+                    @Model.Achievements.PublishedPostFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedPostFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Five Posts</strong>
+                    @Model.Achievements.PublishedFivePostsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedFivePosts
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Ten Posts</strong>
+                    @Model.Achievements.PublishedTenPostsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedTenPosts
+                </div>
+                <div class="grid-item">
+                    <strong>Edit a Post</strong>
+                    @Model.Achievements.EditedPostFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.EditedPostFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Favorite a Post</strong>
+                    @Model.Achievements.FavoritePostFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.FavoritePostFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Comment on a Post</strong>
+                    @Model.Achievements.CreatedPostFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.CreatedPostFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Comment Five Times</strong>
+                    @Model.Achievements.PublishedFiveCommentsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedFiveComments
+                </div>
+                <div class="grid-item">
+                    <strong>Comment Ten Times</strong>
+                    @Model.Achievements.PublishedTenCommentsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedTenComments
+                </div>
+                <div class="grid-item">
+                    <strong>Comment 20 Times</strong>
+                    @Model.Achievements.Published20CommentsImagePath
+                    <br />
+                    Completed: @Model.Achievements.Published20Comments
+                </div>
+                <div class="grid-item">
+                    <strong>Like a Comment</strong>
+                    @Model.Achievements.LikedCommentFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.LikedCommentFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Like Five Comments</strong>
+                    @Model.Achievements.LikedFiveCommentsImagePath
+                    <br />
+                    Completed: @Model.Achievements.LikedFiveComments
+                </div>
+                <div class="grid-item">
+                    <strong>Like Ten Comments</strong>
+                    @Model.Achievements.LikedTenCommentsImagePath
+                    <br />
+                    Completed: @Model.Achievements.LikedTenComments
+                </div>
+                <div class="grid-item">
+                    <strong>Reply to a Comment</strong>
+                    @Model.Achievements.PublishedReplyFirstTimeImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedReplyFirstTime
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Over 500 Total Words</strong>
+                    @Model.Achievements.PublishedOver500TotalWordsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedOver500TotalWords
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Over 1000 Total Words</strong>
+                    @Model.Achievements.PublishedOver1000TotalWordsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedOver1000TotalWords
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Over 5000 Total Words</strong>
+                    @Model.Achievements.PublishedOver5000TotalWordsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedOver5000TotalWords
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Over 10000 Total Words</strong>
+                    @Model.Achievements.PublishedOver10000TotalWordsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedOver10000TotalWords
+                </div>
+                <div class="grid-item">
+                    <strong>Publish Over 50000 Total Words</strong>
+                    @Model.Achievements.PublishedOver50000TotalWordsImagePath
+                    <br />
+                    Completed: @Model.Achievements.PublishedOver50000TotalWords
+                </div>
+            </div>
             <br />
             <br />
         </div>
@@ -92,13 +138,3 @@
 
 
 
-<script>
-    const formSubmitBtn = document.querySelector('#formSubmitBtn');
-
-    formSubmitBtn.addEventListener('click', (e) => {
-        setTimeout(() => {
-            formSubmitBtn.disabled = true;
-            formSubmitBtn.value = "Loading...";
-        }, 50);
-    });
-</script>
