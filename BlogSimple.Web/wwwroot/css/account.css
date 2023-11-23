@@ -78,8 +78,48 @@
     gap: 10px;
 }
 
-    .dash-nav-link:hover {
-        color: #FFF2D8;
+
+
+:root {
+    --gold: #ffb338;
+    --light-shadow: #77571d;
+    --dark-shadow: #3e2904;
+}
+
+.achievement-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(5px 5px 5px rgba(50, 50, 0, 0.5));
+}
+
+.dash-nav-link:hover {
+    color: #FFF2D8;
+}
+
+.achievement-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    aspect-ratio: 1;
+    background-image: repeating-linear-gradient( 105deg, var(--gold) 10%, var(--light-shadow) 100%, var(--gold) 10%);
+    clip-path: polygon(100.00% 50.00%,75.00% 93.30%,25.00% 93.30%,0.00% 50.00%,25.00% 6.70%,75.00% 6.70%);
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+    .achievement-badge:hover {
+        transform: scale(1.05);
+    }
+
+.achievement-completed {
+    background-color: #113946;
+    background-image: unset;
+}
+
+    .achievement-completed:hover {
+        transform: scale(1) !important
     }
 
 @media only screen and (max-width: 500px) {
