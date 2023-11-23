@@ -53,8 +53,6 @@ public class AccountBusinessManager : IAccountBusinessManager
         _achievementsBusinessManager = achievementsBusinessManager;
     }
 
-    #region Achievement Event Handlers
-    #endregion
 
     public async Task<User> GetUserByEmailAsync(string email)
     {
@@ -173,7 +171,6 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAchievementsViewModel> GetMyAchievementsViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-
         Achievements achievements = await _achievementService.Get(user.AchievementId);
         //var publishedPosts = await _postService.GetAll(user);
         //var publishedPostsCount = publishedPosts.Count();
