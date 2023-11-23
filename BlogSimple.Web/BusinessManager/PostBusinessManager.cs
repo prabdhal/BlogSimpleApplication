@@ -940,6 +940,9 @@ public class PostBusinessManager : IPostBusinessManager
             _postService.Remove(post.Id);
         }
 
+        //delete user achievements model
+        _achievementService.Remove(user.AchievementId);
+
         // delete user 
         _userService.Remove(user.Id);
     }

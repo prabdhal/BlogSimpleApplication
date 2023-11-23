@@ -8,27 +8,38 @@
 
 
 <!-- Page content-->
-    <div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedPost))'></div>
-    @foreach (var blog in Model.PublishedPosts)
-    {
-        <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
-    }
-    <div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
-    <br />
-    <br />
-    <br />
-    <div id="featuredBlogHeader"></div>
+<div hidden id="featuredBlog" value='@Html.Raw(Json.Serialize(Model.FeaturedPost))'></div>
+@foreach (var blog in Model.PublishedPosts)
+{
+    <div hidden class="blogsData" value='@Html.Raw(Json.Serialize(blog))'></div>
+}
+<div hidden id="blogCategoryData" value='@Html.Raw(Json.Serialize(Enum.GetValues(typeof(PostCategory))))'></div>
+<br />
+<br />
+<br />
+<div id="featuredBlogHeader"></div>
 <div class="home-index-row">
-        <!-- Blog entries-->
-        <div class="blog-col">
-            <!-- Featured blog post-->
-            <div id="featuredBlogContainer"></div>
+    <!-- Blog entries-->
+    <div class="blog-col">
+        <!-- Featured blog post-->
+        <div id="featuredBlogContainer"></div>
+        <!-- Nested row for non-featured blog posts-->
+        <div class="post-container" id="blogsDisplayContainer"></div>
 
-            <!-- Nested row for non-featured blog posts-->
-            <div class="post-container" id="blogsDisplayContainer"></div>
-           
-            <!-- Pagination-->
-            <div aria-label="Pagination" id="paginationNavContainer"></div>
+        <!-- Pagination-->
+        <div aria-label="Pagination" id="paginationNavContainer"></div>
+    </div>
+    <!-- Side widgets-->
+    <div class="widget-col">
+        <!-- Search widget-->
+        <div class="standard-card mb-4">
+            <div class="standard-card-header">Search</div>
+            <div class="standard-card-body">
+                <div class="input-group">
+                    <input class="form-control" id="searchBarInput" type="text" placeholder="Search for blogs..." aria-label="Search for blogs..." aria-describedby="button-search" />
+                    <button class="search-btn" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
         </div>
         <!-- Side widgets-->
         <div class="widget-col">
@@ -40,41 +51,38 @@
                         <input class="form-control" id="searchBarInput" type="text" placeholder="Search for blogs..." aria-label="Search for blogs..." aria-describedby="button-search" />
                         <button class="search-btn" id="searchBarBtn" type="submit"><i class="fas fa-search"></i></button>
                     </div>
+        <!-- Categories widget-->
+        <div class="standard-card mb-4">
+            <div class="standard-card-header">Categories</div>
+            <div class="standard-card-body">
+                <div class="row">
+                    <ul class="list-unstyled mb-0" id="blogCategoryListContainer">
+                    </ul>
                 </div>
             </div>
-            <!-- Categories widget-->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Categories</div>
-                <div class="standard-card-body">
-                    <div class="row">
-                        <ul class="list-unstyled mb-0" id="blogCategoryListContainer">
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- Trending Posts -->
-            <div class="standard-card mb-4">
-                <div class="standard-card-header">Trending Posts</div>
-                <div class="standard-card-body post-widget-container">
-                    @{
-                        int idx = 0;
-                        foreach (Post post in Model.PublishedPosts)
+        </div>
+        <!-- Trending Posts -->
+        <div class="standard-card mb-4">
+            <div class="standard-card-header">Trending Posts</div>
+            <div class="standard-card-body post-widget-container">
+                @{
+                    int idx = 0;
+                    foreach (Post post in Model.PublishedPosts)
+                    {
+                        if (idx < 5)
                         {
-                            if (idx < 5)
+                            if (idx > 0)
                             {
-                                if (idx > 0)
-                                {
-                                    <hr class="post-widget-hr" />
-                                }
-                                idx++;
-                                <div class="post-widget-body">
-                                    <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.Title Image">
-                                    <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
-                                </div>
+                                <hr class="post-widget-hr" />
                             }
+                            idx++;
+                            <div class="post-widget-body">
+                                <img class="post-widget-img" src="data:image/jpg;base64,@Convert.ToBase64String(post.HeaderImage)" alt="@post.Title Image">
+                                <h5 class="post-widget-body-title"><a href="/Post/PostDetails/@post.Id">@post.Title</a></h5>
+                            </div>
                         }
                     }
-                </div>
+                }
             </div>
         </div>
     </div>
