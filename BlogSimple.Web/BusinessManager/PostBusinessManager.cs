@@ -228,7 +228,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             createdPostFirstTimeAchievementNotification.Name = achievements.CreatedPostFirstTimeName;
             createdPostFirstTimeAchievementNotification.Description = achievements.CreatedPostFirstTimeDescription;
-            createdPostFirstTimeAchievementNotification.ImagePath = achievements.CreatedPostFirstTimeImagePath;
             results.Add(createdPostFirstTimeAchievementNotification);
         }
         if (achievements.PublishedPostFirstTimeActive && achievements.PublishedPostFirstTime)
@@ -237,7 +236,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedPostFirstTimeAchievementNotification.Name = achievements.PublishedPostFirstTimeName;
             publishedPostFirstTimeAchievementNotification.Description = achievements.PublishedPostFirstTimeDescription;
-            publishedPostFirstTimeAchievementNotification.ImagePath = achievements.PublishedPostFirstTimeImagePath;
             results.Add(publishedPostFirstTimeAchievementNotification);
         }
         if (achievements.PublishedFivePostsActive && achievements.PublishedFivePosts)
@@ -246,7 +244,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedFivePostsAchievementNotification.Name = achievements.PublishedFivePostsName;
             publishedFivePostsAchievementNotification.Description = achievements.PublishedFivePostsDescription;
-            publishedFivePostsAchievementNotification.ImagePath = achievements.PublishedFivePostsImagePath;
             results.Add(publishedFivePostsAchievementNotification);
         }
         if (achievements.PublishedTenPostsActive && achievements.PublishedTenPosts)
@@ -255,7 +252,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedTenPostsAchievementNotification.Name = achievements.PublishedTenPostsName;
             publishedTenPostsAchievementNotification.Description = achievements.PublishedTenPostsDescription;
-            publishedTenPostsAchievementNotification.ImagePath = achievements.PublishedTenPostsImagePath;
             results.Add(publishedTenPostsAchievementNotification);
         }
         if (achievements.EditedPostFirstTimeActive && achievements.EditedPostFirstTime)
@@ -264,7 +260,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             editPostFirstTimeAchievementNotification.Name = achievements.EditedPostFirstTimeName;
             editPostFirstTimeAchievementNotification.Description = achievements.EditedPostFirstTimeDescription;
-            editPostFirstTimeAchievementNotification.ImagePath = achievements.EditedPostFirstTimeImagePath;
             results.Add(editPostFirstTimeAchievementNotification);
         }
         if (achievements.FavoritePostFirstTimeActive && achievements.FavoritePostFirstTime)
@@ -273,7 +268,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             favoritedPostFirstTimeAchievementNotification.Name = achievements.FavoritePostFirstTimeName;
             favoritedPostFirstTimeAchievementNotification.Description = achievements.FavoritePostFirstTimeDescription;
-            favoritedPostFirstTimeAchievementNotification.ImagePath = achievements.FavoritePostFirstTimeImagePath;
             results.Add(favoritedPostFirstTimeAchievementNotification);
         }
         if (achievements.PublishedCommentFirstTimeActive && achievements.PublishedCommentFirstTime)
@@ -282,7 +276,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedCommentFirstTimeAchievementNotification.Name = achievements.PublishedCommentFirstTimeName;
             publishedCommentFirstTimeAchievementNotification.Description = achievements.PublishedCommentFirstTimeDescription;
-            publishedCommentFirstTimeAchievementNotification.ImagePath = achievements.PublishedCommentFirstTimeImagePath;
             results.Add(publishedCommentFirstTimeAchievementNotification);
         }
         if (achievements.LikedCommentFirstTimeActive && achievements.LikedCommentFirstTime)
@@ -291,7 +284,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             likedCommentFirstTimeAchievementNotification.Name = achievements.LikedCommentFirstTimeName;
             likedCommentFirstTimeAchievementNotification.Description = achievements.LikedCommentFirstTimeDescription;
-            likedCommentFirstTimeAchievementNotification.ImagePath = achievements.LikedCommentFirstTimeImagePath;
             results.Add(likedCommentFirstTimeAchievementNotification);
         }
         if (achievements.PublishedReplyFirstTimeActive && achievements.PublishedReplyFirstTime)
@@ -300,7 +292,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedReplyFirstTimeAchievementNotification.Name = achievements.PublishedReplyFirstTimeName;
             publishedReplyFirstTimeAchievementNotification.Description = achievements.PublishedReplyFirstTimeDescription;
-            publishedReplyFirstTimeAchievementNotification.ImagePath = achievements.PublishedReplyFirstTimeImagePath;
             results.Add(publishedReplyFirstTimeAchievementNotification);
         }
         if (achievements.PublishedOver500TotalWordsActive && achievements.PublishedOver500TotalWords)
@@ -309,7 +300,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedOver500TotalWordsAchievementNotification.Name = achievements.PublishedOver500TotalWordsName;
             publishedOver500TotalWordsAchievementNotification.Description = achievements.PublishedOver500TotalWordsDescription;
-            publishedOver500TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver500TotalWordsImagePath;
             results.Add(publishedOver500TotalWordsAchievementNotification);
         }
         if (achievements.PublishedOver1000TotalWordsActive && achievements.PublishedOver1000TotalWords)
@@ -318,7 +308,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedOver1000TotalWordsAchievementNotification.Name = achievements.PublishedOver1000TotalWordsName;
             publishedOver1000TotalWordsAchievementNotification.Description = achievements.PublishedOver1000TotalWordsDescription;
-            publishedOver1000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver1000TotalWordsImagePath;
             results.Add(publishedOver1000TotalWordsAchievementNotification);
         }
         if (achievements.PublishedOver5000TotalWordsActive && achievements.PublishedOver5000TotalWords)
@@ -327,7 +316,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedOver5000TotalWordsAchievementNotification.Name = achievements.PublishedOver5000TotalWordsName;
             publishedOver5000TotalWordsAchievementNotification.Description = achievements.PublishedOver5000TotalWordsDescription;
-            publishedOver5000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver5000TotalWordsImagePath;
             results.Add(publishedOver5000TotalWordsAchievementNotification);
         }
         if (achievements.PublishedOver10000TotalWordsActive && achievements.PublishedOver10000TotalWords)
@@ -336,7 +324,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedOver10000TotalWordsAchievementNotification.Name = achievements.PublishedOver10000TotalWordsName;
             publishedOver10000TotalWordsAchievementNotification.Description = achievements.PublishedOver10000TotalWordsDescription;
-            publishedOver10000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver10000TotalWordsImagePath;
             results.Add(publishedOver10000TotalWordsAchievementNotification);
         }
         if (achievements.PublishedOver50000TotalWordsActive && achievements.PublishedOver50000TotalWords)
@@ -345,7 +332,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedOver50000TotalWordsAchievementNotification.Name = achievements.PublishedOver50000TotalWordsName;
             publishedOver50000TotalWordsAchievementNotification.Description = achievements.PublishedOver50000TotalWordsDescription;
-            publishedOver50000TotalWordsAchievementNotification.ImagePath = achievements.PublishedOver50000TotalWordsImagePath;
             results.Add(publishedOver50000TotalWordsAchievementNotification);
         }
         if (achievements.PublishedTenCommentsActive && achievements.PublishedTenComments)
@@ -354,7 +340,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedTenCommentsAchievementNotification.Name = achievements.PublishedTenCommentsName;
             publishedTenCommentsAchievementNotification.Description = achievements.PublishedTenCommentsDescription;
-            publishedTenCommentsAchievementNotification.ImagePath = achievements.PublishedTenCommentsImagePath;
             results.Add(publishedTenCommentsAchievementNotification);
         }
         if (achievements.Published20CommentsActive && achievements.Published20Comments)
@@ -363,7 +348,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             published20CommentsAchievementNotification.Name = achievements.Published20CommentsName;
             published20CommentsAchievementNotification.Description = achievements.Published20CommentsDescription;
-            published20CommentsAchievementNotification.ImagePath = achievements.Published20CommentsImagePath;
             results.Add(published20CommentsAchievementNotification);
         }
         if (achievements.PublishedFiveCommentsActive && achievements.PublishedFiveComments)
@@ -372,7 +356,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             publishedFiveCommentsAchievementNotification.Name = achievements.PublishedFiveCommentsName;
             publishedFiveCommentsAchievementNotification.Description = achievements.PublishedFiveCommentsDescription;
-            publishedFiveCommentsAchievementNotification.ImagePath = achievements.PublishedFiveCommentsImagePath;
             results.Add(publishedFiveCommentsAchievementNotification);
         }
         if (achievements.LikedFiveCommentsActive && achievements.LikedFiveComments)
@@ -381,7 +364,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             likedFiveCommentsAchievementNotification.Name = achievements.LikedFiveCommentsName;
             likedFiveCommentsAchievementNotification.Description = achievements.LikedFiveCommentsDescription;
-            likedFiveCommentsAchievementNotification.ImagePath = achievements.LikedFiveCommentsImagePath;
             results.Add(likedFiveCommentsAchievementNotification);
         }
         if (achievements.LikedTenCommentsActive && achievements.LikedTenComments)
@@ -390,7 +372,6 @@ public class PostBusinessManager : IPostBusinessManager
 
             likedTenCommentsAchievementNotification.Name = achievements.LikedTenCommentsName;
             likedTenCommentsAchievementNotification.Description = achievements.LikedTenCommentsDescription;
-            likedTenCommentsAchievementNotification.ImagePath = achievements.LikedTenCommentsImagePath;
             results.Add(likedTenCommentsAchievementNotification);
         }
 

@@ -175,20 +175,20 @@ public class AccountBusinessManager : IAccountBusinessManager
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
         Achievements achievements = await _achievementService.Get(user.AchievementId);
-        var publishedPosts = await _postService.GetAll(user);
-        var publishedPostsCount = publishedPosts.Count();
-        int totalWordsCount = 0;
+        //var publishedPosts = await _postService.GetAll(user);
+        //var publishedPostsCount = publishedPosts.Count();
+        //int totalWordsCount = 0;
 
-        var comments = await _commentService.GetAll(user);
-        var replies = await _replyService.GetAllByUser(user);
-        var totalCommentsCount = comments.Count();
-        var totalRepliesCount = replies.Count();
-        var favoritedPostsCount = user.FavoritedPosts.Count();
+        //var comments = await _commentService.GetAll(user);
+        //var replies = await _replyService.GetAllByUser(user);
+        //var totalCommentsCount = comments.Count();
+        //var totalRepliesCount = replies.Count();
+        //var favoritedPostsCount = user.FavoritedPosts.Count();
 
-        foreach (Post post in publishedPosts)
-        {
-            totalWordsCount += post.WordCount;
-        }
+        //foreach (Post post in publishedPosts)
+        //{
+        //    totalWordsCount += post.WordCount;
+        //}
 
         return new MyAchievementsViewModel
         {
