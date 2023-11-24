@@ -179,7 +179,8 @@ public class AccountBusinessManager : IAccountBusinessManager
         }
         catch (Exception ex)
         {
-            throw new Exception("Achievements data not found using user id:" + user.AchievementId + ". " + ex);
+            Console.WriteLine(ex.ToString());
+            throw;
         }
         //var publishedPosts = await _postService.GetAll(user);
         //var publishedPostsCount = publishedPosts.Count();

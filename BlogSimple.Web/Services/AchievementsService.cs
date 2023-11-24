@@ -2,6 +2,7 @@
 using BlogSimple.Web.Services.Interfaces;
 using BlogSimple.Web.Settings.Interfaces;
 using MongoDB.Driver;
+using NuGet.ProjectModel;
 
 namespace BlogSimple.Web.Services;
 
@@ -27,7 +28,16 @@ public class AchievementsService : IAchievementsService
 
     public async Task<Achievements> Get(string id)
     {
-        var achievements = await _achievements.Find(u => u.Id == id).FirstOrDefaultAsync();
+        Achievements achievements;
+        try
+        {
+            achievements = await _achievements.Find(u => u.Id == id).FirstOrDefaultAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            throw;
+        }
         return achievements;
     }
 
