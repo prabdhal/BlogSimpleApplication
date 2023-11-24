@@ -171,7 +171,16 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAchievementsViewModel> GetMyAchievementsViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        Achievements achievements;
+
+        try
+        {
+            achievements = await _achievementService.Get(user.AchievementId);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Achievements data not found using user id:" + user.AchievementId + ". " + ex);
+        }
         //var publishedPosts = await _postService.GetAll(user);
         //var publishedPostsCount = publishedPosts.Count();
         //int totalWordsCount = 0;

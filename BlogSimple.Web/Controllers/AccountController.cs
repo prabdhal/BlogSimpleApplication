@@ -130,15 +130,8 @@ namespace BlogSimple.Web.Controllers
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
         public async Task<ActionResult> MyAchievements()
         {
-            try
-            {
-                var myAchievements = await _accountBusinessManager.GetMyAchievementsViewModel(User);
-                return View(myAchievements);
-            }
-            catch (Exception ex)
-            {
-                return View(ex);
-            }
+            var myAchievements = await _accountBusinessManager.GetMyAchievementsViewModel(User);
+            return View(myAchievements);
         }
 
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]
