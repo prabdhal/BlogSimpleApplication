@@ -67,7 +67,8 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.Configure<IdentityOptions>(options
     => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
 
-builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
         options.JsonSerializerOptions.PropertyNameCaseInsensitive = false);
 
 builder.Services.AddRazorPages()

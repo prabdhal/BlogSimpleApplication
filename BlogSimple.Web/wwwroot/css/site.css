@@ -71,6 +71,10 @@ a {
     width: 30%;
 }
 
+.widget-container-layout {
+    margin-top: 150px;
+}
+
 .text-left {
     text-align: left;
 }
