@@ -108,7 +108,7 @@ namespace BlogSimple.Web.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Invalid credentials");
+                        ModelState.AddModelError("", "Please enter the correct password");
                     }
                 }
                 else
