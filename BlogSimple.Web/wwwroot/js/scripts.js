@@ -151,9 +151,6 @@ const displayFeaturedPost = () => {
     var year = createdOnDate.getFullYear();
     var month = months[createdOnDate.getMonth()].substring(0, 3);
     var day = createdOnDate.getDate();
-    console.log('creator: ' + featuredPost.title);
-    console.log('creator: ' + featuredPost.createdBy);
-    console.log('creator: ' + featuredPost.createdBy.userName);
 
     const divElement = document.createElement('div');
     divElement.innerHTML =
@@ -175,7 +172,7 @@ const displayFeaturedPost = () => {
                             </svg>
                         </span>
                         <span style="font-style:italic;">
-                            ${month}/${day}/${year}
+                            ${month}. ${day}, ${year}
                         </span>
                     </span>
                     <span>
@@ -258,7 +255,7 @@ const displayPosts = () => {
                                 </svg>
                             </span>
                             <span style="font-style:italic;">
-                                ${month}/${day}/${year}
+                                ${month}. ${day}, ${year}
                             </span>
                         </span>
                         <span>

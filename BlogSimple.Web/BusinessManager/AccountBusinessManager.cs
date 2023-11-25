@@ -277,12 +277,21 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<AuthorViewModel> GetAuthorViewModel(string userId)
     {
         var user = await _userService.Get(userId);
-        user.HeaderImage = GetImage(Convert.ToBase64String(user.HeaderImage));
+        //user.HeaderImage = GetImage(Convert.ToBase64String(user.HeaderImage));
         var posts = await _postService.GetAll();
         var authorsPosts = await _postService.GetAllPublishedByUser(user);
 
         List<string> postCats = new List<string>();
         IEnumerable<User> users = await _userService.GetAll();
+        //IEnumerable<User> notableAuthors;
+        //Dictionary<User, int> userPostCount = new Dictionary<User, int>();
+
+        //foreach (var u in users)
+        //{
+        //    var ps = await _postService.GetAllPublishedByUser(u);
+        //    int count = ps.Count;
+        //    userPostCount.Add(u, count);
+        //}
 
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
