@@ -171,36 +171,31 @@ public class AccountBusinessManager : IAccountBusinessManager
     public async Task<MyAchievementsViewModel> GetMyAchievementsViewModel(ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        Achievements achievements;
+        Achievements achievements = await _achievementService.Get(user.AchievementId);
+        var publishedPosts = await _postService.GetAll(user);
+        var publishedPostsCount = publishedPosts.Count();
+        int totalWordsCount = 0;
 
-        try
+        var comments = await _commentService.GetAll(user);
+        var replies = await _replyService.GetAllByUser(user);
+        var totalCommentsCount = comments.Count();
+        var totalRepliesCount = replies.Count();
+        var savedPostsCount = user.FavoritedPosts.Count();
+
+        foreach (Post post in publishedPosts)
         {
-            achievements = await _achievementService.Get(user.AchievementId);
+            totalWordsCount += post.WordCount;
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-            throw;
-        }
-        //var publishedPosts = await _postService.GetAll(user);
-        //var publishedPostsCount = publishedPosts.Count();
-        //int totalWordsCount = 0;
-
-        //var comments = await _commentService.GetAll(user);
-        //var replies = await _replyService.GetAllByUser(user);
-        //var totalCommentsCount = comments.Count();
-        //var totalRepliesCount = replies.Count();
-        //var favoritedPostsCount = user.FavoritedPosts.Count();
-
-        //foreach (Post post in publishedPosts)
-        //{
-        //    totalWordsCount += post.WordCount;
-        //}
 
         return new MyAchievementsViewModel
         {
             AccountUser = user,
             Achievements = achievements,
+            PublishedPostsCount = publishedPostsCount,
+            PublishedCommentsCount = totalCommentsCount,
+            PublishedRepliesCount = totalRepliesCount,
+            SavedPostsCount = savedPostsCount,
+            TotalPublishedWordsCount = totalWordsCount
         };
     }
 
