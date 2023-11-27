@@ -20,9 +20,11 @@ public class PostBusinessManager : IPostBusinessManager
     private readonly ICommentReplyService _commentReplyService;
     private readonly IAchievementsService _achievementService;
     private readonly IAchievementsBusinessManager _achievementsBusinessManager;
+    #region Deleted User Variables
     private readonly string deletedUserCommentText = "<<The comment can no longer be viewed since the user account has been deleted>>";
     private readonly string deletedUserUserNameText = "<<Anonymous>>";
     private readonly Guid deletedUserIdText = new Guid("12345678-1234-1234-1234-123456789012");
+    #endregion
     //private readonly int StandardImageWidth = 800;
     //private readonly int StandardImageHeight = 450;
 
@@ -894,6 +896,7 @@ public class PostBusinessManager : IPostBusinessManager
                 Comment removalCommentTemplate = await _commentService.Get(comment.Id);
                 removalCommentTemplate.Content = deletedUserCommentText;
                 removalCommentTemplate.CreatedBy = deletedUser;
+
                 await _commentService.UpdateForRemoval(comment.Id, removalCommentTemplate);
             }
         }
