@@ -53,7 +53,6 @@ public class AccountBusinessManager : IAccountBusinessManager
         _achievementsBusinessManager = achievementsBusinessManager;
     }
 
-
     public async Task<User> GetUserByEmailAsync(string email)
     {
         var user = await _userManager.FindByEmailAsync(email);
