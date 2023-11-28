@@ -5,7 +5,9 @@ using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using SkiaSharp;
+using System.Collections.Generic;
 using System.Security.Claims;
+using ZstdSharp.Unsafe;
 
 namespace BlogSimple.Web.BusinessManager;
 
@@ -148,9 +150,11 @@ public class AccountBusinessManager : IAccountBusinessManager
         int totalWordsCount = 0;
 
         var comments = await _commentService.GetAll(user);
+        var allComments = await _commentService.GetAll();
         var replies = await _replyService.GetAllByUser(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
         var favoritedPostsCount = user.FavoritedPosts.Count();
+        var totalCommentsLikedCount = GetTotalCommentsLikedCountByUser(user, allComments);
 
         foreach (Post post in publishedPosts)
         {
@@ -162,8 +166,9 @@ public class AccountBusinessManager : IAccountBusinessManager
             AccountUser = user,
             PublishedPostsCount = publishedPostsCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            FavoritePostsCount = favoritedPostsCount,
-            TotalWordsCount = totalWordsCount
+            TotalCommentsLiked = totalCommentsLikedCount,
+        SavedPostsCount = favoritedPostsCount,
+            TotalWordsCount = totalWordsCount,
         };
     }
 
@@ -177,9 +182,11 @@ public class AccountBusinessManager : IAccountBusinessManager
 
         var comments = await _commentService.GetAll(user);
         var replies = await _replyService.GetAllByUser(user);
+        var allComments = await _commentService.GetAll();
         var totalCommentsCount = comments.Count();
         var totalRepliesCount = replies.Count();
         var savedPostsCount = user.FavoritedPosts.Count();
+        var totalCommentsLikedCount = GetTotalCommentsLikedCountByUser(user, allComments);
 
         foreach (Post post in publishedPosts)
         {
@@ -194,8 +201,27 @@ public class AccountBusinessManager : IAccountBusinessManager
             PublishedCommentsCount = totalCommentsCount,
             PublishedRepliesCount = totalRepliesCount,
             SavedPostsCount = savedPostsCount,
-            TotalPublishedWordsCount = totalWordsCount
+            TotalPublishedWordsCount = totalWordsCount,
+            TotalCommentsLiked = totalCommentsLikedCount
         };
+    }
+
+    private int GetTotalCommentsLikedCountByUser(User user, List<Comment> comments)
+    {
+        var totalCommentsLiked = 0;
+
+        foreach (Comment cmt in comments)
+        {
+            foreach (User u in cmt.CommentLikedByUsers)
+            {
+                if (u.Username == user.Username)
+                {
+                    totalCommentsLiked += 1;
+                }
+            }
+        }
+
+        return totalCommentsLiked;
     }
 
     private byte[] GetImage(string sBase64String)

@@ -62,10 +62,10 @@
                                         <button type="submit" class="svgButton">
                                             <svg fill="#113946" height="30px" width="30px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve">
                                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
-                                                                        </g><g id="SVGRepo_iconCarrier"> 
+                                                                                    </g><g id="SVGRepo_iconCarrier"> 
                                             <path d="M22,3H10C8.9,3,8,3.9,8,5v22.6c0,0.8,0.5,1.5,1.2,1.8c0.8,0.3,1.6,0.1,2.2-0.4l4.6-4.6l4.6,4.6c0.4,0.4,0.9,0.6,1.4,0.6 c0.3,0,0.5,0,0.8-0.2c0.8-0.3,1.2-1,1.2-1.8V5C24,3.9,23.1,3,22,3z"></path> 
-                                                                        </g>
-                                                                    </svg>
+                                                                                    </g>
+                                                                                </svg>
                                         </button>
                                     }
                                     else
@@ -85,8 +85,8 @@
                                                                             }
             </style> 
                                             <path class="st0" d="M21.3,28.3L16,23l-5.3,5.3C10.1,28.9,9,28.5,9,27.6V5c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1v22.6 C23,28.5,21.9,28.9,21.3,28.3z"></path> 
-                                                                        </g>
-                                                                    </svg>
+                                                                                    </g>
+                                                                                </svg>
                                         </button>
                                     }
                                 }
@@ -107,8 +107,8 @@
                                                                          }
         </style> 
                                         <path class="st0" d="M21.3,28.3L16,23l-5.3,5.3C10.1,28.9,9,28.5,9,27.6V5c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1v22.6 C23,28.5,21.9,28.9,21.3,28.3z"></path> 
-                                                                </g>
-                                                            </svg>
+                                                                        </g>
+                                                                    </svg>
                                     </button>
                                 }
                             }
@@ -148,7 +148,7 @@
                                         <button class="create-comment-btn" type="button" onclick="hideCommentButtons(this)">Cancel</button>
                                         if (SignInManager.IsSignedIn(User))
                                         {
-                                            <button id="createCommentBtn" class="create-comment-btn" id="commentBtn" type="submit">Comment</button>
+                                            <button id="createCommentBtn" class="create-comment-btn" type="submit">Comment</button>
                                         }
                                         else
                                         {
@@ -184,7 +184,14 @@
                                                     <div class="comment-display-editform-dropdown-container mb-4">
                                                         <div>
                                                             <div class="comment-name-date">
-                                                                <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">@comment.CreatedBy.UserName</a></div>
+                                                                @if (comment.CreatedBy == null)
+                                                                {
+                                                                    <div class="fw-bold"><a style="text-decoration:none;color:black;">Deleted User</a></div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">@comment.CreatedBy.UserName</a></div>
+                                                                }
                                                                 <div class="comment-date">@BlogSimple.Web.Services.TimeToWordsConverters.ConvertTimeToWords(comment.CreatedOn)</div>
                                                             </div>
                                                             <div class="text-break">@comment.Content</div>
@@ -238,7 +245,7 @@
                                                             @{
                                                                 if (SignInManager.IsSignedIn(User))
                                                                 {
-                                                                    if (comment.CreatedBy == null)
+                                                                    if (comment.CreatedBy != null)
                                                                     {
                                                                         if (((await UserManager.GetUserAsync(User)).UserName) == comment.CreatedBy.UserName)
                                                                         {
@@ -326,7 +333,7 @@
                                                                                     <div class="comment-name-date">
                                                                                         @if (reply.CreatedBy == null)
                                                                                         {
-                                                                                            <div class="fw-bold"><a style="text-decoration:none;color:black;" href="/Account/Author/@Model.Post.CreatedBy.Id">Deleted User</a></div>
+                                                                                            <div class="fw-bold"><a style="text-decoration:none;color:black;">Deleted User</a></div>
                                                                                         }
                                                                                         else
                                                                                         {
