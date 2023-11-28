@@ -248,17 +248,6 @@ namespace BlogSimple.Web.Controllers
             return View(authorViewModel);
         }
 
-        //[Authorize(Roles = "VerifiedUser,Admin")]
-        //public async Task<ActionResult> UpdateAuthor()
-        //{
-        //    var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
-
-        //    if (authorViewModel is null)
-        //        return new NotFoundResult();
-
-        //    return View(authorViewModel);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "VerifiedUser,Admin")]
