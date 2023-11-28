@@ -67,25 +67,26 @@ const getPostCategoryIdx = (value) => {
 // maps enum int to color
 const getPostCategoryClass = (value) => {
     switch (value) {
-        case 'technology':
-            return 0;
-        case 'economy-finance':
-            return 1;
-        case 'health-fitness':
-            return 2;
-        case 'food':
-            return 3;
-        case 'politics':
-            return 4;
-        case 'travel':
-            return 5;
-        case 'human-science':
-            return 6;
-        case 'nature-science':
-            return 7;
+        case 0:
+            return 'technology';
+        case 1:
+            return 'economy-finance';
+        case 2:
+            return 'health-fitness';
+        case 3:
+            return 'food';
+        case 4:
+            return 'politics';
+        case 5:
+            return 'travel';
+        case 6:
+            return 'human-science';
+        case 7:
+            return 'nature-science';
         default:
             return 'all';
     }
 }
+
 
 createCategoryBadge();
