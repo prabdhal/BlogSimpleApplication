@@ -326,33 +326,33 @@ public class AccountBusinessManager : IAccountBusinessManager
         };
     }
 
-    public async Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal)
+    public async Task<MyProfileViewModel> EditUser(MyProfileViewModel myProfileViewModel, ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        user.Bio = aboutViewModel.AccountUser.Bio;
-        user.Heading = aboutViewModel.AccountUser.Heading;
-        user.PortfolioLink = aboutViewModel.AccountUser.PortfolioLink;
-        user.TwitterLink = aboutViewModel.AccountUser.TwitterLink;
-        user.GitHubLink = aboutViewModel.AccountUser.GitHubLink;
-        user.LinkedInLink = aboutViewModel.AccountUser.LinkedInLink;
+        user.Bio = myProfileViewModel.AccountUser.Bio;
+        user.Heading = myProfileViewModel.AccountUser.Heading;
+        user.PortfolioLink = myProfileViewModel.AccountUser.PortfolioLink;
+        user.TwitterLink = myProfileViewModel.AccountUser.TwitterLink;
+        user.GitHubLink = myProfileViewModel.AccountUser.GitHubLink;
+        user.LinkedInLink = myProfileViewModel.AccountUser.LinkedInLink;
 
 
-        if (aboutViewModel.AccountUser.HeaderImageInput == null)
+        if (myProfileViewModel.AccountUser.HeaderImageInput == null)
         {
         }
-        else if (aboutViewModel.AccountUser.HeaderImageInput.Length > 0)
+        else if (myProfileViewModel.AccountUser.HeaderImageInput.Length > 0)
         {
             using (var ms = new MemoryStream())
             {
-                aboutViewModel.AccountUser.HeaderImageInput.CopyTo(ms);
+                myProfileViewModel.AccountUser.HeaderImageInput.CopyTo(ms);
                 var fileBytes = ms.ToArray();
                 byte[] resizedImage = fileBytes;//ResizeImage(fileBytes, StandardImageWidth, StandardImageHeight);
                 user.HeaderImage = resizedImage;
             }
         }
 
-        return new AuthorViewModel
+        return new MyProfileViewModel
         {
             AccountUser = await _userService.Update(user.UserName, user)
         };

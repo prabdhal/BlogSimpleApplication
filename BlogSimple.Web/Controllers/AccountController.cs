@@ -248,24 +248,24 @@ namespace BlogSimple.Web.Controllers
             return View(authorViewModel);
         }
 
-        [Authorize(Roles = "VerifiedUser,Admin")]
-        public async Task<ActionResult> UpdateAuthor()
-        {
-            var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
+        //[Authorize(Roles = "VerifiedUser,Admin")]
+        //public async Task<ActionResult> UpdateAuthor()
+        //{
+        //    var authorViewModel = await _accountBusinessManager.GetAuthorViewModelForSignedInUser(User);
 
-            if (authorViewModel is null)
-                return new NotFoundResult();
+        //    if (authorViewModel is null)
+        //        return new NotFoundResult();
 
-            return View(authorViewModel);
-        }
+        //    return View(authorViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "VerifiedUser,Admin")]
-        public async Task<IActionResult> UpdateAuthor(AuthorViewModel authorViewModel)
+        public async Task<IActionResult> UpdateAuthor(MyProfileViewModel myProfileViewModel)
         {
-            authorViewModel = await _accountBusinessManager.EditUser(authorViewModel, User);
-            return RedirectToAction("Author", "Post", new { authorViewModel.AccountUser.Id });
+            myProfileViewModel = await _accountBusinessManager.EditUser(myProfileViewModel, User);
+            return RedirectToAction("Author", "Post", new { myProfileViewModel.AccountUser.Id });
         }
 
         [Authorize(Roles = "UnverifiedUser,VerifiedUser,Admin")]

@@ -17,7 +17,7 @@ public interface IAccountBusinessManager
     ChangePasswordViewModel GetChangePasswordViewModel();
     Task<AuthorViewModel> GetAuthorViewModel(string userId);
     Task<AuthorViewModel> GetAuthorViewModelForSignedInUser(ClaimsPrincipal claimsPrincipal);
-    Task<AuthorViewModel> EditUser(AuthorViewModel aboutViewModel, ClaimsPrincipal claimsPrincipal);
+    Task<MyProfileViewModel> EditUser(MyProfileViewModel myProfileViewModel, ClaimsPrincipal claimsPrincipal);
     Task<MyAccountViewModel> UpdateUserProfile(MyAccountViewModel myAccountViewModel, ClaimsPrincipal claimsPrincipal);
     Task SendEmailConfirmationEmail(User user, string token);
     Task SendForgotPasswordEmail(User user, string token);
