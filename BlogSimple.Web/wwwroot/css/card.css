@@ -1,300 +1,283 @@
-﻿
-
-/* FEATURED STYLING */
+﻿/* FEATURED STYLING */
 /* FEATURED STYLING */
 /* FEATURED STYLING */
 
 .featured-post-card {
-    width: 100%;
-    max-width: 1000px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-    margin-bottom: 50px;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  margin-bottom: 50px;
 }
 
 .featured-post-card-img {
-    width: 100%;
-    height: 500px;
+  width: 100%;
+  height: 500px;
 }
 
 .featured-post-card-body {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 20px;
 }
 
 .featured-post-card-body-title {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
 }
 
 .featured-post-card-body-title a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .featured-post-card-body-description {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .featured-post-card-body-details {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    margin-bottom: 5px;
-    align-content: center;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 5px;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .featured-post-card-body-details span {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    margin-bottom: 5px;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 5px;
+  align-content: center;
+  align-items: center;
 }
 
 .featured-post-card-body-details span span a {
-    text-decoration: none;
+  text-decoration: none;
 }
-
 
 /* POST STYLING */
 /* POST STYLING */
 /* POST STYLING */
 .post-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 5px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 .post-card {
-    height: 100%;
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  height: 100%;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
 .post-card-img {
-    width: 100%;
-    height: 300px;
+  width: 100%;
+  height: 300px;
 }
 
 .post-card-body {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 20px;
 }
 
 .post-card-body-title {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    height: 55px;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  height: 55px;
 }
 
 .post-card-body-title a:hover,
 .post-card-body-details span span a:hover,
 li.list-select a:hover {
-    color: #113946;
+  color: #113946;
 }
 
 .post-card-body-title a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .post-card-body-details {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom: 5px;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  align-content: center;
+  align-items: center;
 }
 
-
 .post-card-body-details span {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-content: center;
+  align-items: center;
 }
 
 .post-card-body-details span span a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .post-creator-img {
-    height: 35px;
-    width: 35px;
-    border-radius: 50%;
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
 }
-
 
 /* STANDARD STYLING */
 /* STANDARD STYLING */
 /* STANDARD STYLING */
 .standard-card {
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
 }
 
 .standard-card-header {
-    padding: 8px 16px;
-    border-bottom: 1px solid rgb(0,0,0,0.2);
-    background-color: #113946;
-    color: white;
+  padding: 8px 16px;
+  border-bottom: 1px solid rgb(0, 0, 0, 0.2);
+  background-color: #113946;
+  color: white;
 }
 
 .standard-card-body {
-    padding: 8px 16px;
+  padding: 8px 16px;
 }
 
 .standard-card-body a {
-    text-decoration: none;
-    color: black;
+  text-decoration: none;
+  color: black;
 }
 
 .standard-card-body a:hover {
-    color: blue;
+  color: blue;
 }
 
 .standard-card-body div ul li {
-    margin: 5px 0;
+  margin: 5px 0;
 }
-
 
 /* DASHBOARD POST STYLING */
 /* DASHBOARD POST STYLING */
 /* DASHBOARD POST STYLING */
 
 .dashbboard-post-container {
-    display: flex;
-    justify-content: start;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-
-
 /* POST WIDGET STYLING */
 /* POST WIDGET STYLING */
 /* POST WIDGET STYLING */
-
 
 .post-widget-container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
-
 .post-widget-body {
-    display: flex;
-    justify-content: flex-start;
-    text-align: left;
-    align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  text-align: left;
+  align-items: center;
 }
 
 .post-widget-body-title {
-    margin: 0 0 0 20px;
+  margin: 0 0 0 20px;
 }
 
 .post-widget-body h5 a {
-    color: #1853f7;
+  color: #1853f7;
 }
 
 .post-widget-img {
-    width: 75px;
-    height: 75px;
+  width: 75px;
+  height: 75px;
 }
 
 .post-widget-details {
-    display: flex;
-    flex-direction: column;
-    margin: 0 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 20px;
 }
 
 .post-widget-details p {
-    margin:0px;
-    font-style:italic;
+  margin: 0px;
+  font-style: italic;
 }
 
 .post-widget-hr {
-    border: 1px solid rgb(0, 0, 0, 0.25);
+  border: 1px solid rgb(0, 0, 0, 0.25);
 }
 
 li.list-select a:hover {
-    color: blue;
+  color: blue;
 }
 
-
 img.author-profile-pic-widget {
-    height: 75px;
-    width: 75px;
+  height: 75px;
+  width: 75px;
 }
 
 .search-btn {
-    background-color: #113946;
-    color: white;
-    border: none;
-    outline: none;
-    padding: 8px 16px;
-    border-radius: 0.375rem;
-    transition: all 50ms ease-in-out;
+  background-color: #113946;
+  color: white;
+  border: none;
+  outline-color: transparent;
+  padding: 8px 16px;
+  border-radius: 0.375rem;
+  transition: all 50ms ease-in-out;
 }
 
 .alt-search-btn {
-    background-color: #BCA37F;
-    color: white;
-    border: none;
-    outline: none;
-    padding: 8px 16px;
-    border-radius: 0.375rem;
-    transition: all 50ms ease-in-out;
+  background-color: #bca37f;
+  color: white;
+  border: none;
+  outline-color: transparent;
+  padding: 8px 16px;
+  border-radius: 0.375rem;
+  transition: all 50ms ease-in-out;
 }
 
 .search-btn:hover {
-    background-color: #BCA37F;
+  background-color: #bca37f;
 }
-
 
 .ck-editor__editable_inline {
-    height: 100%;
-    min-height: 500px;
-    width: 100%;
+  height: 100%;
+  min-height: 500px;
+  width: 100%;
 }
 
-
-
 /* ACCOUNT CARD STYLING */
 /* ACCOUNT CARD STYLING */
 /* ACCOUNT CARD STYLING */
-
-
 
 .account-card {
-    display: flex;
-    flex-direction: column;
-    background-color: #113946;
-    height: 100%;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
-    padding: 20px;
-    margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  background-color: #113946;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+  padding: 20px;
+  margin: 10px 0;
 }
 
 .account-card .card-body p {
-    margin: 20px 0;
+  margin: 20px 0;
 }
-
 
 @media only screen and (max-width: 1000px) {
   .featured-post-card-img {
@@ -316,4 +299,3 @@ img.author-profile-pic-widget {
     width: 100%;
   }
 }
-
