@@ -237,12 +237,4 @@ public class PostController : Controller
 
         return RedirectToAction("PostDetails", new { viewModel.Post.Id });
     }
-
-    [Authorize(Roles = "VerifiedUser,Admin")]
-    public async Task<IActionResult> Author(string id)
-    {
-        AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);
-
-        return View(authorViewModel);
-    }
 }
