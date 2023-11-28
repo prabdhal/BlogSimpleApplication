@@ -4,16 +4,20 @@ namespace BlogSimple.Model.Models;
 
 public enum PostCategory
 {
-    [Display(Name = "Programming")]
-    Programming = 0,
-    [Display(Name = "Game Development")]
-    GameDevelopment = 1,
-    [Display(Name = "Web Development")]
-    WebDevelopment = 2,
-    [Display(Name = "General Tutorials")]
-    GeneralTutorials = 3,
-    [Display(Name = "Financial")]
-    Financial = 4,
-    [Display(Name = "Other")]
-    Other = 5
+    [Display(Name = "Technology")]
+    Technology = 0,
+    [Display(Name = "Economy & Finance")]
+    EconomyAndFinance = 1,
+    [Display(Name = "Health & Fitness")]
+    HealthAndFitness = 2,
+    [Display(Name = "Food")]
+    Food = 3,
+    [Display(Name = "Politics")]
+    Politics = 4,
+    [Display(Name = "Travel")]
+    Travel = 5,
+    [Display(Name = "Human Science")]
+    HumanScience = 6,
+    [Display(Name = "Nature Science")]
+    NatureScience = 7
 }

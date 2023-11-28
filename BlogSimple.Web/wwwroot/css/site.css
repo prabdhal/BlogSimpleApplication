@@ -54,14 +54,14 @@ a {
     margin-left: calc(-.5 * var(--bs-gutter-x));
 }
 
-.home-index-row>* {
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 100%;
-    padding-right: calc(var(--bs-gutter-x) * .5);
-    padding-left: calc(var(--bs-gutter-x) * .5);
-    margin-top: var(--bs-gutter-y);
-}
+    .home-index-row > * {
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * .5);
+        padding-left: calc(var(--bs-gutter-x) * .5);
+        margin-top: var(--bs-gutter-y);
+    }
 
 .blog-col {
     width: 70%;
@@ -186,35 +186,35 @@ textarea.comment-textarea:focus {
         margin-left: 5px;
     }
 
-.programming {
+.technology {
     background-color: #ff6a00;
 }
 
-.game-development {
+.economy-finance {
     background-color: #258cfb;
 }
 
-.web-development {
+.health-fitness {
     background-color: #ffd800;
 }
 
-.general-tutorials {
+.food {
     background-color: #b200ff;
 }
 
-.oop {
+.politics {
     background-color: #4800ff;
 }
 
-.web-design {
+.travel {
     background-color: #00ff21;
 }
 
-.tutorials {
-    background-color: #808080
+.human-science {
+    background-color: #808080;
 }
 
-.financial {
+.nature-science {
     background-color: #ff0000;
 }
 

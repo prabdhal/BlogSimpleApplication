@@ -342,17 +342,21 @@ searchBarInput.addEventListener('input', (e) => {
 const getPostCategoryName = (value) => {
     switch (value) {
         case 0:
-            return 'Programming';
+            return 'Technology';
         case 1:
-            return 'Game Development';
+            return 'Economy & Finance';
         case 2:
-            return 'Web Development';
+            return 'Health & Fitness';
         case 3:
-            return 'General Tutorials';
+            return 'Food';
         case 4:
-            return 'Financial';
+            return 'Politics';
         case 5:
-            return 'Other';
+            return 'Travel';
+        case 6:
+            return 'Human Science';
+        case 7:
+            return 'Nature Science';
         default:
             return 'All';
     }
@@ -361,18 +365,22 @@ const getPostCategoryName = (value) => {
 // maps enum name into ints
 const getPostCategoryIdx = (value) => {
     switch (value) {
-        case 'Programming':
+        case 'Technology':
             return 0;
-        case 'Game Development':
+        case 'Economy & Finance':
             return 1;
-        case 'Web Development':
+        case 'Health & Fitness':
             return 2;
-        case 'General Tutorials':
+        case 'Food':
             return 3;
-        case 'Financial':
+        case 'Politics':
             return 4;
-        case 'Other':
+        case 'Travel':
             return 5;
+        case 'Human Science':
+            return 6;
+        case 'Nature Science':
+            return 7;
         default:
             return 100;
     }
@@ -381,18 +389,22 @@ const getPostCategoryIdx = (value) => {
 // maps enum int to color
 const getPostCategoryClass = (value) => {
     switch (value) {
-        case 0:
-            return 'programming';
-        case 1:
-            return 'game-development';
-        case 2:
-            return 'web-development';
-        case 3:
-            return 'general-tutorials';
-        case 4:
-            return 'financial';
-        case 5:
-            return 'other';
+        case 'technology':
+            return 0;
+        case 'economy-finance':
+            return 1;
+        case 'health-fitness':
+            return 2;
+        case 'food':
+            return 3;
+        case 'politics':
+            return 4;
+        case 'travel':
+            return 5;
+        case 'human-science':
+            return 6;
+        case 'nature-science':
+            return 7;
         default:
             return 'all';
     }
