@@ -38,12 +38,12 @@ public class CommentReplyService : ICommentReplyService
 
     public async Task<List<CommentReply>> GetAllByComment(string commentId)
     {
-        return await _replies.Find(r => r.RepliedComment.Id == commentId).ToListAsync();
+        return await _replies.Find(r => r.RepliedCommentId == commentId).ToListAsync();
     }
 
     public async Task<List<CommentReply>> GetAllByPost(string blogId)
     {
-        return await _replies.Find(r => r.RepliedPost.Id == blogId).ToListAsync();
+        return await _replies.Find(r => r.RepliedPostId == blogId).ToListAsync();
     }
 
     public async Task<CommentReply> Create(CommentReply reply)
@@ -76,10 +76,10 @@ public class CommentReplyService : ICommentReplyService
 
     public async void RemoveAllByComment(string commentId)
     {
-        await _replies.DeleteManyAsync(r => r.RepliedComment.Id == commentId);
+        await _replies.DeleteManyAsync(r => r.RepliedCommentId == commentId);
     }
     public async void RemoveAllByPost(string blogId)
     {
-        await _replies.DeleteManyAsync(r => r.RepliedPost.Id == blogId);
+        await _replies.DeleteManyAsync(r => r.RepliedPostId == blogId);
     }
 }

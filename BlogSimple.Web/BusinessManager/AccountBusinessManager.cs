@@ -153,7 +153,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var allComments = await _commentService.GetAll();
         var replies = await _replyService.GetAllByUser(user);
         var totalCommentsAndRepliesCount = comments.Count() + replies.Count();
-        var favoritedPostsCount = user.FavoritedPosts.Count();
+        var favoritedPostsCount = user.FavoritedPostsId.Count();
         var totalCommentsLikedCount = GetTotalCommentsLikedCountByUser(user, allComments);
 
         foreach (Post post in publishedPosts)
@@ -166,7 +166,7 @@ public class AccountBusinessManager : IAccountBusinessManager
             AccountUser = user,
             PublishedPostsCount = publishedPostsCount,
             TotalCommentsAndRepliesCount = totalCommentsAndRepliesCount,
-            TotalCommentsLiked = totalCommentsLikedCount,
+            TotalCommentsLiked = totalCommentsLikedCount.Result,
         SavedPostsCount = favoritedPostsCount,
             TotalWordsCount = totalWordsCount,
         };
@@ -185,7 +185,7 @@ public class AccountBusinessManager : IAccountBusinessManager
         var allComments = await _commentService.GetAll();
         var totalCommentsCount = comments.Count();
         var totalRepliesCount = replies.Count();
-        var savedPostsCount = user.FavoritedPosts.Count();
+        var savedPostsCount = user.FavoritedPostsId.Count();
         var totalCommentsLikedCount = GetTotalCommentsLikedCountByUser(user, allComments);
 
         foreach (Post post in publishedPosts)
@@ -202,19 +202,20 @@ public class AccountBusinessManager : IAccountBusinessManager
             PublishedRepliesCount = totalRepliesCount,
             SavedPostsCount = savedPostsCount,
             TotalPublishedWordsCount = totalWordsCount,
-            TotalCommentsLiked = totalCommentsLikedCount
+            TotalCommentsLiked = totalCommentsLikedCount.Result
         };
     }
 
-    private int GetTotalCommentsLikedCountByUser(User user, List<Comment> comments)
+    private async Task<int> GetTotalCommentsLikedCountByUser(User user, List<Comment> comments)
     {
         var totalCommentsLiked = 0;
 
         foreach (Comment cmt in comments)
         {
-            foreach (User u in cmt.CommentLikedByUsers)
+            foreach (var u in cmt.CommentLikedByUserNames)
             {
-                if (u.Username == user.Username)
+                var likedUser = await _userService.Get(u);
+                if (likedUser.Username == user.Username)
                 {
                     totalCommentsLiked += 1;
                 }

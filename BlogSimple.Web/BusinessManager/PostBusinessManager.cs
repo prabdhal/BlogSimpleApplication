@@ -81,14 +81,6 @@ public class PostBusinessManager : IPostBusinessManager
 
         var userPosts = posts.Where(b => b.CreatedBy.Email == user.Email);
 
-        //// Initialize Achievements
-        //if (user.AchievementId == "0")
-        //{
-        //    Achievements achievements = await _achievementsBusinessManager.CreateAchievement();
-        //    user.AchievementId = achievements.Id;
-        //    await _userService.Update(user.UserName, user);
-        //}
-
         return new DashboardIndexViewModel
         {
             UserPosts = userPosts,
@@ -100,7 +92,14 @@ public class PostBusinessManager : IPostBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
 
-        var usersFavoritePosts = user.FavoritedPosts.ToList();
+        var usersFavoritePostIds = user.FavoritedPostsId.ToList();
+
+        List<Post> usersFavoritePosts = new List<Post>(); 
+
+        foreach (string postId in usersFavoritePostIds)
+        {
+            usersFavoritePosts.Add(await _postService.Get(postId));
+        }
 
         return new FavoritePostsViewModel
         {
@@ -113,15 +112,15 @@ public class PostBusinessManager : IPostBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         var post = await _postService.Get(id);
-        var userAlreadyFavorited = user.FavoritedPosts.Where(b => b.Id == post.Id).FirstOrDefault();
+        var userAlreadyFavorited = user.FavoritedPostsId.Where(p => p == post.Id).FirstOrDefault();
         if (userAlreadyFavorited is null)
         {
-            user.FavoritedPosts.Add(post);
+            user.FavoritedPostsId.Add(post.Id);
         }
         else
         {
-            var removePost = user.FavoritedPosts.Where(b => b.Id == post.Id).FirstOrDefault();
-            user.FavoritedPosts.Remove(removePost);
+            var removePost = user.FavoritedPostsId.Where(p => p == post.Id).FirstOrDefault();
+            user.FavoritedPostsId.Remove(removePost);
         }
 
         List<string> postCats = new List<string>();
@@ -482,7 +481,7 @@ public class PostBusinessManager : IPostBusinessManager
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         var post = await _postService.Get(postDetailsViewModel.Post.Id);
 
-        comment.CommentedPost = post;
+        comment.CommentedPostId = post.Id;
         comment.CreatedBy = user;
         comment.CreatedById = user.Id;
         comment.CreatedOn = DateTime.Now;
@@ -513,8 +512,8 @@ public class PostBusinessManager : IPostBusinessManager
         var post = await _postService.Get(postDetailsViewModel.Post.Id);
         var comment = await _commentService.Get(postDetailsViewModel.Comment.Id);
 
-        reply.RepliedPost = post;
-        reply.RepliedComment = comment;
+        reply.RepliedPostId = post.Id;
+        reply.RepliedCommentId = comment.Id;
         reply.CreatedBy = user;
         reply.CreatedById = user.Id;
         reply.CreatedOn = DateTime.Now;
@@ -553,7 +552,7 @@ public class PostBusinessManager : IPostBusinessManager
     public async Task<EditPostViewModel> GetEditPostViewModelViaComment(string commentId)
     {
         var comment = await _commentService.Get(commentId);
-        var post = await _postService.Get(comment.CommentedPost.Id);
+        var post = await _postService.Get(comment.CommentedPostId);
 
         return new EditPostViewModel
         {
@@ -564,8 +563,8 @@ public class PostBusinessManager : IPostBusinessManager
     public async Task<EditPostViewModel> GetEditPostViewModelViaReply(string replyId)
     {
         var reply = await _commentReplyService.Get(replyId);
-        var comment = await _commentService.Get(reply.RepliedComment.Id);
-        var post = await _postService.Get(comment.CommentedPost.Id);
+        var comment = await _commentService.Get(reply.RepliedCommentId);
+        var post = await _postService.Get(comment.CommentedPostId);
 
         return new EditPostViewModel
         {
@@ -737,15 +736,17 @@ public class PostBusinessManager : IPostBusinessManager
 
         var replies = await _commentReplyService.GetAllByPost(post.Id);
 
-        var userAlreadyLiked = comment.CommentLikedByUsers.Where(u => u.Id == user.Id).FirstOrDefault();
+        Guid userAlreadyLiked = comment.CommentLikedByUserNames.Where(u => u == user.Id).FirstOrDefault();
 
-        if (userAlreadyLiked is null)
+        Console.WriteLine(userAlreadyLiked == Guid.Empty);
+
+        if (userAlreadyLiked == Guid.Empty)
         {
-            comment.CommentLikedByUsers.Add(user);
+            comment.CommentLikedByUserNames.Add(user.Id);
         }
         else
         {
-            comment.CommentLikedByUsers.Remove(userAlreadyLiked);
+            comment.CommentLikedByUserNames.Remove(userAlreadyLiked);
         }
 
         List<string> postCats = new List<string>();
@@ -814,7 +815,7 @@ public class PostBusinessManager : IPostBusinessManager
         // Remove post from all users favorite posts
         foreach (var u in users)
         {
-            u.FavoritedPosts.RemoveAll(p => p.Id == post.Id);
+            u.FavoritedPostsId.RemoveAll(p => p == post.Id);
             await _userService.Update(u.UserName, u);
         }
     }
@@ -884,10 +885,11 @@ public class PostBusinessManager : IPostBusinessManager
             UserName = deletedUserUserNameText,
         };
 
-        // Update values for comments
+        // Remove user comments from users posts
         foreach (var comment in comments)
         {
-            if (comment.CommentedPost.CreatedBy.Id == user.Id)
+            var post = await _postService.Get(comment.CommentedPostId);
+            if (post.CreatedBy.Id == user.Id)
             {
                 _commentService.Remove(comment);
             }
@@ -901,10 +903,11 @@ public class PostBusinessManager : IPostBusinessManager
             }
         }
 
-        // Update values for comment replies
+        // Remove user replies from users posts
         foreach (var reply in replies)
         {
-            if (reply.RepliedPost.CreatedBy.Id == user.Id)
+            var post = await _postService.Get(reply.RepliedPostId);
+            if (post.CreatedBy.Id == user.Id)
             {
                 _commentReplyService.Remove(reply);
             }

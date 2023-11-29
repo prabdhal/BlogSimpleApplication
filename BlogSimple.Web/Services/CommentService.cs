@@ -43,7 +43,7 @@ public class CommentService : ICommentService
 
     public async Task<List<Comment>> GetAllByPost(string blogId)
     {
-        return await _comments.Find(c => c.CommentedPost.Id == blogId).ToListAsync();
+        return await _comments.Find(c => c.CommentedPostId == blogId).ToListAsync();
     }
 
     public async Task<Comment> Create(Comment comment)
@@ -76,6 +76,6 @@ public class CommentService : ICommentService
 
     public async void RemoveAllByPost(string blogId)
     {
-        await _comments.DeleteManyAsync(c => c.CommentedPost.Id == blogId);
+        await _comments.DeleteManyAsync(c => c.CommentedPostId == blogId);
     }
 }

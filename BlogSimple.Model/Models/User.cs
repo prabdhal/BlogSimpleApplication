@@ -80,7 +80,7 @@ public class User : ApplicationUser
     public byte[] HeaderImage { get; set; } = Convert.FromBase64String(DefaultHeaderImageBase64String);
 
     [BsonElement]
-    public List<Post> FavoritedPosts { get; set; } = new List<Post>();
+    public List<string> FavoritedPostsId { get; set; } = new List<string>();
 
     [BsonElement]
     public string AchievementId { get; set; }

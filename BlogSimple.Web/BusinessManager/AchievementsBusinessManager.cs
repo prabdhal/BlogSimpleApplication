@@ -10,17 +10,20 @@ public class AchievementsBusinessManager : IAchievementsBusinessManager
     private readonly IAchievementsService _achievementsService;
     private readonly IPostService _postService;
     private readonly ICommentService _commentService;
+    private readonly IUserService _userService;
 
 
     public AchievementsBusinessManager(
         IAchievementsService achivementsService,
         IPostService postService,
-        ICommentService commentService
+        ICommentService commentService,
+        IUserService userService
         )
     {
         _achievementsService = achivementsService;
         _postService = postService;
         _commentService = commentService;
+        _userService = userService;
     }
 
     public async Task<Achievements> CreateAchievement()
@@ -155,15 +158,16 @@ public class AchievementsBusinessManager : IAchievementsBusinessManager
         }
     }
 
-    private void CommentsLikedCountAchievementCheck(Achievements achievements, List<Comment> comments, User user)
+    private async void CommentsLikedCountAchievementCheck(Achievements achievements, List<Comment> comments, User user)
     {
         int likedCommentsCount = 0;
 
         foreach (Comment comment in comments)
         {
-            foreach (User u in comment.CommentLikedByUsers)
+            foreach (var u in comment.CommentLikedByUserNames)
             {
-                if (u.Id == user.Id)
+                var userLiked = await _userService.Get(u);
+                if (userLiked.Id == user.Id)
                 {
                     likedCommentsCount += 1;
                 }

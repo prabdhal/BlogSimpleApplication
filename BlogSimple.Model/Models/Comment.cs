@@ -16,6 +16,6 @@ public class Comment
     [Required(ErrorMessage = "Comment is empty!")]
     [StringLength(300, ErrorMessage = "Can only have a maximum of 300 characters", MinimumLength = 1)]
     public string Content { get; set; }
-    public List<User> CommentLikedByUsers { get; set; } = new List<User>();
-    public Post CommentedPost { get; set; }
+    public List<Guid> CommentLikedByUserNames { get; set; } = new List<Guid>();
+    public string CommentedPostId { get; set; }
 }

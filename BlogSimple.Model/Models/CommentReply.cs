@@ -16,6 +16,6 @@ public class CommentReply
     [Required(ErrorMessage = "Reply is empty!")]
     [StringLength(300, ErrorMessage = "Can only have a maximum of 300 characters", MinimumLength = 1)]
     public string Content { get; set; }
-    public Comment RepliedComment { get; set; }
-    public Post RepliedPost { get; set; }
+    public string RepliedCommentId { get; set; }
+    public string RepliedPostId { get; set; }
 }
