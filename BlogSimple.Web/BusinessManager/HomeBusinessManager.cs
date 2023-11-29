@@ -22,19 +22,25 @@ public class HomeBusinessManager : IHomeBusinessManager
 
     public async Task<HomeIndexViewModel> GetHomeIndexViewModel(string searchString)
     {
-        IEnumerable<Post> publishedBlogs = await _blogService.GetPublishedOnly(searchString ?? string.Empty);
-        Post featuredBlog = new Post();
+        IEnumerable<Post> publishedPosts = await _blogService.GetPublishedOnly(searchString ?? string.Empty);
+        List<PostAndCreator> publishedPostsAndCreator = new List<PostAndCreator>();
+        PostAndCreator featuredBlogAndCreator = new PostAndCreator();
         List<string> blogCats = new List<string>();
 
-        if (publishedBlogs.Any())
+        if (publishedPosts.Any())
         {
-            featuredBlog = await DetermineFeaturedBlog(publishedBlogs);
-            featuredBlog.CreatedBy = await _userService.Get(featuredBlog.CreatedById);
+            featuredBlogAndCreator.Post = await DetermineFeaturedBlog(publishedPosts);
+            featuredBlogAndCreator.Creator = await _userService.Get(featuredBlogAndCreator.Post.CreatedById);
         }
 
-        foreach (Post post in publishedBlogs)
+        foreach (Post post in publishedPosts)
         {
-            post.CreatedBy = await _userService.Get(post.CreatedById);
+            PostAndCreator postAndCreatorModel = new PostAndCreator
+            {
+                Post = post,
+                Creator = await _userService.Get(post.CreatedById),
+            };
+            publishedPostsAndCreator.Add(postAndCreatorModel);
         }
 
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
@@ -44,9 +50,9 @@ public class HomeBusinessManager : IHomeBusinessManager
 
         return new HomeIndexViewModel
         {
-            FeaturedPost = featuredBlog,
+            FeaturedPost = featuredBlogAndCreator,
             PostCategories = blogCats,
-            PublishedPosts = publishedBlogs,
+            PublishedPosts = publishedPostsAndCreator,
         };
     }
 

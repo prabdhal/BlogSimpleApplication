@@ -25,13 +25,13 @@ public class PostService : IPostService
 
     public async Task<List<Post>> GetAllByUser(User user)
     {
-        return await _posts.Find(p => p.CreatedBy.Id == user.Id).ToListAsync();
+        return await _posts.Find(p => p.CreatedById == user.Id).ToListAsync();
     }
 
     public async Task<List<Post>> GetAllPublishedByUser(User user)
     {
         // Need to filter by user
-        var filterSearch = Builders<Post>.Filter.Where(p => p.CreatedBy.Id == user.Id);
+        var filterSearch = Builders<Post>.Filter.Where(p => p.CreatedById == user.Id);
 
         var filterByPublished = Builders<Post>.Filter.Where(b => b.IsPublished);
 
@@ -43,9 +43,9 @@ public class PostService : IPostService
         var search = searchString.ToLower();
 
         // Need to filter by contains text
-        var filterSearch = Builders<Post>.Filter.Where(b => b.Title.ToLower().Contains(search) |
-            b.Description.ToLower().Contains(search) |
-            b.Category.ToString().ToLower().Contains(search));
+        var filterSearch = Builders<Post>.Filter.Where(p => p.Title.ToLower().Contains(search) |
+            p.Description.ToLower().Contains(search) |
+            p.Category.ToString().ToLower().Contains(search));
 
         return await _posts.Find(filterSearch).ToListAsync();
     }
@@ -53,7 +53,7 @@ public class PostService : IPostService
     public async Task<List<Post>> GetAll(User user)
     {
         // Need to filter by by user posts
-        var filterSearch = Builders<Post>.Filter.Where(b => b.CreatedBy.UserName == user.UserName & b.IsPublished == true);
+        var filterSearch = Builders<Post>.Filter.Where(p => p.CreatedById == user.Id & p.IsPublished == true);
 
         return await _posts.Find(filterSearch).ToListAsync();
     }
@@ -63,11 +63,11 @@ public class PostService : IPostService
         var search = searchString.ToLower();
 
         // Need to filter by contains text
-        var filterSearch = Builders<Post>.Filter.Where(b => b.Title.ToLower().Contains(search) |
-            b.Description.ToLower().Contains(search) |
-            b.Category.ToString().ToLower().Contains(search));
+        var filterSearch = Builders<Post>.Filter.Where(p => p.Title.ToLower().Contains(search) |
+            p.Description.ToLower().Contains(search) |
+            p.Category.ToString().ToLower().Contains(search));
 
-        var filterByPublished = Builders<Post>.Filter.Where(b => b.IsPublished);
+        var filterByPublished = Builders<Post>.Filter.Where(p => p.IsPublished);
 
         return await _posts.Find(filterSearch & filterByPublished).ToListAsync();
     }
@@ -96,6 +96,6 @@ public class PostService : IPostService
 
     public async void Remove(Post post)
     {
-        await _posts.DeleteOneAsync(b => b == post);
+        await _posts.DeleteOneAsync(p => p == post);
     }
 }

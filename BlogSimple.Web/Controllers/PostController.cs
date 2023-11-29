@@ -172,7 +172,7 @@ public class PostController : Controller
     public async Task<IActionResult> FavoritePost(string id)
     {
         var postDetailsViewModel = await _postBusinessManager.FavoritePost(id, User);
-        return RedirectToAction("PostDetails", new { postDetailsViewModel.Post.Id });
+        return RedirectToAction("PostDetails", new { postDetailsViewModel.PostAndCreator.Post.Id });
     }
 
     [HttpPost]
@@ -181,7 +181,7 @@ public class PostController : Controller
     public async Task<IActionResult> CreateComment(PostDetailsViewModel postDetailsViewModel)
     {
         await _postBusinessManager.CreateComment(postDetailsViewModel, User);
-        return RedirectToAction("PostDetails", new { postDetailsViewModel.Post.Id });
+        return RedirectToAction("PostDetails", new { postDetailsViewModel.PostAndCreator.Post.Id });
     }
 
     [HttpPost]
@@ -190,7 +190,7 @@ public class PostController : Controller
     public async Task<IActionResult> EditComment(string id, PostDetailsViewModel postDetailsViewModel)
     {
         await _postBusinessManager.EditComment(id, postDetailsViewModel, User);
-        return RedirectToAction("PostDetails", new { postDetailsViewModel.Post.Id });
+        return RedirectToAction("PostDetails", new { postDetailsViewModel.PostAndCreator.Post.Id });
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
@@ -208,7 +208,7 @@ public class PostController : Controller
     public async Task<IActionResult> LikeComment(string id, PostDetailsViewModel postDetailsViewModel)
     {
         await _postBusinessManager.LikeComment(id, postDetailsViewModel, User);
-        return RedirectToAction("PostDetails", new { postDetailsViewModel.Post.Id });
+        return RedirectToAction("PostDetails", new { postDetailsViewModel.PostAndCreator.Post.Id });
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]
@@ -217,7 +217,7 @@ public class PostController : Controller
     public async Task<IActionResult> CreateReply(PostDetailsViewModel postDetailsViewModel)
     {
         await _postBusinessManager.CreateReply(postDetailsViewModel, User);
-        return RedirectToAction("PostDetails", new { postDetailsViewModel.Post.Id });
+        return RedirectToAction("PostDetails", new { postDetailsViewModel.PostAndCreator.Post.Id });
     }
 
     [HttpPost]
@@ -226,7 +226,7 @@ public class PostController : Controller
     public async Task<IActionResult> EditReply(string id, PostDetailsViewModel postDetailsViewModel)
     {
         await _postBusinessManager.EditReply(id, postDetailsViewModel, User);
-        return RedirectToAction("PostDetails", new { postDetailsViewModel.Post.Id });
+        return RedirectToAction("PostDetails", new { postDetailsViewModel.PostAndCreator.Post.Id });
     }
 
     [Authorize(Roles = "VerifiedUser,Admin")]

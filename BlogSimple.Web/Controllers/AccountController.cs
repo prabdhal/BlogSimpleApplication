@@ -39,7 +39,7 @@ namespace BlogSimple.Web.Controllers
                     EmailVerified = false,
                 };
                 var emailConfirmModel = await _accountBusinessManager.GetEmailConfirmViewModel(User, model);
-                return RedirectToAction("MyAccount", emailConfirmModel);
+                return RedirectToAction("EmailVerification", emailConfirmModel);
             }
 
             return View();
@@ -71,11 +71,10 @@ namespace BlogSimple.Web.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             if (User.Identity.IsAuthenticated)
             {
-                var myAccountViewModel = await _accountBusinessManager.GetMyAccountViewModel(User);
                 return RedirectToAction("MyProfile");
             }
             return View();
@@ -241,7 +240,6 @@ namespace BlogSimple.Web.Controllers
             return View(model);
         }
 
-        [Authorize(Roles = "VerifiedUser,Admin")]
         public async Task<IActionResult> Author(string id)
         {
             AuthorViewModel authorViewModel = await _accountBusinessManager.GetAuthorViewModel(id);

@@ -1,5 +1,6 @@
 ﻿using BlogSimple.Model.Models;
 using BlogSimple.Model.Services.Interfaces;
+using BlogSimple.Model.ViewModels.HomeViewModels;
 using BlogSimple.Model.ViewModels.PostViewModels;
 using BlogSimple.Web.BusinessManager.Interfaces;
 using BlogSimple.Web.Services;
@@ -79,7 +80,7 @@ public class PostBusinessManager : IPostBusinessManager
 
         var loggedInUser = await _userService.Get(user.Id);
 
-        var userPosts = posts.Where(b => b.CreatedBy.Email == user.Email);
+        var userPosts = posts.Where(p => p.CreatedById == user.Id);
 
         return new DashboardIndexViewModel
         {
@@ -112,6 +113,11 @@ public class PostBusinessManager : IPostBusinessManager
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         var post = await _postService.Get(id);
+        PostAndCreator postAndCreator = new PostAndCreator
+        {
+            Post = post,
+            Creator = await _userService.Get(post.CreatedById),
+        };
         var userAlreadyFavorited = user.FavoritedPostsId.Where(p => p == post.Id).FirstOrDefault();
         if (userAlreadyFavorited is null)
         {
@@ -143,7 +149,7 @@ public class PostBusinessManager : IPostBusinessManager
         return new PostDetailsViewModel
         {
             PostCategories = postCats,
-            Post = post,
+            PostAndCreator = postAndCreator,
             Comment = null,
             Comments = comments,
             AccountUser = user,
@@ -156,8 +162,24 @@ public class PostBusinessManager : IPostBusinessManager
         var user = await _userManager.GetUserAsync(claimsPrincipal);
         Post post = await _postService.Get(id);
         post.HeaderImage = GetImage(Convert.ToBase64String(post.HeaderImage));
+        PostAndCreator postAndCreator = new PostAndCreator
+        {
+            Post = post,
+            Creator = await _userService.Get(post.CreatedById),
+        };
         List<string> postCats = new List<string>();
-        var posts = await _postService.GetPublishedOnly("");
+        var publishedPosts = await _postService.GetPublishedOnly("");
+        List<PostAndCreator> publishedPostsAndCreator = new List<PostAndCreator>();
+        foreach (Post p in publishedPosts)
+        {
+            PostAndCreator pAC = new PostAndCreator
+            {
+                Post = p,
+                Creator = await _userService.Get(p.CreatedById),
+            };
+            publishedPostsAndCreator.Add(pAC);
+        }
+
         var comments = await _commentService.GetAllByPost(id);
         Achievements achievements;
         List<AchievementsNotificationModel> achievementNotificationsList = new List<AchievementsNotificationModel>();
@@ -188,9 +210,9 @@ public class PostBusinessManager : IPostBusinessManager
 
         return new PostDetailsViewModel
         {
-            AllPosts = posts,
+            AllPosts = publishedPostsAndCreator,
             PostCategories = postCats,
-            Post = post,
+            PostAndCreator = postAndCreator,
             Comments = comments,
             CommentReplies = replies,
             AccountUser = user,
@@ -424,7 +446,6 @@ public class PostBusinessManager : IPostBusinessManager
             }
         }
 
-        post.CreatedBy = user;
         post.CreatedById = user.Id;
         post.CreatedOn = DateTime.Now;
         post.UpdatedOn = DateTime.Now;
@@ -479,7 +500,7 @@ public class PostBusinessManager : IPostBusinessManager
         Comment comment = postDetailsViewModel.Comment;
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        var post = await _postService.Get(postDetailsViewModel.Post.Id);
+        var post = await _postService.Get(postDetailsViewModel.PostAndCreator.Post.Id);
 
         comment.CommentedPostId = post.Id;
         comment.CreatedBy = user;
@@ -509,7 +530,7 @@ public class PostBusinessManager : IPostBusinessManager
         CommentReply reply = postDetailsViewModel.CommentReply;
 
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        var post = await _postService.Get(postDetailsViewModel.Post.Id);
+        var post = await _postService.Get(postDetailsViewModel.PostAndCreator.Post.Id);
         var comment = await _commentService.Get(postDetailsViewModel.Comment.Id);
 
         reply.RepliedPostId = post.Id;
@@ -638,9 +659,14 @@ public class PostBusinessManager : IPostBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var post = await _postService.Get(postDetailsViewModel.Post.Id);
+        var post = await _postService.Get(postDetailsViewModel.PostAndCreator.Post.Id);
         if (post is null)
             return new NotFoundResult();
+        PostAndCreator postAndCreator = new PostAndCreator
+        {
+            Post = post,
+            Creator = await _userService.Get(post.CreatedById),
+        };
 
         var comment = await _commentService.Get(commentId);
         if (comment is null)
@@ -665,7 +691,7 @@ public class PostBusinessManager : IPostBusinessManager
         return new PostDetailsViewModel
         {
             PostCategories = postCats,
-            Post = post,
+            PostAndCreator = postAndCreator,
             Comment = comment,
             Comments = comments,
             AccountUser = user,
@@ -679,9 +705,14 @@ public class PostBusinessManager : IPostBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var post = await _postService.Get(postDetailsViewModel.Post.Id);
+        var post = await _postService.Get(postDetailsViewModel.PostAndCreator.Post.Id);
         if (post is null)
             return new NotFoundResult();
+        PostAndCreator postAndCreator = new PostAndCreator
+        {
+            Post = post,
+            Creator = await _userService.Get(post.CreatedById),
+        };
 
         var comment = await _commentService.Get(postDetailsViewModel.Comment.Id);
         if (comment is null)
@@ -711,7 +742,7 @@ public class PostBusinessManager : IPostBusinessManager
         return new PostDetailsViewModel
         {
             PostCategories = postCats,
-            Post = post,
+            PostAndCreator = postAndCreator,
             Comment = comment,
             Comments = comments,
             CommentReply = reply,
@@ -726,9 +757,14 @@ public class PostBusinessManager : IPostBusinessManager
         if (user is null)
             return new NotFoundResult();
 
-        var post = await _postService.Get(postDetailsViewModel.Post.Id);
+        var post = await _postService.Get(postDetailsViewModel.PostAndCreator.Post.Id);
         if (post is null)
             return new NotFoundResult();
+        PostAndCreator postAndCreator = new PostAndCreator
+        {
+            Post = post,
+            Creator = await _userService.Get(post.CreatedById),
+        };
 
         var comment = await _commentService.Get(commentId);
         if (comment is null)
@@ -775,7 +811,7 @@ public class PostBusinessManager : IPostBusinessManager
         return new PostDetailsViewModel
         {
             PostCategories = postCats,
-            Post = post,
+            PostAndCreator = postAndCreator,
             Comment = comment,
             Comments = comments,
             AccountUser = user,
@@ -794,7 +830,7 @@ public class PostBusinessManager : IPostBusinessManager
             return new NotFoundResult();
 
         // Validate User
-        if (post.CreatedBy.Id != user.Id)
+        if (post.CreatedById != user.Id)
             return new NotFoundResult();
 
         List<User> users = await _userService.GetAll();
@@ -889,7 +925,7 @@ public class PostBusinessManager : IPostBusinessManager
         foreach (var comment in comments)
         {
             var post = await _postService.Get(comment.CommentedPostId);
-            if (post.CreatedBy.Id == user.Id)
+            if (post.CreatedById == user.Id)
             {
                 _commentService.Remove(comment);
             }
@@ -907,7 +943,7 @@ public class PostBusinessManager : IPostBusinessManager
         foreach (var reply in replies)
         {
             var post = await _postService.Get(reply.RepliedPostId);
-            if (post.CreatedBy.Id == user.Id)
+            if (post.CreatedById == user.Id)
             {
                 _commentReplyService.Remove(reply);
             }

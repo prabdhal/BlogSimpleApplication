@@ -9,7 +9,7 @@ const postsDisplayContainer = document.querySelector('#blogsDisplayContainer');
 const featuredBlogHeader = document.querySelector('#featuredBlogHeader');
 const paginationNavContainer = document.querySelector('#paginationNavContainer');
 
-let featuredPost = JSON.parse(document.querySelector('#featuredBlog').getAttribute("value"));
+let featuredPostAndCreator = JSON.parse(document.querySelector('#featuredBlog').getAttribute("value"));
 let postsData = document.querySelectorAll('div.blogsData');
 let postCategoryData = JSON.parse(document.querySelector('#blogCategoryData').getAttribute("value"));
 
@@ -92,18 +92,18 @@ const setPostsToDisplay = () => {
     displayFeaturedPost();
 
     postsData.forEach(p => {
-        let post = JSON.parse(p.getAttribute("value"));
+        let postAndCreator = JSON.parse(p.getAttribute("value"));
 
         // exclude featured posts
-        if (post.isFeatured && hideFeaturedPost) return;
+        if (postAndCreator.post.isFeatured && hideFeaturedPost) return;
 
         // Displays posts that contain the entered search string in their title, description or category
-        if (post.title.toString().toLowerCase().includes(postSearchString) ||
-            post.description.toString().toLowerCase().includes(postSearchString) ||
-            getPostCategoryName(post.category).toString().toLowerCase().includes(postSearchString) ||
+        if (postAndCreator.post.title.toString().toLowerCase().includes(postSearchString) ||
+            postAndCreator.post.description.toString().toLowerCase().includes(postSearchString) ||
+            getPostCategoryName(postAndCreator.category).toString().toLowerCase().includes(postSearchString) ||
             postSearchString.toString() === "") {
-            if (post.category == postCategory || postCategory === 100) {
-                postsToShow.push(post);
+            if (postAndCreator.post.category == postCategory || postCategory === 100) {
+                postsToShow.push(postAndCreator);
             }
         }
     });
@@ -115,7 +115,7 @@ const setPostsToDisplay = () => {
 // sort posts by updated date
 const sortPosts = () => {
     postsToShow = postsToShow.sort(
-        (b1, b2) => (b1.updatedOn < b2.updatedOn) ? 1 : (b1.updatedOn > b2.updatedOn) ? -1 : 0);
+        (b1, b2) => (b1.post.updatedOn < b2.post.updatedOn) ? 1 : (b1.post.updatedOn > b2.post.updatedOn) ? -1 : 0);
 }
 
 const updatePaginationVariables = (postCount) => {
@@ -144,10 +144,10 @@ const displayFeaturedPost = () => {
 
     featuredPostContainer.innerHTML = '';
 
-    if (featuredPost.id == null || hideFeaturedPost == false) return;
+    if (featuredPostAndCreator.post.id == null || hideFeaturedPost == false) return;
 
     // Displays featured post
-    var createdOnDate = new Date(featuredPost.createdOn);
+    var createdOnDate = new Date(featuredPostAndCreator.post.createdOn);
     var year = createdOnDate.getFullYear();
     var month = months[createdOnDate.getMonth()].substring(0, 3);
     var day = createdOnDate.getDate();
@@ -155,15 +155,15 @@ const displayFeaturedPost = () => {
     const divElement = document.createElement('div');
     divElement.innerHTML =
         `<div class="featured-post-card">
-            <a href="${postDetailsPath}/${featuredPost.id}">
-                <div class="banner-tag ${getPostCategoryClass(featuredPost.category)}">
-                    <div>${getPostCategoryName(featuredPost.category)}</div >
+            <a href="${postDetailsPath}/${featuredPostAndCreator.post.id}">
+                <div class="banner-tag ${getPostCategoryClass(featuredPostAndCreator.post.category)}">
+                    <div>${getPostCategoryName(featuredPostAndCreator.post.category)}</div >
                 </div>
-                <img class="featured-post-card-img" src="${getImagePath(featuredPost.headerImage)}" alt="${featuredPost.title}" />
+                <img class="featured-post-card-img" src="${getImagePath(featuredPostAndCreator.post.headerImage)}" alt="${featuredPostAndCreator.post.title}" />
             </a>
             <div class="featured-post-card-body">
-                <h2 class="featured-post-card-body-title"><a href="${postDetailsPath}/${featuredPost.id}">${featuredPost.title}</a></h2>
-                <p class="featured-post-card-body-description">${featuredPost.description}</p>
+                <h2 class="featured-post-card-body-title"><a href="${postDetailsPath}/${featuredPostAndCreator.post.id}">${featuredPostAndCreator.post.title}</a></h2>
+                <p class="featured-post-card-body-description">${featuredPostAndCreator.post.description}</p>
                 <div class="featured-post-card-body-details">
                     <span>
                         <span>
@@ -177,14 +177,14 @@ const displayFeaturedPost = () => {
                     </span>
                     <span>
                         <span>
-                            <img class="post-creator-img" src="${getImagePath(featuredPost.createdBy.profilePicture)}" alt="${featuredPost.createdBy.userName} Profile Picture" />
+                            <img class="post-creator-img" src="${getImagePath(featuredPostAndCreator.creator.profilePicture)}" alt="${featuredPostAndCreator.creator.userName} Profile Picture" />
                             <!--<svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>-->
                         </span>
                         <span>
-                            <a href="/Account/Author/${featuredPost.createdBy.id}">${featuredPost.createdBy.userName}</a>
+                            <a href="/Home/Author/${featuredPostAndCreator.creator.id}">${featuredPostAndCreator.creator.userName}</a>
                         </span>
                     </span>
                 </div>
@@ -227,9 +227,9 @@ const displayPosts = () => {
     for (var i = curPostIdx; i < postIdxOnCurrentPage; i++) {
 
         if (postsToShow[i] == null) return;
-        if (postsToShow[i].isFeatured && hideFeaturedPost) return;
+        if (postsToShow[i].post.isFeatured && hideFeaturedPost) return;
 
-        var createdOnDate = new Date(postsToShow[i].createdOn);
+        var createdOnDate = new Date(postsToShow[i].post.createdOn);
         var year = createdOnDate.getFullYear();
         var month = months[createdOnDate.getMonth()].substring(0, 3);
         var day = createdOnDate.getDate();
@@ -238,15 +238,15 @@ const displayPosts = () => {
         divElement.classList = 'post-card mb-4'
         divElement.innerHTML =
             `<div class="post-card">
-                <a href="${postDetailsPath}/${postsToShow[i].id}">
-                    <div class="banner-tag ${getPostCategoryClass(postsToShow[i].category)}">
-                        <div>${getPostCategoryName(postsToShow[i].category)}</div >
+                <a href="${postDetailsPath}/${postsToShow[i].post.id}">
+                    <div class="banner-tag ${getPostCategoryClass(postsToShow[i].post.category)}">
+                        <div>${getPostCategoryName(postsToShow[i].post.category)}</div >
                     </div>
-                    <img class="post-card-img" src="${getImagePath(postsToShow[i].headerImage)}" alt="${postsToShow[i].title}" />
+                    <img class="post-card-img" src="${getImagePath(postsToShow[i].post.headerImage)}" alt="${postsToShow[i].post.title}" />
                 </a>
                 <div class="post-card-body">
-                    <h2 class="post-card-body-title"><a href="${postDetailsPath}/${postsToShow[i].id}">${postsToShow[i].title}</a></h2>
-                    <!--<p class="post-card-body-description">${postsToShow[i].description}</p>-->
+                    <h2 class="post-card-body-title"><a href="${postDetailsPath}/${postsToShow[i].post.id}">${postsToShow[i].post.title}</a></h2>
+                    <!--<p class="post-card-body-description">${postsToShow[i].post.description}</p>-->
                     <div class="post-card-body-details">
                         <span>
                             <span>
@@ -260,14 +260,14 @@ const displayPosts = () => {
                         </span>
                         <span>
                             <span>
-                                <img class="post-creator-img" src="${getImagePath(postsToShow[i].createdBy.profilePicture)}" alt="${postsToShow[i].createdBy.userName} Profile Picture" />
+                                <img class="post-creator-img" src="${getImagePath(postsToShow[i].creator.profilePicture)}" alt="${postsToShow[i].creator.userName} Profile Picture" />
                                 <!--<svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>-->
                             </span>
                             <span>
-                                <a href="/Account/Author/${postsToShow[i].createdBy.id}">${postsToShow[i].createdBy.userName}</a>
+                                <a href="/Home/Author/${postsToShow[i].post.createdById}">${postsToShow[i].creator.userName}</a>
                             </span>
                         </span>
                     </div>

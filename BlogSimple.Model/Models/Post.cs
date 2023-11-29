@@ -24,7 +24,6 @@ public class Post
     public bool IsPublished { get; set; } = false;
     public bool IsFeatured { get; set; } = false;
     [DisplayName("Author")]
-    public User CreatedBy { get; set; } = new User();
     public Guid CreatedById { get; set; }
     
     [DisplayName("Created On")]
