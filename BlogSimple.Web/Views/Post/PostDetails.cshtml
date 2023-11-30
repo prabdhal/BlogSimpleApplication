@@ -246,7 +246,7 @@
                                                             @{
                                                                 if (SignInManager.IsSignedIn(User))
                                                                 {
-                                                                    if (comment.Creator.Id != Guid.Empty)
+                                                                    if (comment.Comment.CreatedById != Guid.Empty)
                                                                     {
                                                                         if (((await UserManager.GetUserAsync(User)).UserName) == comment.Creator.UserName)
                                                                         {
@@ -348,7 +348,7 @@
                                                                                     @{
                                                                                         if (SignInManager.IsSignedIn(User))
                                                                                         {
-                                                                                            if (reply.Creator != null)
+                                                                                            if (reply.CommentReply.CreatedById != Guid.Empty)
                                                                                             {
                                                                                                 if (((await UserManager.GetUserAsync(User)).UserName) == reply.Creator.UserName)
                                                                                                 {
