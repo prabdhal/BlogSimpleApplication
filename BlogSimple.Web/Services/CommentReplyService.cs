@@ -31,7 +31,7 @@ public class CommentReplyService : ICommentReplyService
     public async Task<List<CommentReply>> GetAllByUser(User user)
     {
         // Need to filter by user comments
-        var filterSearch = Builders<CommentReply>.Filter.Where(c => c.CreatedBy.Id == user.Id);
+        var filterSearch = Builders<CommentReply>.Filter.Where(c => c.CreatedById == user.Id);
 
         return await _replies.Find(filterSearch).ToListAsync();
     }

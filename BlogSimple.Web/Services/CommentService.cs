@@ -30,13 +30,13 @@ public class CommentService : ICommentService
 
     public async Task<List<Comment>> GetAllByUser(User user)
     {
-        return await _comments.Find(c => c.CreatedBy.Id == user.Id).ToListAsync();
+        return await _comments.Find(c => c.CreatedById== user.Id).ToListAsync();
     }
 
     public async Task<List<Comment>> GetAll(User user)
     {
         // Need to filter by user comments
-        var filterSearch = Builders<Comment>.Filter.Where(c => c.CreatedBy.UserName == user.UserName);
+        var filterSearch = Builders<Comment>.Filter.Where(c => c.CreatedById == user.Id);
 
         return await _comments.Find(filterSearch).ToListAsync();
     }

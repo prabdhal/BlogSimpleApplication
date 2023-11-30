@@ -129,8 +129,20 @@ public class PostBusinessManager : IPostBusinessManager
             user.FavoritedPostsId.Remove(removePost);
         }
 
-        List<string> postCats = new List<string>();
         var comments = await _commentService.GetAllByPost(post.Id);
+        List<CommentAndCreator> commentsAndCreator = new List<CommentAndCreator>();
+        foreach (Comment comment in comments) 
+        {
+            CommentAndCreator cAC = new CommentAndCreator
+            {
+                Comment = comment,
+                Creator = await _userService.Get(comment.CreatedById),
+            };
+            commentsAndCreator.Add(cAC);    
+        }
+
+        List<string> postCats = new List<string>();
+
         foreach (var cat in Enum.GetValues(typeof(PostCategory)))
         {
             postCats.Add(cat.ToString());
@@ -151,16 +163,16 @@ public class PostBusinessManager : IPostBusinessManager
             PostCategories = postCats,
             PostAndCreator = postAndCreator,
             Comment = null,
-            Comments = comments,
+            Comments = commentsAndCreator,
             AccountUser = user,
             CommentCount = 0,
         };
     }
 
-    public async Task<PostDetailsViewModel> GetPostDetailsViewModel(string id, ClaimsPrincipal claimsPrincipal)
+    public async Task<PostDetailsViewModel> GetPostDetailsViewModel(string postId, ClaimsPrincipal claimsPrincipal)
     {
         var user = await _userManager.GetUserAsync(claimsPrincipal);
-        Post post = await _postService.Get(id);
+        Post post = await _postService.Get(postId);
         post.HeaderImage = GetImage(Convert.ToBase64String(post.HeaderImage));
         PostAndCreator postAndCreator = new PostAndCreator
         {
@@ -180,7 +192,37 @@ public class PostBusinessManager : IPostBusinessManager
             publishedPostsAndCreator.Add(pAC);
         }
 
-        var comments = await _commentService.GetAllByPost(id);
+        var comments = await _commentService.GetAllByPost(postId);
+        List<CommentAndCreator> commentsAndCreator = new List<CommentAndCreator>();
+        foreach (Comment comment in comments)
+        {
+            CommentAndCreator cAC = new CommentAndCreator
+            {
+                Comment = comment,
+                Creator = await _userService.Get(comment.CreatedById),
+            };
+            commentsAndCreator.Add(cAC);
+        }
+
+        var replies = await _commentReplyService.GetAllByPost(postId);
+        List<CommentReplyAndCreator> repliesAndCreator = new List<CommentReplyAndCreator>();
+        foreach (CommentReply reply in replies)
+        {
+            CommentReplyAndCreator rAC = new CommentReplyAndCreator
+            {
+                CommentReply = reply,
+                Creator = await _userService.Get(reply.CreatedById),
+            };
+            repliesAndCreator.Add(rAC);
+        }
+
+        int commentCount = comments.Count() + replies.Count();
+
+        foreach (var cat in Enum.GetValues(typeof(PostCategory)))
+        {
+            postCats.Add(cat.ToString());
+        }
+
         Achievements achievements;
         List<AchievementsNotificationModel> achievementNotificationsList = new List<AchievementsNotificationModel>();
 
@@ -191,30 +233,13 @@ public class PostBusinessManager : IPostBusinessManager
             await _achievementService.Update(achievements.Id, achievements);
         }
 
-        foreach (Comment c in comments)
-        {
-            c.CreatedBy = await _userService.Get(c.CreatedById);
-        }
-        var replies = await _commentReplyService.GetAllByPost(id);
-        foreach (CommentReply r in replies)
-        {
-            r.CreatedBy = await _userService.Get(r.CreatedById);
-        }
-
-        int commentCount = comments.Count() + replies.Count();
-
-        foreach (var cat in Enum.GetValues(typeof(PostCategory)))
-        {
-            postCats.Add(cat.ToString());
-        }
-
         return new PostDetailsViewModel
         {
             AllPosts = publishedPostsAndCreator,
             PostCategories = postCats,
             PostAndCreator = postAndCreator,
-            Comments = comments,
-            CommentReplies = replies,
+            Comments = commentsAndCreator,
+            CommentReplies = repliesAndCreator,
             AccountUser = user,
             CommentCount = commentCount,
             AchievementsNotificationList = achievementNotificationsList
@@ -503,7 +528,6 @@ public class PostBusinessManager : IPostBusinessManager
         var post = await _postService.Get(postDetailsViewModel.PostAndCreator.Post.Id);
 
         comment.CommentedPostId = post.Id;
-        comment.CreatedBy = user;
         comment.CreatedById = user.Id;
         comment.CreatedOn = DateTime.Now;
         comment.UpdatedOn = DateTime.Now;
@@ -535,7 +559,6 @@ public class PostBusinessManager : IPostBusinessManager
 
         reply.RepliedPostId = post.Id;
         reply.RepliedCommentId = comment.Id;
-        reply.CreatedBy = user;
         reply.CreatedById = user.Id;
         reply.CreatedOn = DateTime.Now;
         reply.UpdatedOn = DateTime.Now;
@@ -677,6 +700,16 @@ public class PostBusinessManager : IPostBusinessManager
 
         List<string> postCats = new List<string>();
         var comments = await _commentService.GetAllByPost(post.Id);
+        List<CommentAndCreator> commentsAndCreator = new List<CommentAndCreator>();
+        foreach (Comment c in comments)
+        {
+            CommentAndCreator cAC = new CommentAndCreator
+            {
+                Comment = c,
+                Creator = await _userService.Get(c.CreatedById),
+            };
+            commentsAndCreator.Add(cAC);
+        }
 
         int commentCount = comments.Count() + replies.Count();
 
@@ -693,7 +726,7 @@ public class PostBusinessManager : IPostBusinessManager
             PostCategories = postCats,
             PostAndCreator = postAndCreator,
             Comment = comment,
-            Comments = comments,
+            Comments = commentsAndCreator,
             AccountUser = user,
             CommentCount = commentCount
         };
@@ -728,6 +761,16 @@ public class PostBusinessManager : IPostBusinessManager
 
         List<string> postCats = new List<string>();
         var comments = await _commentService.GetAllByPost(post.Id);
+        List<CommentAndCreator> commentsAndCreator = new List<CommentAndCreator>();
+        foreach (Comment c in comments)
+        {
+            CommentAndCreator cAC = new CommentAndCreator
+            {
+                Comment = c,
+                Creator = await _userService.Get(c.CreatedById),
+            };
+            commentsAndCreator.Add(cAC);
+        }
 
         int commentCount = comments.Count() + replies.Count();
 
@@ -744,7 +787,7 @@ public class PostBusinessManager : IPostBusinessManager
             PostCategories = postCats,
             PostAndCreator = postAndCreator,
             Comment = comment,
-            Comments = comments,
+            Comments = commentsAndCreator,
             CommentReply = reply,
             AccountUser = user,
             CommentCount = commentCount
@@ -787,6 +830,16 @@ public class PostBusinessManager : IPostBusinessManager
 
         List<string> postCats = new List<string>();
         var comments = await _commentService.GetAllByPost(post.Id);
+        List<CommentAndCreator> commentsAndCreator = new List<CommentAndCreator>();
+        foreach (Comment c in comments)
+        {
+            CommentAndCreator cAC = new CommentAndCreator
+            {
+                Comment = c,
+                Creator = await _userService.Get(c.CreatedById),
+            };
+            commentsAndCreator.Add(cAC);
+        }
 
         int commentCount = comments.Count() + replies.Count();
 
@@ -813,7 +866,7 @@ public class PostBusinessManager : IPostBusinessManager
             PostCategories = postCats,
             PostAndCreator = postAndCreator,
             Comment = comment,
-            Comments = comments,
+            Comments = commentsAndCreator,
             AccountUser = user,
             CommentCount = commentCount
         };
@@ -868,7 +921,7 @@ public class PostBusinessManager : IPostBusinessManager
             throw new Exception("comment could not be found");
 
         // Validate User
-        if (comment.CreatedBy.Id != user.Id)
+        if (comment.CreatedById != user.Id)
             throw new Exception("Cannot delete because comment creator and user creater are not the same");
 
 
@@ -891,7 +944,7 @@ public class PostBusinessManager : IPostBusinessManager
             throw new Exception("Reply could not be found");
 
         // Validate User
-        if (reply.CreatedBy.Id != user.Id)
+        if (reply.CreatedById != user.Id)
             throw new Exception("Cannot delete because reply creator and user creater are not the same");
 
         _commentReplyService.Remove(replyId);
@@ -929,12 +982,10 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 _commentService.Remove(comment);
             }
-            else if (comment.CreatedBy.Id == user.Id)
+            else if (comment.CreatedById == user.Id)
             {
                 Comment removalCommentTemplate = await _commentService.Get(comment.Id);
                 removalCommentTemplate.Content = deletedUserCommentText;
-                removalCommentTemplate.CreatedBy = deletedUser;
-
                 await _commentService.UpdateForRemoval(comment.Id, removalCommentTemplate);
             }
         }
@@ -947,11 +998,10 @@ public class PostBusinessManager : IPostBusinessManager
             {
                 _commentReplyService.Remove(reply);
             }
-            else if (reply.CreatedBy.Id == user.Id)
+            else if (reply.CreatedById == user.Id)
             {
                 CommentReply removalReplyTemplate = await _commentReplyService.Get(reply.Id);
                 removalReplyTemplate.Content = deletedUserCommentText;
-                removalReplyTemplate.CreatedBy = deletedUser;
                 await _commentReplyService.UpdateForRemoval(reply.Id, removalReplyTemplate);
             }
         }

@@ -10,7 +10,6 @@ public class Comment
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
     public Guid CreatedById { get; set; }
-    public User CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     [Required(ErrorMessage = "Comment is empty!")]
@@ -18,4 +17,11 @@ public class Comment
     public string Content { get; set; }
     public List<Guid> CommentLikedByUserNames { get; set; } = new List<Guid>();
     public string CommentedPostId { get; set; }
+}
+
+
+public class CommentAndCreator
+{
+    public Comment Comment { get; set; }
+    public User Creator { get; set; }
 }

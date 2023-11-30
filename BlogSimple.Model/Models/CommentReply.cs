@@ -10,7 +10,6 @@ public class CommentReply
     [BsonRepresentation(BsonType.ObjectId)]
     public string Id { get; set; }
     public Guid CreatedById { get; set; }
-    public User CreatedBy { get; set; }
     public DateTime CreatedOn { get; set; }
     public DateTime UpdatedOn { get; set; }
     [Required(ErrorMessage = "Reply is empty!")]
@@ -18,4 +17,11 @@ public class CommentReply
     public string Content { get; set; }
     public string RepliedCommentId { get; set; }
     public string RepliedPostId { get; set; }
+}
+
+
+public class CommentReplyAndCreator
+{
+    public CommentReply CommentReply { get; set; }
+    public User Creator { get; set; }
 }
