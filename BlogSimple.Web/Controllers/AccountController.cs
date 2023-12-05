@@ -215,7 +215,8 @@ namespace BlogSimple.Web.Controllers
                 Token = token,
                 UserId = uid
             };
-            return View(resetPasswordViewModel);
+            //return View(resetPasswordViewModel);
+            return RedirectToAction("ForgotPassword");
         }
 
         [AllowAnonymous, HttpPost("reset-password")]
