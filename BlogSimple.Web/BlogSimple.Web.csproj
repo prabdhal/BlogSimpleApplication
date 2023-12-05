@@ -15,11 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Account\PasswordReset.cshtml" />
-    <Content Remove="Views\Account\ResetPassword.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="EmailTemplate\EmailConfirm.html" />
   </ItemGroup>
 
@@ -56,11 +51,6 @@
     <Folder Include="wwwroot\lib\jquery\" />
     <Folder Include="wwwroot\lib\jquery\dist\" />
     <Folder Include="wwwroot\UserFiles\AchievementImages\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Views\Account\PasswordReset.cshtml" />
-    <None Include="Views\Account\ResetPassword.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

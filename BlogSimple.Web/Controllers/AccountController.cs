@@ -208,19 +208,18 @@ namespace BlogSimple.Web.Controllers
         }
 
         [AllowAnonymous, HttpGet("reset-password")]
-        public IActionResult PasswordReset(string uid, string token)
+        public IActionResult ResetPassword(string uid, string token)
         {
             ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel
             {
                 Token = token,
                 UserId = uid
             };
-            //return View(resetPasswordViewModel);
-            return RedirectToAction("ForgotPassword");
+            return View(resetPasswordViewModel);
         }
 
         [AllowAnonymous, HttpPost("reset-password")]
-        public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
