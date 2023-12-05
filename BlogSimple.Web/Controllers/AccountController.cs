@@ -208,7 +208,7 @@ namespace BlogSimple.Web.Controllers
         }
 
         [AllowAnonymous, HttpGet("reset-password")]
-        public IActionResult ResetPassword(string uid, string token)
+        public IActionResult PasswordReset(string uid, string token)
         {
             ResetPasswordViewModel resetPasswordViewModel = new ResetPasswordViewModel
             {
@@ -219,7 +219,7 @@ namespace BlogSimple.Web.Controllers
         }
 
         [AllowAnonymous, HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        public async Task<IActionResult> PasswordReset(ResetPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
