@@ -548,7 +548,7 @@ button:hover {
 }
 
 /* The Modal (background) */
-.delete-comment-modal {
+.delete-comment-modal, .delete-reply-modal, .delete-post-modal, .delete-account-modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 10000; /* Sit on top */
@@ -568,21 +568,6 @@ button:hover {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-/* The Modal (background) */
-.delete-reply-modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 10000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: #113946;
-    color: #FFF2D8;
-    /*padding-top: 50px;*/
 }
 
 /* Modal Content/Box */

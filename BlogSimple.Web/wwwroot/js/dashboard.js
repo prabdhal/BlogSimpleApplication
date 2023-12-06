@@ -28,6 +28,31 @@ let deletePostPath = '/Post/DeletePost';
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
+// post modals
+const deletePostModal = document.querySelector('.delete-post-modal');
+const deletePostModalForm = document.querySelector('#deletePostModalForm');
+
+// opens the account drop down menu
+const openPostDropDownMenuContent = (el) => {
+    if (el.nextElementSibling.style.display == 'block') {
+        closeAllAccountDropDownModal();
+    } else {
+        el.nextElementSibling.style.display = 'block';
+    }
+}
+
+// displays delete account modal 
+const displayDeletePostModal = (postId) => {
+    deletePostModal.style.display = 'block';
+    deletePostModalForm.action = `/Post/DeletePost/${postId}`;
+}
+
+// hides delete account modal 
+const hideDeletePostModal = () => {
+    deletePostModal.style.display = 'none';
+}
+
+
 const getPostImagePath = (img) => {
     return `data:image/jpg;base64,${img}`;
 }
@@ -36,6 +61,8 @@ const getPostImagePath = (img) => {
 const openDeletePostModal = (id) => {
     alert(`Are you sure you want to delete post with ${id}`);
 }
+
+hideDeletePostModal();
 
 // sets postsToShow 
 const setPostsToDisplay = () => {
@@ -167,7 +194,7 @@ const displayPosts = () => {
                             <svg class="menu-icon" width="60px" height="40px" viewBox="-2.4 -2.4 28.80 28.80" fill="none" xmlns="http://www.w3.org/2000/svg" transform="rotate(90)matrix(1, 0, 0, 1, 0, 0)"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z" stroke="#000000" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
                             <div class="dropdown-content">
                                 <a href="${editPostPath}/${blogsToShow[i].id}">Edit</a>
-                                <a href="${deletePostPath}/${blogsToShow[i].id}">Delete</a>
+                                <a onclick="displayDeletePostModal('${blogsToShow[i].id}')">Delete</a>
                             </div>
                         </div>
                     </div>

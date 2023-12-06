@@ -32,3 +32,31 @@
     </div>
 </main>
 
+<!-- Delete Post Modal -->
+<div id="deletePostModal" class="delete-post-modal">
+    <span onclick="hideDeletePostModal()" class="close" title="Close Modal">&times;</span>
+    <form class="modal-content" id="deletePostModalForm" method="post">
+        <div class="modal-content-container">
+            <h1>Delete Post</h1>
+            <p>Are you sure you want to delete your post?</p>
+
+            <div class="modal-buttons">
+                <button class="hero-btn" type="button" onclick="hideDeletePostModal()">Cancel</button>
+                <button id="postDeleteBtn" class="hero-btn" type="submit">Delete</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    const postDeleteBtn = document.querySelector('#postDeleteBtn');
+
+    postDeleteBtn.addEventListener('click', (e) => {
+        setTimeout(() => {
+            postDeleteBtn.disabled = true;
+            postDeleteBtn.innerHTML = "Loading...";
+        }, 50);
+    });
+</script>
+
